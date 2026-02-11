@@ -6,7 +6,6 @@ import {
   Library,
   Users,
   BarChart3,
-  TrendingUp,
   DollarSign,
   Activity,
   Settings,
@@ -59,7 +58,6 @@ export const adminNavConfig: NavItem[] = [
     title: "Analytics",
     icon: BarChart3,
     children: [
-      { title: "Overview", path: "/admin/analytics", icon: TrendingUp },
       { title: "Users", path: "/admin/analytics/users", icon: Users },
       { title: "Revenue", path: "/admin/analytics/revenue", icon: DollarSign },
       { title: "Engagement", path: "/admin/analytics/engagement", icon: Activity },

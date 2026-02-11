@@ -15,7 +15,7 @@ import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import type { Plan } from "../types/admin.types";
 import { mockPlans } from "../data/mockPlans";
 import { formatCurrency } from "../utils/helpers";
-import { PlanFormModal, type PlanFormData } from "../components/PlanFormModal";
+import { PlanFormDrawer, type PlanFormData } from "../components/PlanFormModal";
 
 /* ── Quality badge colors ─────────────────────── */
 
@@ -223,8 +223,8 @@ export function PlansManagePage() {
         emptyMessage="No plans yet. Create your first plan."
       />
 
-      {/* Form Modal (create / edit) */}
-      <PlanFormModal
+      {/* Form Drawer (create / edit) */}
+      <PlanFormDrawer
         open={formOpen}
         onClose={() => { setFormOpen(false); setEditTarget(null); }}
         onSave={handleFormSave}

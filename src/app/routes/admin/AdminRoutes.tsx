@@ -5,6 +5,9 @@ import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
 import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
 import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
 import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
+import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
+import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
+import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
 import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
 
 // /admin → redirect to login
@@ -74,25 +77,27 @@ const adminUsersRoute = createRoute({
 const adminAnalyticsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics",
-  component: () => <PlaceholderPage title="Analytics Overview" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/analytics/users" });
+  },
 });
 
 const adminAnalyticsUsersRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/users",
-  component: () => <PlaceholderPage title="User Analytics" />,
+  component: AnalyticsUsersPage,
 });
 
 const adminAnalyticsRevenueRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/revenue",
-  component: () => <PlaceholderPage title="Revenue" />,
+  component: AnalyticsRevenuePage,
 });
 
 const adminAnalyticsEngagementRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/engagement",
-  component: () => <PlaceholderPage title="Engagement" />,
+  component: AnalyticsEngagementPage,
 });
 
 // ── Settings ─────────────────────────────────────
