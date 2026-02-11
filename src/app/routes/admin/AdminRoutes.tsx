@@ -3,6 +3,8 @@ import rootRoute from "../RootRoute";
 import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
 import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
 import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
+import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
+import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
 import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
 
 // /admin → redirect to login
@@ -39,13 +41,13 @@ const adminDashboardRoute = createRoute({
 const adminPlansRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/plans",
-  component: () => <PlaceholderPage title="Plans Overview" />,
+  component: PlansOverviewPage,
 });
 
 const adminPlansManageRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/plans/manage",
-  component: () => <PlaceholderPage title="Manage Plans" />,
+  component: PlansManagePage,
 });
 
 // ── Content ──────────────────────────────────────
