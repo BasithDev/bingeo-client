@@ -1,5 +1,5 @@
-import { type InputHTMLAttributes, forwardRef, useState, type ReactNode } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { forwardRef, type InputHTMLAttributes, type ReactNode, useState } from "react";
 import { cn } from "@/utils/cn";
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -15,10 +15,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     return (
       <div className="space-y-1.5">
         {label && (
-          <label
-            htmlFor={id}
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor={id} className="block text-sm font-medium text-gray-700">
             {label}
           </label>
         )}
@@ -55,9 +52,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         </div>
-        {error && (
-          <p className="text-xs font-medium text-red-500">{error}</p>
-        )}
+        {error && <p className="text-xs font-medium text-red-500">{error}</p>}
       </div>
     );
   },

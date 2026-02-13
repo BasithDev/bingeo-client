@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
 import NumberFlow from "@number-flow/react";
-import { Users, Crown, CreditCard, UserX, ChevronDown } from "lucide-react";
+import { ChevronDown, CreditCard, Crown, Users, UserX } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 interface ExpandableUsersCardProps {
@@ -22,9 +22,30 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
   const growthPct = Math.round(((stats.total - previousTotal) / previousTotal) * 100);
 
   const breakdown = [
-    { label: "Premium", value: stats.premium, change: "+13%", icon: Crown, textColor: "text-violet-500", bg: "bg-violet-500/10" },
-    { label: "Basic", value: stats.basic, change: "+6%", icon: CreditCard, textColor: "text-blue-500", bg: "bg-blue-500/10" },
-    { label: "Free", value: stats.free, change: "+7%", icon: UserX, textColor: "text-slate-400", bg: "bg-slate-400/10" },
+    {
+      label: "Premium",
+      value: stats.premium,
+      change: "+13%",
+      icon: Crown,
+      textColor: "text-violet-500",
+      bg: "bg-violet-500/10",
+    },
+    {
+      label: "Basic",
+      value: stats.basic,
+      change: "+6%",
+      icon: CreditCard,
+      textColor: "text-blue-500",
+      bg: "bg-blue-500/10",
+    },
+    {
+      label: "Free",
+      value: stats.free,
+      change: "+7%",
+      icon: UserX,
+      textColor: "text-slate-400",
+      bg: "bg-slate-400/10",
+    },
   ];
 
   return (
@@ -51,7 +72,9 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
         <div className="flex items-center gap-2">
           <div className="text-right">
             <span className="text-xs font-semibold text-emerald-500">↑ {growthPct}%</span>
-            <p className="text-[10px] text-muted-foreground">vs last month ({previousTotal} → {stats.total})</p>
+            <p className="text-[10px] text-muted-foreground">
+              vs last month ({previousTotal} → {stats.total})
+            </p>
           </div>
           <ChevronDown
             className={cn(
@@ -77,7 +100,13 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
                 <div key={item.label} className="rounded-xl bg-muted/50 p-2.5">
                   {/* Icon + label */}
                   <div className="flex items-center gap-1.5 mb-1">
-                    <div className={cn("flex h-6 w-6 items-center justify-center rounded-lg", item.bg, item.textColor)}>
+                    <div
+                      className={cn(
+                        "flex h-6 w-6 items-center justify-center rounded-lg",
+                        item.bg,
+                        item.textColor,
+                      )}
+                    >
                       <item.icon className="h-3 w-3" />
                     </div>
                     <span className="text-xs font-medium text-muted-foreground">{item.label}</span>

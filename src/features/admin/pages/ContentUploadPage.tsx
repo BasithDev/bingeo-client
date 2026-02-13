@@ -1,22 +1,22 @@
-import { useState, useReducer, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
-  Film, Tv, Sparkles,
-  ChevronRight, ChevronLeft,
-  Save, ArrowRight,
-  Clock, Image as ImageIcon,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Film,
+  Image as ImageIcon,
+  Save,
+  Sparkles,
+  Tv,
 } from "lucide-react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
-import type {
-  ContentType,
-  ContentMetadata,
-  CastMember,
-  Season,
-} from "../types/content.types";
-import { GenrePicker } from "../components/content/GenrePicker";
 import { CastSearch } from "../components/content/CastSearch";
-import { SeasonManager } from "../components/content/SeasonManager";
+import { GenrePicker } from "../components/content/GenrePicker";
 import { MediaUploadZone } from "../components/content/MediaUploadZone";
+import { SeasonManager } from "../components/content/SeasonManager";
+import type { CastMember, ContentMetadata, ContentType, Season } from "../types/content.types";
 
 /* ── Step definitions ─────────────────────────── */
 
@@ -65,7 +65,11 @@ type Action =
 function reducer(state: FormState, action: Action): FormState {
   switch (action.kind) {
     case "SET_TYPE":
-      return { ...state, type: action.payload, seasons: action.payload === "series" ? state.seasons : [] };
+      return {
+        ...state,
+        type: action.payload,
+        seasons: action.payload === "series" ? state.seasons : [],
+      };
     case "SET_FIELD":
       return { ...state, [action.field]: action.value };
     case "SET_GENRES":
@@ -116,9 +120,7 @@ export function ContentUploadPage() {
   useEffect(() => {
     if (!draftId) return;
     try {
-      const stored: ContentMetadata[] = JSON.parse(
-        localStorage.getItem("bingeo-drafts") ?? "[]",
-      );
+      const stored: ContentMetadata[] = JSON.parse(localStorage.getItem("bingeo-drafts") ?? "[]");
       const found = stored.find((d) => d.id === draftId);
       if (found) {
         editingIdRef.current = found.id;
@@ -171,9 +173,7 @@ export function ContentUploadPage() {
   /* ── Save draft ──────────────────────────────── */
 
   const saveDraft = () => {
-    const drafts: ContentMetadata[] = JSON.parse(
-      localStorage.getItem("bingeo-drafts") ?? "[]",
-    );
+    const drafts: ContentMetadata[] = JSON.parse(localStorage.getItem("bingeo-drafts") ?? "[]");
     const now = new Date().toISOString();
 
     if (editingIdRef.current) {
@@ -227,7 +227,10 @@ export function ContentUploadPage() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h2
+                className="text-lg font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 What are you uploading?
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -253,15 +256,18 @@ export function ContentUploadPage() {
                     <div
                       className={cn(
                         "h-14 w-14 rounded-2xl flex items-center justify-center",
-                        active
-                          ? "bg-primary/15 text-primary"
-                          : "bg-muted text-muted-foreground",
+                        active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground",
                       )}
                     >
                       <Icon className="h-6 w-6" />
                     </div>
                     <div className="text-center">
-                      <p className={cn("text-sm font-semibold", active ? "text-primary" : "text-foreground")}>
+                      <p
+                        className={cn(
+                          "text-sm font-semibold",
+                          active ? "text-primary" : "text-foreground",
+                        )}
+                      >
                         {label}
                       </p>
                       <p className="text-[11px] text-muted-foreground mt-0.5">{desc}</p>
@@ -277,7 +283,10 @@ export function ContentUploadPage() {
         return (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h2
+                className="text-lg font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 Content Details
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -291,7 +300,9 @@ export function ContentUploadPage() {
               <input
                 type="text"
                 value={state.title}
-                onChange={(e) => dispatch({ kind: "SET_FIELD", field: "title", value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ kind: "SET_FIELD", field: "title", value: e.target.value })
+                }
                 placeholder="Enter content title"
                 className={cn(
                   "w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground",
@@ -305,7 +316,9 @@ export function ContentUploadPage() {
               <label className="text-sm font-medium text-foreground">Plot / Description</label>
               <textarea
                 value={state.plot}
-                onChange={(e) => dispatch({ kind: "SET_FIELD", field: "plot", value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ kind: "SET_FIELD", field: "plot", value: e.target.value })
+                }
                 placeholder="Write a brief synopsis..."
                 rows={4}
                 className={cn(
@@ -330,7 +343,9 @@ export function ContentUploadPage() {
                 <input
                   type="text"
                   value={state.duration}
-                  onChange={(e) => dispatch({ kind: "SET_FIELD", field: "duration", value: e.target.value })}
+                  onChange={(e) =>
+                    dispatch({ kind: "SET_FIELD", field: "duration", value: e.target.value })
+                  }
                   placeholder="e.g. 2h 15m"
                   className={cn(
                     "w-full rounded-xl border border-border bg-background pl-10 pr-4 py-2.5 text-sm text-foreground",
@@ -361,7 +376,9 @@ export function ContentUploadPage() {
                     <input
                       type="text"
                       value={state.posterUrl}
-                      onChange={(e) => dispatch({ kind: "SET_FIELD", field: "posterUrl", value: e.target.value })}
+                      onChange={(e) =>
+                        dispatch({ kind: "SET_FIELD", field: "posterUrl", value: e.target.value })
+                      }
                       placeholder="https://example.com/poster.jpg"
                       className={cn(
                         "w-full rounded-xl border border-border bg-background pl-10 pr-4 py-2.5 text-sm text-foreground",
@@ -394,7 +411,10 @@ export function ContentUploadPage() {
         return (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h2
+                className="text-lg font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 Cast & Crew
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -412,7 +432,10 @@ export function ContentUploadPage() {
         return (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h2
+                className="text-lg font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 Season & Episode Structure
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -430,7 +453,10 @@ export function ContentUploadPage() {
         return (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h2
+                className="text-lg font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 Upload Media
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -471,12 +497,7 @@ export function ContentUploadPage() {
           return (
             <div key={step.key} className="flex items-center">
               {i > 0 && (
-                <div
-                  className={cn(
-                    "h-px w-6 sm:w-10 mx-1",
-                    isDone ? "bg-primary" : "bg-border",
-                  )}
-                />
+                <div className={cn("h-px w-6 sm:w-10 mx-1", isDone ? "bg-primary" : "bg-border")} />
               )}
               <button
                 type="button"

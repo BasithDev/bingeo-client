@@ -1,14 +1,24 @@
-import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
-  Film, Tv, Sparkles,
-  Plus, Trash2, Calendar, Clock, ArrowRight,
-  Tag, Users as UsersIcon, Search,
-  ChevronLeft, ChevronRight, Image as ImageIcon,
+  ArrowRight,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Film,
+  Image as ImageIcon,
+  Plus,
+  Search,
+  Sparkles,
+  Tag,
+  Trash2,
+  Tv,
+  Users as UsersIcon,
 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
-import type { ContentMetadata, ContentType } from "../types/content.types";
 import { mockDrafts } from "../data/mockContent";
+import type { ContentMetadata, ContentType } from "../types/content.types";
 import { formatDate } from "../utils/helpers";
 
 /* ── Constants ────────────────────────────────── */
@@ -56,8 +66,7 @@ export function ContentDraftsPage() {
       try {
         const parsed = JSON.parse(stored);
         setDrafts(parsed.length > 0 ? parsed : mockDrafts);
-        if (parsed.length === 0)
-          localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
+        if (parsed.length === 0) localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
       } catch {
         setDrafts(mockDrafts);
         localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
@@ -85,10 +94,7 @@ export function ContentDraftsPage() {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
-  const paginated = filtered.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
-  );
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   // Reset to page 1 when search changes
   useEffect(() => {
@@ -193,10 +199,7 @@ export function ContentDraftsPage() {
           <div className="space-y-3">
             {paginated.map((draft) => {
               const meta = TYPE_META[draft.type];
-              const totalEpisodes = draft.seasons.reduce(
-                (sum, s) => sum + s.episodes.length,
-                0,
-              );
+              const totalEpisodes = draft.seasons.reduce((sum, s) => sum + s.episodes.length, 0);
 
               return (
                 <div
@@ -273,9 +276,7 @@ export function ContentDraftsPage() {
 
                           {/* Meta row */}
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 ml-[42px] text-xs text-muted-foreground">
-                            <span className={cn("font-semibold", meta.glow)}>
-                              {meta.label}
-                            </span>
+                            <span className={cn("font-semibold", meta.glow)}>{meta.label}</span>
                             {draft.duration && (
                               <span className="inline-flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
@@ -294,13 +295,12 @@ export function ContentDraftsPage() {
                                 {draft.cast.length} cast
                               </span>
                             )}
-                            {draft.type === "series" &&
-                              draft.seasons.length > 0 && (
-                                <span className="inline-flex items-center gap-1">
-                                  <Tv className="h-3 w-3" />
-                                  {draft.seasons.length}S · {totalEpisodes}E
-                                </span>
-                              )}
+                            {draft.type === "series" && draft.seasons.length > 0 && (
+                              <span className="inline-flex items-center gap-1">
+                                <Tv className="h-3 w-3" />
+                                {draft.seasons.length}S · {totalEpisodes}E
+                              </span>
+                            )}
                             <span className="inline-flex items-center gap-1">
                               <Calendar className="h-3 w-3" />
                               {formatDate(draft.updatedAt)}
@@ -346,8 +346,7 @@ export function ContentDraftsPage() {
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-muted-foreground">
                 Showing {(currentPage - 1) * PAGE_SIZE + 1}–
-                {Math.min(currentPage * PAGE_SIZE, filtered.length)} of{" "}
-                {filtered.length}
+                {Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length}
               </p>
               <div className="flex items-center gap-1">
                 <button
@@ -357,29 +356,26 @@ export function ContentDraftsPage() {
                   className={cn(
                     "p-2 rounded-lg text-sm cursor-pointer transition-colors",
                     "hover:bg-muted",
-                    currentPage <= 1 &&
-                      "opacity-30 cursor-not-allowed hover:bg-transparent",
+                    currentPage <= 1 && "opacity-30 cursor-not-allowed hover:bg-transparent",
                   )}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setPage(n)}
-                      className={cn(
-                        "h-8 w-8 rounded-lg text-xs font-medium cursor-pointer transition-colors",
-                        n === currentPage
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-                      )}
-                    >
-                      {n}
-                    </button>
-                  ),
-                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setPage(n)}
+                    className={cn(
+                      "h-8 w-8 rounded-lg text-xs font-medium cursor-pointer transition-colors",
+                      n === currentPage
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    )}
+                  >
+                    {n}
+                  </button>
+                ))}
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}

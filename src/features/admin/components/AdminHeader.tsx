@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Sun, Moon, ChevronDown, Settings, LogOut, User } from "lucide-react";
+import { ChevronDown, LogOut, Moon, Settings, Sun, User } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils/cn";
 import { useAdminThemeStore } from "../stores/admin-theme.store";
-import { useAuthStore } from "@/stores/auth.store";
 
 const routeLabels: Record<string, string> = {
   dashboard: "Dashboard",
@@ -61,11 +61,25 @@ export function AdminHeader() {
         <div className="lg:hidden flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-primary">
-              <path d="M4 8L12 4L20 8V16L12 20L4 16V8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-              <path d="M9 11L11 13L15 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9 11L11 13L15 9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </div>
-          <span className="text-base font-bold tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+          <span
+            className="text-base font-bold tracking-tight"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
             Bingeo
           </span>
         </div>
@@ -75,7 +89,11 @@ export function AdminHeader() {
           {crumbs.map((crumb, i) => (
             <span key={`${crumb}-${i}`} className="flex items-center gap-1.5">
               {i > 0 && <span className="text-muted-foreground/40">/</span>}
-              <span className={i === crumbs.length - 1 ? "font-medium text-foreground" : "text-muted-foreground"}>
+              <span
+                className={
+                  i === crumbs.length - 1 ? "font-medium text-foreground" : "text-muted-foreground"
+                }
+              >
                 {crumb}
               </span>
             </span>
@@ -100,10 +118,19 @@ export function AdminHeader() {
             {user?.name?.charAt(0).toUpperCase() || "A"}
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-sm font-medium text-foreground leading-tight">{user?.name || "Admin"}</p>
-            <p className="text-[11px] text-muted-foreground leading-tight">{user?.email || "admin@bingeo.com"}</p>
+            <p className="text-sm font-medium text-foreground leading-tight">
+              {user?.name || "Admin"}
+            </p>
+            <p className="text-[11px] text-muted-foreground leading-tight">
+              {user?.email || "admin@bingeo.com"}
+            </p>
           </div>
-          <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform duration-200", dropdownOpen && "rotate-180")} />
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 text-muted-foreground transition-transform duration-200",
+              dropdownOpen && "rotate-180",
+            )}
+          />
         </button>
 
         {/* Dropdown */}
@@ -123,7 +150,11 @@ export function AdminHeader() {
               }}
               className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-muted transition-colors cursor-pointer"
             >
-              {isDark ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-muted-foreground" />}
+              {isDark ? (
+                <Sun className="h-4 w-4 text-amber-400" />
+              ) : (
+                <Moon className="h-4 w-4 text-muted-foreground" />
+              )}
               <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
             </button>
 

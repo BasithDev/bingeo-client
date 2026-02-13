@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef, type FormEvent } from "react";
-import { createPortal } from "react-dom";
-import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/utils/cn";
 import type { Plan } from "../types/admin.types";
 
@@ -75,13 +75,16 @@ function SelectField({
       )}
     >
       {options.map((o) => (
-        <option key={o.value} value={o.value}>{o.label}</option>
+        <option key={o.value} value={o.value}>
+          {o.label}
+        </option>
       ))}
     </select>
   );
 }
 
-const inputClass = "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-150";
+const inputClass =
+  "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-150";
 
 /* ══════════════════════════════════════════════════
    Plan Form Drawer — slides in from the right
@@ -118,7 +121,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = ""; };
+      return () => {
+        document.body.style.overflow = "";
+      };
     }
   }, [open]);
 
@@ -134,7 +139,10 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
   };
 
   const removeFeature = (feat: string) =>
-    update("features", form.features.filter((f) => f !== feat));
+    update(
+      "features",
+      form.features.filter((f) => f !== feat),
+    );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export interface SearchInputProps {

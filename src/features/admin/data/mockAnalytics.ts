@@ -44,11 +44,36 @@ export const ageDemographics = [
 ];
 
 export const recentSignups = [
-  { name: "Ananya Sharma", email: "ananya.sharma@gmail.com", plan: "premium" as const, joinedAt: "2025-12-28T10:30:00Z" },
-  { name: "Vikram Rao", email: "vikram.rao@gmail.com", plan: "basic" as const, joinedAt: "2025-12-27T14:15:00Z" },
-  { name: "Priya Nair", email: "priya.nair@gmail.com", plan: "free" as const, joinedAt: "2025-12-27T09:45:00Z" },
-  { name: "Arjun Mehta", email: "arjun.mehta@gmail.com", plan: "basic" as const, joinedAt: "2025-12-26T18:20:00Z" },
-  { name: "Diya Kapoor", email: "diya.kapoor@gmail.com", plan: "premium" as const, joinedAt: "2025-12-26T11:00:00Z" },
+  {
+    name: "Ananya Sharma",
+    email: "ananya.sharma@gmail.com",
+    plan: "premium" as const,
+    joinedAt: "2025-12-28T10:30:00Z",
+  },
+  {
+    name: "Vikram Rao",
+    email: "vikram.rao@gmail.com",
+    plan: "basic" as const,
+    joinedAt: "2025-12-27T14:15:00Z",
+  },
+  {
+    name: "Priya Nair",
+    email: "priya.nair@gmail.com",
+    plan: "free" as const,
+    joinedAt: "2025-12-27T09:45:00Z",
+  },
+  {
+    name: "Arjun Mehta",
+    email: "arjun.mehta@gmail.com",
+    plan: "basic" as const,
+    joinedAt: "2025-12-26T18:20:00Z",
+  },
+  {
+    name: "Diya Kapoor",
+    email: "diya.kapoor@gmail.com",
+    plan: "premium" as const,
+    joinedAt: "2025-12-26T11:00:00Z",
+  },
 ];
 
 /* ── Revenue Analytics ────────────────────────── */
@@ -100,8 +125,20 @@ export const recentTransactions = [
   { user: "Myra Verma", amount: 499, plan: "Premium", method: "UPI", date: "2025-12-28T10:30:00Z" },
   { user: "Rohan Joshi", amount: 199, plan: "Basic", method: "Card", date: "2025-12-28T09:15:00Z" },
   { user: "Kavya Iyer", amount: 499, plan: "Premium", method: "UPI", date: "2025-12-27T18:42:00Z" },
-  { user: "Aditya Singh", amount: 199, plan: "Basic", method: "Net Banking", date: "2025-12-27T14:20:00Z" },
-  { user: "Sneha Patel", amount: 499, plan: "Premium", method: "Card", date: "2025-12-26T22:05:00Z" },
+  {
+    user: "Aditya Singh",
+    amount: 199,
+    plan: "Basic",
+    method: "Net Banking",
+    date: "2025-12-27T14:20:00Z",
+  },
+  {
+    user: "Sneha Patel",
+    amount: 499,
+    plan: "Premium",
+    method: "Card",
+    date: "2025-12-26T22:05:00Z",
+  },
 ];
 
 /* ── Engagement Analytics ─────────────────────── */
@@ -144,10 +181,22 @@ export const peakViewingHours = [
 ];
 
 export const topContent = [
-  { title: "The Night Train", genre: "Thriller", views: 12400, watchHours: 8200, completionRate: 78 },
+  {
+    title: "The Night Train",
+    genre: "Thriller",
+    views: 12400,
+    watchHours: 8200,
+    completionRate: 78,
+  },
   { title: "Love in Mumbai", genre: "Romance", views: 10800, watchHours: 6900, completionRate: 72 },
   { title: "Code Red", genre: "Action", views: 9600, watchHours: 7100, completionRate: 81 },
-  { title: "Whispers of Kerala", genre: "Drama", views: 8900, watchHours: 5800, completionRate: 65 },
+  {
+    title: "Whispers of Kerala",
+    genre: "Drama",
+    views: 8900,
+    watchHours: 5800,
+    completionRate: 65,
+  },
   { title: "Comedy Nights", genre: "Comedy", views: 8200, watchHours: 4600, completionRate: 58 },
 ];
 

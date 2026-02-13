@@ -1,30 +1,24 @@
-import { useState, useMemo } from "react";
-import {
-  ShieldBan,
-  ShieldCheck,
-  Trash2,
-  AlertTriangle,
-  Clock,
-} from "lucide-react";
-import { cn } from "@/utils/cn";
-
-import { DataTable, type Column } from "@/components/ui/admin/DataTable";
-import { SearchInput } from "@/components/ui/admin/SearchInput";
+import { AlertTriangle, Clock, ShieldBan, ShieldCheck, Trash2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { type Column, DataTable } from "@/components/ui/admin/DataTable";
 import { FilterDropdown } from "@/components/ui/admin/FilterDropdown";
-import { SortDropdown } from "@/components/ui/admin/SortDropdown";
 import { Pagination } from "@/components/ui/admin/Pagination";
+import { SearchInput } from "@/components/ui/admin/SearchInput";
+import { SortDropdown } from "@/components/ui/admin/SortDropdown";
 import { StatusBadge } from "@/components/ui/admin/StatusBadge";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
-
-import type { AdminUser } from "../types/admin.types";
-import { mockUsers } from "../data/mockUsers";
-import { formatDate, formatCurrency } from "../utils/helpers";
-
+import { cn } from "@/utils/cn";
 import { ExpandableUsersCard } from "../components/ExpandableUsersCard";
-import { UserGrowthCard } from "../components/UserGrowthCard";
 import { QuickStatsCard } from "../components/QuickStatsCard";
+import { UserGrowthCard } from "../components/UserGrowthCard";
+import { mockUsers } from "../data/mockUsers";
+import type { AdminUser } from "../types/admin.types";
+import { formatCurrency, formatDate } from "../utils/helpers";
 
-const planBadge: Record<AdminUser["plan"], { label: string; variant: "premium" | "info" | "default" }> = {
+const planBadge: Record<
+  AdminUser["plan"],
+  { label: string; variant: "premium" | "info" | "default" }
+> = {
   premium: { label: "Premium", variant: "premium" },
   basic: { label: "Basic", variant: "info" },
   free: { label: "Free", variant: "default" },
@@ -110,19 +104,29 @@ export function AdminUsersPage() {
   const totalPages = Math.max(1, Math.ceil(processedData.length / pageSize));
   const paginatedData = processedData.slice((page - 1) * pageSize, page * pageSize);
 
-  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
-  const handleFilter = (v: string) => { setPlanFilter(v); setPage(1); };
+  const handleSearch = (v: string) => {
+    setSearch(v);
+    setPage(1);
+  };
+  const handleFilter = (v: string) => {
+    setPlanFilter(v);
+    setPage(1);
+  };
 
   const handleBlockConfirm = () => {
     if (!blockTarget) return;
-    setUsers((prev) => prev.map((u) => (u.id === blockTarget.id ? { ...u, isBlocked: !u.isBlocked } : u)));
+    setUsers((prev) =>
+      prev.map((u) => (u.id === blockTarget.id ? { ...u, isBlocked: !u.isBlocked } : u)),
+    );
     setBlockTarget(null);
   };
 
   const handleRemoveSubConfirm = () => {
     if (!removeSubTarget) return;
     setUsers((prev) =>
-      prev.map((u) => (u.id === removeSubTarget.id ? { ...u, plan: "free" as const, totalPaid: 0 } : u)),
+      prev.map((u) =>
+        u.id === removeSubTarget.id ? { ...u, plan: "free" as const, totalPaid: 0 } : u,
+      ),
     );
     setRemoveSubTarget(null);
   };
@@ -160,7 +164,11 @@ export function AdminUsersPage() {
     {
       key: "joinedAt",
       header: "Joined",
-      render: (row) => <span className="text-sm text-muted-foreground whitespace-nowrap">{formatDate(row.joinedAt)}</span>,
+      render: (row) => (
+        <span className="text-sm text-muted-foreground whitespace-nowrap">
+          {formatDate(row.joinedAt)}
+        </span>
+      ),
     },
     {
       key: "totalWatchHours",
@@ -196,7 +204,11 @@ export function AdminUsersPage() {
                 : "border-red-500/30 text-red-600 hover:bg-red-500/10",
             )}
           >
-            {row.isBlocked ? <ShieldCheck className="h-3.5 w-3.5" /> : <ShieldBan className="h-3.5 w-3.5" />}
+            {row.isBlocked ? (
+              <ShieldCheck className="h-3.5 w-3.5" />
+            ) : (
+              <ShieldBan className="h-3.5 w-3.5" />
+            )}
             {row.isBlocked ? "Unblock" : "Block"}
           </button>
           {row.plan !== "free" && (
@@ -221,7 +233,10 @@ export function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+        <h1
+          className="text-2xl font-bold text-foreground"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           Users
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -268,7 +283,10 @@ export function AdminUsersPage() {
                 pageSize={pageSize}
                 total={processedData.length}
                 onPageChange={setPage}
-                onPageSizeChange={(s) => { setPageSize(s); setPage(1); }}
+                onPageSizeChange={(s) => {
+                  setPageSize(s);
+                  setPage(1);
+                }}
               />
             }
           />
@@ -285,7 +303,11 @@ export function AdminUsersPage() {
         open={!!blockTarget}
         onClose={() => setBlockTarget(null)}
         icon={blockTarget?.isBlocked ? ShieldCheck : ShieldBan}
-        iconColor={blockTarget?.isBlocked ? "text-emerald-500 bg-emerald-500/10" : "text-destructive bg-destructive/10"}
+        iconColor={
+          blockTarget?.isBlocked
+            ? "text-emerald-500 bg-emerald-500/10"
+            : "text-destructive bg-destructive/10"
+        }
         title={blockTarget?.isBlocked ? "Unblock User" : "Block User"}
         description={
           blockTarget?.isBlocked
@@ -293,7 +315,9 @@ export function AdminUsersPage() {
             : `Block ${blockTarget?.name}? They will lose platform access.`
         }
         confirmLabel={blockTarget?.isBlocked ? "Unblock" : "Block"}
-        confirmColor={blockTarget?.isBlocked ? "bg-emerald-500 text-white hover:bg-emerald-600" : undefined}
+        confirmColor={
+          blockTarget?.isBlocked ? "bg-emerald-500 text-white hover:bg-emerald-600" : undefined
+        }
         onConfirm={handleBlockConfirm}
       />
 
@@ -306,7 +330,8 @@ export function AdminUsersPage() {
         description={
           <>
             Remove <strong>{removeSubTarget?.name}</strong>'s{" "}
-            <strong>{removeSubTarget?.plan}</strong> plan? They'll be downgraded to free. This can't be undone.
+            <strong>{removeSubTarget?.plan}</strong> plan? They'll be downgraded to free. This can't
+            be undone.
           </>
         }
         confirmLabel="Remove Subscription"

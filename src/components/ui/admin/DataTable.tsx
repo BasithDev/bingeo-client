@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { Inbox } from "lucide-react";
+import type { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 /* ── Column definition ─────────────────────────── */
@@ -68,43 +68,43 @@ export function DataTable<T>({
 
           {/* ── Body ── */}
           <tbody className="divide-y divide-border">
-            {loading
-              ? Array.from({ length: skeletonRows }).map((_, i) => (
-                  <tr key={`sk-${i}`}>
-                    {columns.map((col) => (
-                      <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
-                        <div className="h-4 w-3/4 rounded-md bg-muted animate-pulse" />
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              : data.length === 0
-                ? (
-                    <tr>
-                      <td colSpan={columns.length} className="px-4 py-16 text-center">
-                        <div className="flex flex-col items-center gap-3">
-                          {emptyIcon ?? (
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
-                              <Inbox className="h-6 w-6 text-muted-foreground" />
-                            </div>
-                          )}
-                          <p className="text-sm text-muted-foreground">{emptyMessage}</p>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                : data.map((row, i) => (
-                    <tr
-                      key={rowKey ? rowKey(row, i) : i}
-                      className="hover:bg-muted/30 transition-colors duration-100"
-                    >
-                      {columns.map((col) => (
-                        <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
-                          {col.render(row, i)}
-                        </td>
-                      ))}
-                    </tr>
+            {loading ? (
+              Array.from({ length: skeletonRows }).map((_, i) => (
+                <tr key={`sk-${i}`}>
+                  {columns.map((col) => (
+                    <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
+                      <div className="h-4 w-3/4 rounded-md bg-muted animate-pulse" />
+                    </td>
                   ))}
+                </tr>
+              ))
+            ) : data.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-16 text-center">
+                  <div className="flex flex-col items-center gap-3">
+                    {emptyIcon ?? (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+                        <Inbox className="h-6 w-6 text-muted-foreground" />
+                      </div>
+                    )}
+                    <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              data.map((row, i) => (
+                <tr
+                  key={rowKey ? rowKey(row, i) : i}
+                  className="hover:bg-muted/30 transition-colors duration-100"
+                >
+                  {columns.map((col) => (
+                    <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
+                      {col.render(row, i)}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

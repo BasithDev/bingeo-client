@@ -57,8 +57,18 @@ export const mockDrafts: ContentMetadata[] = [
         number: 1,
         title: "Season 1",
         episodes: [
-          { number: 1, title: "The Beginning", plot: "Two detectives are assigned to a cold case.", duration: "48m" },
-          { number: 2, title: "Shadows", plot: "A new witness emerges, shaking the investigation.", duration: "52m" },
+          {
+            number: 1,
+            title: "The Beginning",
+            plot: "Two detectives are assigned to a cold case.",
+            duration: "48m",
+          },
+          {
+            number: 2,
+            title: "Shadows",
+            plot: "A new witness emerges, shaking the investigation.",
+            duration: "52m",
+          },
         ],
       },
     ],
@@ -106,17 +116,30 @@ export const mockDrafts: ContentMetadata[] = [
     genres: ["Thriller", "Sci-Fi", "Action"],
     plot: "An elite team of ethical hackers fights against a global cyber threat that could bring nations to their knees.",
     duration: "",
-    cast: [
-      { id: 106, name: "Karthik Nair", character: "Zero", profilePath: "" },
-    ],
+    cast: [{ id: 106, name: "Karthik Nair", character: "Zero", profilePath: "" }],
     seasons: [
       {
         number: 1,
         title: "Season 1",
         episodes: [
-          { number: 1, title: "Breach", plot: "A massive data breach exposes government secrets.", duration: "55m" },
-          { number: 2, title: "Firewall", plot: "The team races to build defenses.", duration: "50m" },
-          { number: 3, title: "Zero Day", plot: "A zero-day exploit threatens everything.", duration: "58m" },
+          {
+            number: 1,
+            title: "Breach",
+            plot: "A massive data breach exposes government secrets.",
+            duration: "55m",
+          },
+          {
+            number: 2,
+            title: "Firewall",
+            plot: "The team races to build defenses.",
+            duration: "50m",
+          },
+          {
+            number: 3,
+            title: "Zero Day",
+            plot: "A zero-day exploit threatens everything.",
+            duration: "58m",
+          },
         ],
       },
     ],
@@ -169,15 +192,30 @@ export const mockDrafts: ContentMetadata[] = [
         number: 1,
         title: "Season 1",
         episodes: [
-          { number: 1, title: "Roots", plot: "Lakshmi returns to her childhood home.", duration: "42m" },
-          { number: 2, title: "Thorns", plot: "Strange things begin to happen in the garden.", duration: "45m" },
+          {
+            number: 1,
+            title: "Roots",
+            plot: "Lakshmi returns to her childhood home.",
+            duration: "42m",
+          },
+          {
+            number: 2,
+            title: "Thorns",
+            plot: "Strange things begin to happen in the garden.",
+            duration: "45m",
+          },
         ],
       },
       {
         number: 2,
         title: "Season 2",
         episodes: [
-          { number: 1, title: "Bloom", plot: "New discoveries change everything.", duration: "47m" },
+          {
+            number: 1,
+            title: "Bloom",
+            plot: "New discoveries change everything.",
+            duration: "47m",
+          },
         ],
       },
     ],

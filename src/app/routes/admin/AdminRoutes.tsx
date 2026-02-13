@@ -1,16 +1,16 @@
 import { createRoute, redirect } from "@tanstack/react-router";
-import rootRoute from "../RootRoute";
-import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
-import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
-import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
-import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
-import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
-import { ContentUploadPage } from "@/features/admin/pages/ContentUploadPage";
-import { ContentDraftsPage } from "@/features/admin/pages/ContentDraftsPage";
-import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
-import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
-import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
 import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
+import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
+import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
+import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
+import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
+import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
+import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
+import { ContentDraftsPage } from "@/features/admin/pages/ContentDraftsPage";
+import { ContentUploadPage } from "@/features/admin/pages/ContentUploadPage";
+import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
+import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
+import rootRoute from "../RootRoute";
 
 // /admin → redirect to login
 const adminIndexRoute = createRoute({
@@ -134,9 +134,7 @@ function PlaceholderPage({ title }: { title: string }) {
       >
         {title}
       </h1>
-      <p className="text-sm text-muted-foreground">
-        This page is under construction.
-      </p>
+      <p className="text-sm text-muted-foreground">This page is under construction.</p>
     </div>
   );
 }

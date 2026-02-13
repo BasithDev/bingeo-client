@@ -1,10 +1,10 @@
-import { useState, type ReactNode } from "react";
 import {
-  RefreshCw,
   AreaChart as AreaIcon,
   BarChart3 as BarIcon,
   LineChart as LineIcon,
+  RefreshCw,
 } from "lucide-react";
+import { type ReactNode, useState } from "react";
 import { cn } from "@/utils/cn";
 
 /* ── Time range options ───────────────────────── */
@@ -86,9 +86,7 @@ export function ChartCard({
             >
               {title}
             </h3>
-            {subtitle && (
-              <p className="text-[11px] text-muted-foreground mt-0.5">{subtitle}</p>
-            )}
+            {subtitle && <p className="text-[11px] text-muted-foreground mt-0.5">{subtitle}</p>}
           </div>
         </div>
 
@@ -151,9 +149,7 @@ export function ChartCard({
               )}
               title="Refetch data"
             >
-              <RefreshCw
-                className={cn("h-3 w-3", spinning && "animate-spin")}
-              />
+              <RefreshCw className={cn("h-3 w-3", spinning && "animate-spin")} />
             </button>
           </div>
         )}

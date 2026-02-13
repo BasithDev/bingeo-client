@@ -1,18 +1,29 @@
+import { Clock, Timer, TrendingUp, Users } from "lucide-react";
 import {
-  Clock, Timer, Users, TrendingUp,
-} from "lucide-react";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar,
-  LineChart, Line,
-  PieChart, Pie, Label,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Label,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 
 import { StatCard } from "@/components/ui/admin/StatCard";
 import { ChartCard, type ChartStyle } from "../components/ChartCard";
 import {
-  engagementKPIs, watchHoursOverTime, peakViewingHours,
-  topContent, deviceBreakdown,
+  deviceBreakdown,
+  engagementKPIs,
+  peakViewingHours,
+  topContent,
+  watchHoursOverTime,
 } from "../data/mockAnalytics";
 
 /* ── Chart tooltip ────────────────────────────── */
@@ -57,7 +68,10 @@ function CompletionBar({ rate }: { rate: number }) {
       <div className="h-1.5 w-16 rounded-full bg-muted/50 overflow-hidden">
         <div
           className="h-full rounded-full"
-          style={{ width: `${rate}%`, backgroundColor: rate >= 70 ? "#10b981" : rate >= 50 ? "#f59e0b" : "#ef4444" }}
+          style={{
+            width: `${rate}%`,
+            backgroundColor: rate >= 70 ? "#10b981" : rate >= 50 ? "#f59e0b" : "#ef4444",
+          }}
         />
       </div>
       <span className="text-xs text-foreground font-medium">{rate}%</span>
@@ -69,8 +83,18 @@ function CompletionBar({ rate }: { rate: number }) {
 
 function WatchHoursChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
-  const xProps = { dataKey: "week", tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
-  const yProps = { tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false, tickFormatter: (v: number) => `${(v / 1000).toFixed(0)}k` } as const;
+  const xProps = {
+    dataKey: "week",
+    tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+  } as const;
+  const yProps = {
+    tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+    tickFormatter: (v: number) => `${(v / 1000).toFixed(0)}k`,
+  } as const;
 
   if (style === "bar") {
     return (
@@ -91,7 +115,14 @@ function WatchHoursChart({ style }: { style: ChartStyle }) {
         <XAxis {...xProps} />
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
-        <Line type="monotone" dataKey="hours" stroke="#7c3aed" strokeWidth={2} dot={{ r: 3, fill: "#7c3aed" }} name="Hours" />
+        <Line
+          type="monotone"
+          dataKey="hours"
+          stroke="#7c3aed"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#7c3aed" }}
+          name="Hours"
+        />
       </LineChart>
     );
   }
@@ -108,7 +139,14 @@ function WatchHoursChart({ style }: { style: ChartStyle }) {
       <XAxis {...xProps} />
       <YAxis {...yProps} />
       <Tooltip content={<ChartTip />} />
-      <Area type="monotone" dataKey="hours" stroke="#7c3aed" strokeWidth={2} fill="url(#gradWatch)" name="Hours" />
+      <Area
+        type="monotone"
+        dataKey="hours"
+        stroke="#7c3aed"
+        strokeWidth={2}
+        fill="url(#gradWatch)"
+        name="Hours"
+      />
     </AreaChart>
   );
 }
@@ -117,8 +155,17 @@ function WatchHoursChart({ style }: { style: ChartStyle }) {
 
 function PeakHoursChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
-  const xProps = { dataKey: "hour", tick: { fontSize: 9, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
-  const yProps = { tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
+  const xProps = {
+    dataKey: "hour",
+    tick: { fontSize: 9, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+  } as const;
+  const yProps = {
+    tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+  } as const;
 
   if (style === "area") {
     return (
@@ -133,7 +180,14 @@ function PeakHoursChart({ style }: { style: ChartStyle }) {
         <XAxis {...xProps} />
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
-        <Area type="monotone" dataKey="viewers" stroke="#3b82f6" strokeWidth={2} fill="url(#gradPeak)" name="Viewers" />
+        <Area
+          type="monotone"
+          dataKey="viewers"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          fill="url(#gradPeak)"
+          name="Viewers"
+        />
       </AreaChart>
     );
   }
@@ -145,7 +199,14 @@ function PeakHoursChart({ style }: { style: ChartStyle }) {
         <XAxis {...xProps} />
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
-        <Line type="monotone" dataKey="viewers" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} name="Viewers" />
+        <Line
+          type="monotone"
+          dataKey="viewers"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#3b82f6" }}
+          name="Viewers"
+        />
       </LineChart>
     );
   }
@@ -173,7 +234,10 @@ export function AnalyticsEngagementPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+        <h1
+          className="text-2xl font-bold text-foreground"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           Engagement Analytics
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -183,10 +247,33 @@ export function AnalyticsEngagementPage() {
 
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Clock} label="Total Watch Hours" value={engagementKPIs.totalWatchHours} color="text-blue-500 bg-blue-500/10" />
-        <StatCard icon={Timer} label="Avg Session" value={engagementKPIs.avgSessionMin} change="+3 min" color="text-emerald-500 bg-emerald-500/10" />
-        <StatCard icon={Users} label="Peak Concurrent" value={engagementKPIs.peakConcurrent} change="+18%" color="text-violet-500 bg-violet-500/10" />
-        <StatCard icon={TrendingUp} label="Completion Rate" value={engagementKPIs.completionRate} change="+2.5%" color="text-amber-500 bg-amber-500/10" />
+        <StatCard
+          icon={Clock}
+          label="Total Watch Hours"
+          value={engagementKPIs.totalWatchHours}
+          color="text-blue-500 bg-blue-500/10"
+        />
+        <StatCard
+          icon={Timer}
+          label="Avg Session"
+          value={engagementKPIs.avgSessionMin}
+          change="+3 min"
+          color="text-emerald-500 bg-emerald-500/10"
+        />
+        <StatCard
+          icon={Users}
+          label="Peak Concurrent"
+          value={engagementKPIs.peakConcurrent}
+          change="+18%"
+          color="text-violet-500 bg-violet-500/10"
+        />
+        <StatCard
+          icon={TrendingUp}
+          label="Completion Rate"
+          value={engagementKPIs.completionRate}
+          change="+2.5%"
+          color="text-amber-500 bg-amber-500/10"
+        />
       </div>
 
       {/* Watch hours (wide) | Device donut (narrow) */}
@@ -262,10 +349,18 @@ export function AnalyticsEngagementPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">Title</th>
-                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">Genre</th>
-                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">Views</th>
-                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">Completion</th>
+                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">
+                    Title
+                  </th>
+                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">
+                    Genre
+                  </th>
+                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">
+                    Views
+                  </th>
+                  <th className="pb-2 text-left text-xs font-medium text-muted-foreground">
+                    Completion
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
@@ -273,11 +368,15 @@ export function AnalyticsEngagementPage() {
                   <tr key={c.title}>
                     <td className="py-2.5">
                       <span className="font-medium text-foreground block">{c.title}</span>
-                      <span className="text-[10px] text-muted-foreground">{c.watchHours.toLocaleString("en-IN")} hrs</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {c.watchHours.toLocaleString("en-IN")} hrs
+                      </span>
                     </td>
                     <td className="py-2.5 text-muted-foreground">{c.genre}</td>
                     <td className="py-2.5 text-foreground">{c.views.toLocaleString("en-IN")}</td>
-                    <td className="py-2.5"><CompletionBar rate={c.completionRate} /></td>
+                    <td className="py-2.5">
+                      <CompletionBar rate={c.completionRate} />
+                    </td>
                   </tr>
                 ))}
               </tbody>

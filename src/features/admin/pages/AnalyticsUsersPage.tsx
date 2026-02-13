@@ -1,18 +1,28 @@
+import { Activity, UserMinus, UserPlus, Users } from "lucide-react";
 import {
-  Users, UserPlus, UserMinus, Activity,
-} from "lucide-react";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Label,
-  BarChart, Bar,
-  LineChart, Line,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Label,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 
 import { StatCard } from "@/components/ui/admin/StatCard";
 import { ChartCard, type ChartStyle } from "../components/ChartCard";
 import {
-  usersKPIs, userGrowthData, planDistribution,
   ageDemographics,
+  planDistribution,
+  userGrowthData,
+  usersKPIs,
 } from "../data/mockAnalytics";
 
 /* ── Chart tooltip ────────────────────────────── */
@@ -53,13 +63,21 @@ function renderDonutLabel(total: number) {
 
 /* ── Plan badge ──────────────────────────────── */
 
-
 /* ── Switchable chart renderer ────────────────── */
 
 function SignupsChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -20, bottom: 0 };
-  const xProps = { dataKey: "month", tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
-  const yProps = { tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
+  const xProps = {
+    dataKey: "month",
+    tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+  } as const;
+  const yProps = {
+    tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+    axisLine: false,
+    tickLine: false,
+  } as const;
 
   if (style === "bar") {
     return (
@@ -80,7 +98,14 @@ function SignupsChart({ style }: { style: ChartStyle }) {
         <XAxis {...xProps} />
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
-        <Line type="monotone" dataKey="signups" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} name="Signups" />
+        <Line
+          type="monotone"
+          dataKey="signups"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#3b82f6" }}
+          name="Signups"
+        />
       </LineChart>
     );
   }
@@ -98,7 +123,14 @@ function SignupsChart({ style }: { style: ChartStyle }) {
       <XAxis {...xProps} />
       <YAxis {...yProps} />
       <Tooltip content={<ChartTip />} />
-      <Area type="monotone" dataKey="signups" stroke="#3b82f6" strokeWidth={2} fill="url(#gradSignups)" name="Signups" />
+      <Area
+        type="monotone"
+        dataKey="signups"
+        stroke="#3b82f6"
+        strokeWidth={2}
+        fill="url(#gradSignups)"
+        name="Signups"
+      />
     </AreaChart>
   );
 }
@@ -116,7 +148,10 @@ export function AnalyticsUsersPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+        <h1
+          className="text-2xl font-bold text-foreground"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           User Analytics
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -126,10 +161,33 @@ export function AnalyticsUsersPage() {
 
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Users} label="Total Users" value={usersKPIs.totalUsers} color="text-blue-500 bg-blue-500/10" />
-        <StatCard icon={UserPlus} label="New Signups" value={usersKPIs.newSignups} change="+12%" color="text-emerald-500 bg-emerald-500/10" />
-        <StatCard icon={UserMinus} label="Churn Rate" value={usersKPIs.churnRate} change="-0.4%" color="text-red-500 bg-red-500/10" />
-        <StatCard icon={Activity} label="Active Rate" value={usersKPIs.activeRate} change="+2.1%" color="text-violet-500 bg-violet-500/10" />
+        <StatCard
+          icon={Users}
+          label="Total Users"
+          value={usersKPIs.totalUsers}
+          color="text-blue-500 bg-blue-500/10"
+        />
+        <StatCard
+          icon={UserPlus}
+          label="New Signups"
+          value={usersKPIs.newSignups}
+          change="+12%"
+          color="text-emerald-500 bg-emerald-500/10"
+        />
+        <StatCard
+          icon={UserMinus}
+          label="Churn Rate"
+          value={usersKPIs.churnRate}
+          change="-0.4%"
+          color="text-red-500 bg-red-500/10"
+        />
+        <StatCard
+          icon={Activity}
+          label="Active Rate"
+          value={usersKPIs.activeRate}
+          change="+2.1%"
+          color="text-violet-500 bg-violet-500/10"
+        />
       </div>
 
       {/* Full-width growth chart — switchable */}
@@ -189,12 +247,34 @@ export function AnalyticsUsersPage() {
         <ChartCard title="Age Demographics" controls={false}>
           <div className="h-[230px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={ageDemographics} layout="vertical" margin={{ top: 0, right: 4, left: 0, bottom: 0 }}>
+              <BarChart
+                data={ageDemographics}
+                layout="vertical"
+                margin={{ top: 0, right: 4, left: 0, bottom: 0 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
-                <XAxis type="number" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
-                <YAxis type="category" dataKey="range" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} width={48} />
+                <XAxis
+                  type="number"
+                  tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="range"
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
+                  axisLine={false}
+                  tickLine={false}
+                  width={48}
+                />
                 <Tooltip content={<ChartTip />} cursor={false} />
-                <Bar dataKey="count" fill="#7c3aed" radius={[0, 6, 6, 0]} name="Users" barSize={20} />
+                <Bar
+                  dataKey="count"
+                  fill="#7c3aed"
+                  radius={[0, 6, 6, 0]}
+                  name="Users"
+                  barSize={20}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export interface FilterOption {
@@ -15,7 +15,13 @@ export interface FilterDropdownProps {
   className?: string;
 }
 
-export function FilterDropdown({ label, value, options, onChange, className }: FilterDropdownProps) {
+export function FilterDropdown({
+  label,
+  value,
+  options,
+  onChange,
+  className,
+}: FilterDropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -44,7 +50,9 @@ export function FilterDropdown({ label, value, options, onChange, className }: F
       >
         <span className="text-muted-foreground text-xs font-medium">{label}:</span>
         <span>{selected?.label ?? "All"}</span>
-        <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-150", open && "rotate-180")} />
+        <ChevronDown
+          className={cn("h-3.5 w-3.5 transition-transform duration-150", open && "rotate-180")}
+        />
       </button>
 
       {open && (

@@ -1,9 +1,15 @@
-import { useState } from "react";
 import NumberFlow from "@number-flow/react";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-} from "recharts";
 import { TrendingUp } from "lucide-react";
+import { useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { cn } from "@/utils/cn";
 
 import { mockGrowth, mockGrowthChart } from "../data/mockUsers";
@@ -45,7 +51,10 @@ export function UserGrowthCard() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-semibold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+          <h3
+            className="text-sm font-semibold text-foreground"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
             User Growth
           </h3>
         </div>
@@ -72,7 +81,11 @@ export function UserGrowthCard() {
       <div className="mb-3">
         <div className="flex items-baseline gap-2">
           <span className="text-2xl font-bold text-foreground">+</span>
-          <NumberFlow value={growth.count} className="text-2xl font-bold text-foreground" format={{ useGrouping: true }} />
+          <NumberFlow
+            value={growth.count}
+            className="text-2xl font-bold text-foreground"
+            format={{ useGrouping: true }}
+          />
           <span className="text-xs font-semibold text-emerald-500">{growth.change}</span>
         </div>
         <p className="text-[11px] text-muted-foreground mt-0.5">new users this {growthPeriod}</p>
@@ -97,12 +110,42 @@ export function UserGrowthCard() {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-            <XAxis dataKey="month" tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 10, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="month"
+              tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+              axisLine={false}
+              tickLine={false}
+            />
             <Tooltip content={<ChartTooltip />} />
-            <Area type="monotone" dataKey="premium" stroke="#7c3aed" strokeWidth={2} fill="url(#gradPremium)" name="Premium" />
-            <Area type="monotone" dataKey="basic" stroke="#3b82f6" strokeWidth={2} fill="url(#gradBasic)" name="Basic" />
-            <Area type="monotone" dataKey="free" stroke="#94a3b8" strokeWidth={1.5} fill="url(#gradFree)" name="Free" />
+            <Area
+              type="monotone"
+              dataKey="premium"
+              stroke="#7c3aed"
+              strokeWidth={2}
+              fill="url(#gradPremium)"
+              name="Premium"
+            />
+            <Area
+              type="monotone"
+              dataKey="basic"
+              stroke="#3b82f6"
+              strokeWidth={2}
+              fill="url(#gradBasic)"
+              name="Basic"
+            />
+            <Area
+              type="monotone"
+              dataKey="free"
+              stroke="#94a3b8"
+              strokeWidth={1.5}
+              fill="url(#gradFree)"
+              name="Free"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>

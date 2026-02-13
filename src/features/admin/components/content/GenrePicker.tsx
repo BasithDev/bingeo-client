@@ -8,11 +8,7 @@ interface GenrePickerProps {
 
 export function GenrePicker({ selected, onChange }: GenrePickerProps) {
   const toggle = (genre: string) => {
-    onChange(
-      selected.includes(genre)
-        ? selected.filter((g) => g !== genre)
-        : [...selected, genre],
-    );
+    onChange(selected.includes(genre) ? selected.filter((g) => g !== genre) : [...selected, genre]);
   };
 
   return (

@@ -1,20 +1,17 @@
-import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Mail, Lock, ArrowRight, Play, Users, Film } from "lucide-react";
+import { ArrowRight, Film, Lock, Mail, Play, Users } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
-import { BingeoLogo } from "../components/BingeoLogo";
 import { toast } from "@/components/ui/Toast";
 import { useAuthStore } from "@/stores/auth.store";
-import {
-  adminLoginSchema,
-  type AdminLoginFormData,
-} from "../schemas/loginSchema";
+import { BingeoLogo } from "../components/BingeoLogo";
+import { type AdminLoginFormData, adminLoginSchema } from "../schemas/loginSchema";
 
 // Simulated login API — replace with real API call later
 async function loginAdmin(data: AdminLoginFormData) {
@@ -113,7 +110,10 @@ export function AdminLoginPage() {
                 />
               </svg>
             </div>
-            <span className="text-2xl font-bold text-white tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
+            <span
+              className="text-2xl font-bold text-white tracking-tight"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
               Bingeo
             </span>
           </div>
@@ -122,13 +122,17 @@ export function AdminLoginPage() {
         {/* Center content */}
         <div className="relative z-10 space-y-8">
           <div>
-            <h1 className="text-4xl xl:text-5xl font-bold text-white leading-tight" style={{ fontFamily: "var(--font-heading)" }}>
+            <h1
+              className="text-4xl xl:text-5xl font-bold text-white leading-tight"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
               Manage your
               <br />
               streaming platform
             </h1>
             <p className="mt-4 text-lg text-white/70 max-w-md">
-              Monitor content, manage users, and track performance — all from one powerful dashboard.
+              Monitor content, manage users, and track performance — all from one powerful
+              dashboard.
             </p>
           </div>
 
@@ -177,7 +181,10 @@ export function AdminLoginPage() {
                 Admin Portal
               </span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: "var(--font-heading)" }}>
+            <h2
+              className="text-2xl font-bold text-gray-900"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
               Welcome back
             </h2>
             <p className="mt-1 text-sm text-gray-500">
@@ -227,7 +234,9 @@ export function AdminLoginPage() {
               loading={loginMutation.isPending}
               id="admin-login-submit"
             >
-              {loginMutation.isPending ? "Signing in..." : (
+              {loginMutation.isPending ? (
+                "Signing in..."
+              ) : (
                 <>
                   Sign In
                   <ArrowRight className="h-4 w-4" />

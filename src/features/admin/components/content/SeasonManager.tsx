@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/utils/cn";
-import type { Season, Episode } from "../../types/content.types";
+import type { Episode, Season } from "../../types/content.types";
 
 interface SeasonManagerProps {
   seasons: Season[];
@@ -37,7 +37,11 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
   const removeSeason = (idx: number) => {
     const updated = seasons
       .filter((_, i) => i !== idx)
-      .map((s, i) => ({ ...s, number: i + 1, title: s.title.startsWith("Season ") ? `Season ${i + 1}` : s.title }));
+      .map((s, i) => ({
+        ...s,
+        number: i + 1,
+        title: s.title.startsWith("Season ") ? `Season ${i + 1}` : s.title,
+      }));
     onChange(updated);
   };
 
@@ -74,20 +78,13 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
     );
   };
 
-  const updateEpisode = (
-    seasonIdx: number,
-    epIdx: number,
-    field: keyof Episode,
-    value: string,
-  ) => {
+  const updateEpisode = (seasonIdx: number, epIdx: number, field: keyof Episode, value: string) => {
     onChange(
       seasons.map((s, i) => {
         if (i !== seasonIdx) return s;
         return {
           ...s,
-          episodes: s.episodes.map((ep, j) =>
-            j === epIdx ? { ...ep, [field]: value } : ep,
-          ),
+          episodes: s.episodes.map((ep, j) => (j === epIdx ? { ...ep, [field]: value } : ep)),
         };
       }),
     );
@@ -96,9 +93,7 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-foreground">
-          Seasons & Episodes
-        </label>
+        <label className="text-sm font-medium text-foreground">Seasons & Episodes</label>
         <button
           type="button"
           onClick={addSeason}
@@ -184,18 +179,14 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                         <input
                           type="text"
                           value={ep.title}
-                          onChange={(e) =>
-                            updateEpisode(sIdx, eIdx, "title", e.target.value)
-                          }
+                          onChange={(e) => updateEpisode(sIdx, eIdx, "title", e.target.value)}
                           placeholder="Episode title"
                           className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
                         />
                         <input
                           type="text"
                           value={ep.duration}
-                          onChange={(e) =>
-                            updateEpisode(sIdx, eIdx, "duration", e.target.value)
-                          }
+                          onChange={(e) => updateEpisode(sIdx, eIdx, "duration", e.target.value)}
                           placeholder="Duration"
                           className="w-20 text-right bg-transparent text-xs text-muted-foreground placeholder:text-muted-foreground/40 focus:outline-none"
                         />
@@ -209,9 +200,7 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                       </div>
                       <textarea
                         value={ep.plot}
-                        onChange={(e) =>
-                          updateEpisode(sIdx, eIdx, "plot", e.target.value)
-                        }
+                        onChange={(e) => updateEpisode(sIdx, eIdx, "plot", e.target.value)}
                         placeholder="Episode plot / description..."
                         rows={2}
                         className="w-full bg-transparent text-xs text-muted-foreground placeholder:text-muted-foreground/40 focus:outline-none resize-none"

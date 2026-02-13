@@ -1,13 +1,5 @@
 import NumberFlow from "@number-flow/react";
-import {
-  Check,
-  Monitor,
-  Tv,
-  Smartphone,
-  Film,
-  Users,
-  Zap,
-} from "lucide-react";
+import { Check, Film, Monitor, Smartphone, Tv, Users, Zap } from "lucide-react";
 import { mockPlans } from "../data/mockPlans";
 import type { Plan } from "../types/admin.types";
 
@@ -54,7 +46,10 @@ function PlanCard({ plan }: { plan: Plan }) {
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+              <h3
+                className="text-base font-bold text-foreground"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
                 {plan.name}
               </h3>
               <span
@@ -73,7 +68,10 @@ function PlanCard({ plan }: { plan: Plan }) {
             ) : (
               <>
                 <span className="text-lg font-semibold text-muted-foreground">₹</span>
-                <NumberFlow value={plan.price} className="text-3xl font-bold text-foreground tracking-tight" />
+                <NumberFlow
+                  value={plan.price}
+                  className="text-3xl font-bold text-foreground tracking-tight"
+                />
                 <span className="text-sm text-muted-foreground ml-0.5">
                   / {plan.billingCycle === "monthly" ? "mo" : "yr"}
                 </span>
@@ -85,16 +83,33 @@ function PlanCard({ plan }: { plan: Plan }) {
         {/* Specs row */}
         <div className="grid grid-cols-3 gap-2 mb-6">
           {[
-            { icon: QualityIcon, label: "Quality", value: plan.maxQuality, sub: qualityLabel[plan.maxQuality] },
-            { icon: Users, label: "Streams", value: String(plan.maxStreams), sub: `device${plan.maxStreams > 1 ? "s" : ""}` },
-            { icon: Film, label: "Content", value: plan.contentAccess.charAt(0).toUpperCase() + plan.contentAccess.slice(1), sub: "" },
+            {
+              icon: QualityIcon,
+              label: "Quality",
+              value: plan.maxQuality,
+              sub: qualityLabel[plan.maxQuality],
+            },
+            {
+              icon: Users,
+              label: "Streams",
+              value: String(plan.maxStreams),
+              sub: `device${plan.maxStreams > 1 ? "s" : ""}`,
+            },
+            {
+              icon: Film,
+              label: "Content",
+              value: plan.contentAccess.charAt(0).toUpperCase() + plan.contentAccess.slice(1),
+              sub: "",
+            },
           ].map((spec) => (
             <div
               key={spec.label}
               className="flex flex-col items-center rounded-xl bg-muted/40 px-2 py-3 text-center"
             >
               <spec.icon className="h-4 w-4 text-muted-foreground mb-1.5" />
-              <span className="text-xs font-semibold text-foreground leading-tight">{spec.value}</span>
+              <span className="text-xs font-semibold text-foreground leading-tight">
+                {spec.value}
+              </span>
               {spec.sub && (
                 <span className="text-[9px] text-muted-foreground mt-0.5">{spec.sub}</span>
               )}
@@ -106,7 +121,9 @@ function PlanCard({ plan }: { plan: Plan }) {
         <div className="rounded-xl bg-muted/30 px-3.5 py-2.5 mb-5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground">Content Access</span>
-            <span className="text-xs font-semibold text-foreground">{accessLabel[plan.contentAccess]}</span>
+            <span className="text-xs font-semibold text-foreground">
+              {accessLabel[plan.contentAccess]}
+            </span>
           </div>
         </div>
 
@@ -148,7 +165,10 @@ export function PlansOverviewPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+        <h1
+          className="text-2xl font-bold text-foreground"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           Plans Overview
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">

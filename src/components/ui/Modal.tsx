@@ -1,32 +1,23 @@
-import {
-  type ReactNode,
-  type MouseEvent,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
-import { createPortal } from "react-dom";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { type MouseEvent, type ReactNode, useCallback, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/utils/cn";
 
 /* ── Overlay variants ─────────────────────────────── */
 
-const overlayVariants = cva(
-  "fixed inset-0 z-[100] flex items-center justify-center p-4",
-  {
-    variants: {
-      blur: {
-        none: "bg-black/50",
-        sm: "bg-black/40 backdrop-blur-[6px]",
-        md: "bg-black/35 backdrop-blur-md",
-        lg: "bg-black/30 backdrop-blur-lg",
-      },
+const overlayVariants = cva("fixed inset-0 z-[100] flex items-center justify-center p-4", {
+  variants: {
+    blur: {
+      none: "bg-black/50",
+      sm: "bg-black/40 backdrop-blur-[6px]",
+      md: "bg-black/35 backdrop-blur-md",
+      lg: "bg-black/30 backdrop-blur-lg",
     },
-    defaultVariants: { blur: "sm" },
   },
-);
+  defaultVariants: { blur: "sm" },
+});
 
 /* ── Panel variants ───────────────────────────────── */
 

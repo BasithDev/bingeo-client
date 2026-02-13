@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Search, X, Loader2 } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import type { CastMember } from "../../types/content.types";
 
@@ -83,9 +83,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
         }
       } catch {
         // Fallback to mock on error
-        const filtered = MOCK_RESULTS.filter((p) =>
-          p.name.toLowerCase().includes(q.toLowerCase()),
-        );
+        const filtered = MOCK_RESULTS.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()));
         setResults(filtered);
       } finally {
         setLoading(false);

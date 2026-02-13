@@ -1,19 +1,29 @@
+import { BarChart3, DollarSign, TrendingUp, Users } from "lucide-react";
 import {
-  DollarSign, TrendingUp, BarChart3, Users,
-} from "lucide-react";
-import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart, Bar, Legend,
-  LineChart, Line,
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 
 import { StatCard } from "@/components/ui/admin/StatCard";
 import { ChartCard, type ChartStyle } from "../components/ChartCard";
-import { formatCurrency, formatDate } from "../utils/helpers";
 import {
-  revenueKPIs, revenueOverTime, revenueByPlan,
-  subscriptionFunnel, recentTransactions,
+  recentTransactions,
+  revenueByPlan,
+  revenueKPIs,
+  revenueOverTime,
+  subscriptionFunnel,
 } from "../data/mockAnalytics";
+import { formatCurrency, formatDate } from "../utils/helpers";
 
 /* ── Chart tooltip ────────────────────────────── */
 
@@ -37,8 +47,18 @@ const funnelColors = ["#94a3b8", "#3b82f6", "#7c3aed"];
 
 /* ── Shared axis props ───────────────────────── */
 
-const xProps = { dataKey: "month", tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false } as const;
-const yProps = { tick: { fontSize: 10, fill: "var(--muted-foreground)" }, axisLine: false, tickLine: false, tickFormatter: (v: number) => `₹${(v / 1000).toFixed(0)}k` } as const;
+const xProps = {
+  dataKey: "month",
+  tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+  axisLine: false,
+  tickLine: false,
+} as const;
+const yProps = {
+  tick: { fontSize: 10, fill: "var(--muted-foreground)" },
+  axisLine: false,
+  tickLine: false,
+  tickFormatter: (v: number) => `₹${(v / 1000).toFixed(0)}k`,
+} as const;
 const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
 
 /* ── Switchable revenue chart ─────────────────── */
@@ -63,7 +83,14 @@ function RevenueChart({ style }: { style: ChartStyle }) {
         <XAxis {...xProps} />
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
-        <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} dot={{ r: 3, fill: "#10b981" }} name="Revenue" />
+        <Line
+          type="monotone"
+          dataKey="revenue"
+          stroke="#10b981"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#10b981" }}
+          name="Revenue"
+        />
       </LineChart>
     );
   }
@@ -80,7 +107,14 @@ function RevenueChart({ style }: { style: ChartStyle }) {
       <XAxis {...xProps} />
       <YAxis {...yProps} />
       <Tooltip content={<ChartTip />} />
-      <Area type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} fill="url(#gradRevenue)" name="Revenue" />
+      <Area
+        type="monotone"
+        dataKey="revenue"
+        stroke="#10b981"
+        strokeWidth={2}
+        fill="url(#gradRevenue)"
+        name="Revenue"
+      />
     </AreaChart>
   );
 }
@@ -106,8 +140,22 @@ function RevenueByPlanChart({ style }: { style: ChartStyle }) {
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
         <Legend iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-        <Area type="monotone" dataKey="basic" stroke="#3b82f6" strokeWidth={2} fill="url(#gradBasicRev)" name="Basic" />
-        <Area type="monotone" dataKey="premium" stroke="#7c3aed" strokeWidth={2} fill="url(#gradPremRev)" name="Premium" />
+        <Area
+          type="monotone"
+          dataKey="basic"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          fill="url(#gradBasicRev)"
+          name="Basic"
+        />
+        <Area
+          type="monotone"
+          dataKey="premium"
+          stroke="#7c3aed"
+          strokeWidth={2}
+          fill="url(#gradPremRev)"
+          name="Premium"
+        />
       </AreaChart>
     );
   }
@@ -120,8 +168,22 @@ function RevenueByPlanChart({ style }: { style: ChartStyle }) {
         <YAxis {...yProps} />
         <Tooltip content={<ChartTip />} />
         <Legend iconSize={8} wrapperStyle={{ fontSize: 11 }} />
-        <Line type="monotone" dataKey="basic" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} name="Basic" />
-        <Line type="monotone" dataKey="premium" stroke="#7c3aed" strokeWidth={2} dot={{ r: 3, fill: "#7c3aed" }} name="Premium" />
+        <Line
+          type="monotone"
+          dataKey="basic"
+          stroke="#3b82f6"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#3b82f6" }}
+          name="Basic"
+        />
+        <Line
+          type="monotone"
+          dataKey="premium"
+          stroke="#7c3aed"
+          strokeWidth={2}
+          dot={{ r: 3, fill: "#7c3aed" }}
+          name="Premium"
+        />
       </LineChart>
     );
   }
@@ -155,7 +217,10 @@ export function AnalyticsRevenuePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+        <h1
+          className="text-2xl font-bold text-foreground"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
           Revenue Analytics
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -165,10 +230,33 @@ export function AnalyticsRevenuePage() {
 
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={DollarSign} label="Total Revenue" value={revenueKPIs.totalRevenue} color="text-emerald-500 bg-emerald-500/10" />
-        <StatCard icon={TrendingUp} label="MRR" value={revenueKPIs.mrr} change="+8.2%" color="text-blue-500 bg-blue-500/10" />
-        <StatCard icon={Users} label="ARPU" value={revenueKPIs.arpu} change="+₹4" color="text-violet-500 bg-violet-500/10" />
-        <StatCard icon={BarChart3} label="Growth" value={revenueKPIs.growthPct} change="+12.4%" color="text-amber-500 bg-amber-500/10" />
+        <StatCard
+          icon={DollarSign}
+          label="Total Revenue"
+          value={revenueKPIs.totalRevenue}
+          color="text-emerald-500 bg-emerald-500/10"
+        />
+        <StatCard
+          icon={TrendingUp}
+          label="MRR"
+          value={revenueKPIs.mrr}
+          change="+8.2%"
+          color="text-blue-500 bg-blue-500/10"
+        />
+        <StatCard
+          icon={Users}
+          label="ARPU"
+          value={revenueKPIs.arpu}
+          change="+₹4"
+          color="text-violet-500 bg-violet-500/10"
+        />
+        <StatCard
+          icon={BarChart3}
+          label="Growth"
+          value={revenueKPIs.growthPct}
+          change="+12.4%"
+          color="text-amber-500 bg-amber-500/10"
+        />
       </div>
 
       {/* Revenue chart | Funnel */}
@@ -190,7 +278,12 @@ export function AnalyticsRevenuePage() {
         </ChartCard>
 
         {/* Subscription Funnel */}
-        <ChartCard title="Subscription Funnel" subtitle="Free → paid conversion" className="xl:col-span-2" controls={false}>
+        <ChartCard
+          title="Subscription Funnel"
+          subtitle="Free → paid conversion"
+          className="xl:col-span-2"
+          controls={false}
+        >
           <div className="space-y-5 mt-2">
             {subscriptionFunnel.map((step, i) => {
               const pct = Math.round((step.count / funnelMax) * 100);
@@ -198,7 +291,9 @@ export function AnalyticsRevenuePage() {
                 <div key={step.stage}>
                   <div className="flex items-center justify-between text-xs mb-1.5">
                     <span className="font-medium text-foreground">{step.stage}</span>
-                    <span className="text-muted-foreground font-semibold">{step.count.toLocaleString("en-IN")}</span>
+                    <span className="text-muted-foreground font-semibold">
+                      {step.count.toLocaleString("en-IN")}
+                    </span>
                   </div>
                   <div className="h-5 rounded-full bg-muted/50 overflow-hidden">
                     <div
@@ -211,7 +306,8 @@ export function AnalyticsRevenuePage() {
             })}
           </div>
           <p className="text-[10px] text-muted-foreground mt-6 text-center">
-            {Math.round((subscriptionFunnel[2].count / subscriptionFunnel[0].count) * 100)}% of free users convert to Premium
+            {Math.round((subscriptionFunnel[2].count / subscriptionFunnel[0].count) * 100)}% of free
+            users convert to Premium
           </p>
         </ChartCard>
       </div>
@@ -249,7 +345,9 @@ export function AnalyticsRevenuePage() {
               {recentTransactions.map((t, i) => (
                 <tr key={i} className="hover:bg-muted/30 transition-colors">
                   <td className="py-2.5 font-medium text-foreground">{t.user}</td>
-                  <td className="py-2.5 text-emerald-500 font-semibold">{formatCurrency(t.amount)}</td>
+                  <td className="py-2.5 text-emerald-500 font-semibold">
+                    {formatCurrency(t.amount)}
+                  </td>
                   <td className="py-2.5 text-foreground">{t.plan}</td>
                   <td className="py-2.5 text-muted-foreground">{t.method}</td>
                   <td className="py-2.5 text-muted-foreground text-xs">{formatDate(t.date)}</td>

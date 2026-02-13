@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
+import { useState } from "react";
 import { cn } from "@/utils/cn";
 import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
 
@@ -14,7 +14,7 @@ export function AdminMobileNav() {
   const getIsActive = (item: NavItem) =>
     item.path
       ? location.pathname === item.path
-      : item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false;
+      : (item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false);
 
   return (
     <>
@@ -51,9 +51,7 @@ export function AdminMobileNav() {
                   onClick={() => setExpandedItem(null)}
                   className={cn(
                     "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
-                    childActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-foreground hover:bg-muted",
+                    childActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted",
                   )}
                 >
                   <child.icon className="h-4 w-4 shrink-0" />
@@ -80,9 +78,7 @@ export function AdminMobileNav() {
                   className={cn(
                     "flex flex-col items-center gap-0.5 min-w-[64px] flex-1 px-2 py-2 rounded-xl",
                     "text-[11px] font-medium transition-all duration-150 cursor-pointer",
-                    isActive || isExpanded
-                      ? "text-primary"
-                      : "text-muted-foreground",
+                    isActive || isExpanded ? "text-primary" : "text-muted-foreground",
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -98,9 +94,7 @@ export function AdminMobileNav() {
                 className={cn(
                   "flex flex-col items-center gap-0.5 min-w-[64px] flex-1 px-2 py-2 rounded-xl",
                   "text-[11px] font-medium transition-all duration-150",
-                  isActive
-                    ? "text-primary"
-                    : "text-muted-foreground",
+                  isActive ? "text-primary" : "text-muted-foreground",
                 )}
               >
                 <item.icon className="h-5 w-5" />
