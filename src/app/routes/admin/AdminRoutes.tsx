@@ -5,6 +5,8 @@ import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
 import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
 import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
 import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
+import { ContentUploadPage } from "@/features/admin/pages/ContentUploadPage";
+import { ContentDraftsPage } from "@/features/admin/pages/ContentDraftsPage";
 import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
 import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
 import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
@@ -57,7 +59,16 @@ const adminPlansManageRoute = createRoute({
 const adminContentUploadRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/content/upload",
-  component: () => <PlaceholderPage title="Upload Content" />,
+  component: ContentUploadPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    draft: (search.draft as string) || undefined,
+  }),
+});
+
+const adminContentDraftsRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "/admin/content/drafts",
+  component: ContentDraftsPage,
 });
 
 const adminContentManageRoute = createRoute({
@@ -138,6 +149,7 @@ export const AdminRoutes = [
     adminPlansRoute,
     adminPlansManageRoute,
     adminContentUploadRoute,
+    adminContentDraftsRoute,
     adminContentManageRoute,
     adminUsersRoute,
     adminAnalyticsRoute,

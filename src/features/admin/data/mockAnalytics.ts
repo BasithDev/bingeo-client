@@ -31,9 +31,9 @@ export const userGrowthData = [
 ];
 
 export const planDistribution = [
-  { name: "Free", value: 2100, color: "#94a3b8" },
-  { name: "Basic", value: 1620, color: "#3b82f6" },
-  { name: "Premium", value: 1100, color: "#7c3aed" },
+  { name: "Free", value: 2100, fill: "#94a3b8" },
+  { name: "Basic", value: 1620, fill: "#3b82f6" },
+  { name: "Premium", value: 1100, fill: "#7c3aed" },
 ];
 
 export const ageDemographics = [
@@ -152,8 +152,8 @@ export const topContent = [
 ];
 
 export const deviceBreakdown = [
-  { name: "Mobile", value: 52, color: "#3b82f6" },
-  { name: "Desktop", value: 22, color: "#7c3aed" },
-  { name: "Smart TV", value: 18, color: "#10b981" },
-  { name: "Tablet", value: 8, color: "#f59e0b" },
+  { name: "Mobile", value: 52, fill: "#3b82f6" },
+  { name: "Desktop", value: 22, fill: "#7c3aed" },
+  { name: "Smart TV", value: 18, fill: "#10b981" },
+  { name: "Tablet", value: 8, fill: "#f59e0b" },
 ];

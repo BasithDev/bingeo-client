@@ -1,0 +1,189 @@
+/* ══════════════════════════════════════════════════
+   Mock data for admin content section.
+   ══════════════════════════════════════════════════ */
+
+import type { ContentMetadata } from "../types/content.types";
+
+/* ── Genre list ───────────────────────────────── */
+
+export const GENRES = [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "Fantasy",
+  "Horror",
+  "Mystery",
+  "Romance",
+  "Sci-Fi",
+  "Thriller",
+  "War",
+  "Western",
+] as const;
+
+/* ── Sample drafts ────────────────────────────── */
+
+export const mockDrafts: ContentMetadata[] = [
+  {
+    id: "draft-1",
+    title: "The Last Frontier",
+    type: "movie",
+    genres: ["Action", "Sci-Fi"],
+    plot: "In a dystopian future, a lone warrior ventures into uncharted territory to find the last remaining sanctuary for humanity.",
+    duration: "2h 18m",
+    cast: [
+      { id: 101, name: "Rajesh Kumar", character: "Commander Arjun", profilePath: "" },
+      { id: 102, name: "Priya Menon", character: "Dr. Kavya", profilePath: "" },
+    ],
+    seasons: [],
+    posterUrl: "https://picsum.photos/seed/frontier/400/600",
+    status: "draft",
+    createdAt: "2025-12-20T10:30:00Z",
+    updatedAt: "2025-12-22T14:15:00Z",
+  },
+  {
+    id: "draft-2",
+    title: "Streets of Chennai",
+    type: "series",
+    genres: ["Crime", "Drama", "Thriller"],
+    plot: "A gritty crime series following the lives of two detectives navigating the underworld of Chennai.",
+    duration: "",
+    cast: [],
+    seasons: [
+      {
+        number: 1,
+        title: "Season 1",
+        episodes: [
+          { number: 1, title: "The Beginning", plot: "Two detectives are assigned to a cold case.", duration: "48m" },
+          { number: 2, title: "Shadows", plot: "A new witness emerges, shaking the investigation.", duration: "52m" },
+        ],
+      },
+    ],
+    posterUrl: "https://picsum.photos/seed/chennai/400/600",
+    status: "draft",
+    createdAt: "2025-12-18T08:00:00Z",
+    updatedAt: "2025-12-25T19:45:00Z",
+  },
+  {
+    id: "draft-3",
+    title: "Diwali Comedy Special",
+    type: "special",
+    genres: ["Comedy"],
+    plot: "A star-studded comedy event celebrating Diwali with sketches, stand-up, and musical performances.",
+    duration: "1h 30m",
+    cast: [],
+    seasons: [],
+    posterUrl: "https://picsum.photos/seed/diwali/400/600",
+    status: "draft",
+    createdAt: "2025-12-24T16:00:00Z",
+    updatedAt: "2025-12-24T16:00:00Z",
+  },
+  {
+    id: "draft-4",
+    title: "Monsoon Melodies",
+    type: "movie",
+    genres: ["Romance", "Drama"],
+    plot: "Two musicians from different worlds meet during the monsoon season in Mumbai and discover love through music.",
+    duration: "2h 05m",
+    cast: [
+      { id: 103, name: "Vikram Desai", character: "Arjun", profilePath: "" },
+      { id: 104, name: "Ananya Sharma", character: "Meera", profilePath: "" },
+      { id: 105, name: "Suresh Gopi", character: "Guruji", profilePath: "" },
+    ],
+    seasons: [],
+    posterUrl: "https://picsum.photos/seed/monsoon/400/600",
+    status: "draft",
+    createdAt: "2025-12-10T09:00:00Z",
+    updatedAt: "2026-01-05T11:20:00Z",
+  },
+  {
+    id: "draft-5",
+    title: "Code Red: Cyber Wars",
+    type: "series",
+    genres: ["Thriller", "Sci-Fi", "Action"],
+    plot: "An elite team of ethical hackers fights against a global cyber threat that could bring nations to their knees.",
+    duration: "",
+    cast: [
+      { id: 106, name: "Karthik Nair", character: "Zero", profilePath: "" },
+    ],
+    seasons: [
+      {
+        number: 1,
+        title: "Season 1",
+        episodes: [
+          { number: 1, title: "Breach", plot: "A massive data breach exposes government secrets.", duration: "55m" },
+          { number: 2, title: "Firewall", plot: "The team races to build defenses.", duration: "50m" },
+          { number: 3, title: "Zero Day", plot: "A zero-day exploit threatens everything.", duration: "58m" },
+        ],
+      },
+    ],
+    posterUrl: "https://picsum.photos/seed/cyber/400/600",
+    status: "draft",
+    createdAt: "2025-11-28T14:00:00Z",
+    updatedAt: "2026-01-10T08:30:00Z",
+  },
+  {
+    id: "draft-6",
+    title: "Heritage Kitchen",
+    type: "special",
+    genres: ["Documentary"],
+    plot: "A culinary journey through India's forgotten recipes, tracing the origins of regional dishes passed down through generations.",
+    duration: "2h 00m",
+    cast: [],
+    seasons: [],
+    posterUrl: "https://picsum.photos/seed/kitchen/400/600",
+    status: "draft",
+    createdAt: "2026-01-02T12:00:00Z",
+    updatedAt: "2026-01-15T17:45:00Z",
+  },
+  {
+    id: "draft-7",
+    title: "Phantom League",
+    type: "movie",
+    genres: ["Action", "Fantasy", "Adventure"],
+    plot: "A group of vigilantes with supernatural abilities band together to protect the city from an ancient evil awakening beneath the streets.",
+    duration: "2h 35m",
+    cast: [
+      { id: 107, name: "Arjun Kapoor", character: "Shadow", profilePath: "" },
+      { id: 108, name: "Deepa Nair", character: "Flame", profilePath: "" },
+    ],
+    seasons: [],
+    posterUrl: "https://picsum.photos/seed/phantom/400/600",
+    status: "draft",
+    createdAt: "2026-01-08T10:00:00Z",
+    updatedAt: "2026-01-20T15:30:00Z",
+  },
+  {
+    id: "draft-8",
+    title: "Lakshmi's Garden",
+    type: "series",
+    genres: ["Drama", "Mystery"],
+    plot: "A retired botanist discovers that her ancestral garden holds dark secrets spanning three generations.",
+    duration: "",
+    cast: [],
+    seasons: [
+      {
+        number: 1,
+        title: "Season 1",
+        episodes: [
+          { number: 1, title: "Roots", plot: "Lakshmi returns to her childhood home.", duration: "42m" },
+          { number: 2, title: "Thorns", plot: "Strange things begin to happen in the garden.", duration: "45m" },
+        ],
+      },
+      {
+        number: 2,
+        title: "Season 2",
+        episodes: [
+          { number: 1, title: "Bloom", plot: "New discoveries change everything.", duration: "47m" },
+        ],
+      },
+    ],
+    posterUrl: "https://picsum.photos/seed/garden/400/600",
+    status: "draft",
+    createdAt: "2026-01-12T11:00:00Z",
+    updatedAt: "2026-02-01T09:00:00Z",
+  },
+];

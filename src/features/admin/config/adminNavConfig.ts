@@ -3,6 +3,7 @@ import {
   Layers,
   SlidersHorizontal,
   FolderUp,
+  FileText,
   Library,
   Users,
   BarChart3,
@@ -46,6 +47,7 @@ export const adminNavConfig: NavItem[] = [
     icon: Library,
     children: [
       { title: "Upload", path: "/admin/content/upload", icon: FolderUp },
+      { title: "Drafts", path: "/admin/content/drafts", icon: FileText },
       { title: "Manage", path: "/admin/content/manage", icon: Library },
     ],
   },

@@ -3,7 +3,7 @@ import {
 } from "lucide-react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Label,
+  PieChart, Pie, Label,
   BarChart, Bar,
   LineChart, Line,
 } from "recharts";
@@ -166,9 +166,6 @@ export function AnalyticsUsersPage() {
                   nameKey="name"
                   strokeWidth={0}
                 >
-                  {planDistribution.map((d) => (
-                    <Cell key={d.name} fill={d.color} />
-                  ))}
                   <Label content={renderDonutLabel(total)} position="center" />
                 </Pie>
                 <Tooltip content={<ChartTip />} />
@@ -178,7 +175,7 @@ export function AnalyticsUsersPage() {
           <div className="flex justify-center gap-5 mt-2">
             {planDistribution.map((d) => (
               <div key={d.name} className="flex items-center gap-1.5">
-                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.fill }} />
                 <span className="text-[11px] text-muted-foreground">{d.name}</span>
                 <span className="text-[11px] font-semibold text-foreground">
                   {Math.round((d.value / total) * 100)}%

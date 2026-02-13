@@ -5,7 +5,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   BarChart, Bar,
   LineChart, Line,
-  PieChart, Pie, Cell, Label,
+  PieChart, Pie, Label,
 } from "recharts";
 
 import { StatCard } from "@/components/ui/admin/StatCard";
@@ -222,9 +222,6 @@ export function AnalyticsEngagementPage() {
                   nameKey="name"
                   strokeWidth={0}
                 >
-                  {deviceBreakdown.map((d) => (
-                    <Cell key={d.name} fill={d.color} />
-                  ))}
                   <Label content={renderDonutLabel} position="center" />
                 </Pie>
                 <Tooltip content={<ChartTip />} />
@@ -234,7 +231,7 @@ export function AnalyticsEngagementPage() {
           <div className="grid grid-cols-2 gap-2 mt-2">
             {deviceBreakdown.map((d) => (
               <div key={d.name} className="flex items-center gap-1.5">
-                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: d.fill }} />
                 <span className="text-[11px] text-muted-foreground">{d.name}</span>
                 <span className="text-[11px] font-semibold text-foreground">{d.value}%</span>
               </div>
