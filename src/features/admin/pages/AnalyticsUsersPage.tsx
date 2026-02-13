@@ -57,7 +57,14 @@ function ChartTip({ active, payload, label }: ChartTipProps) {
 /* ── Donut center label ───────────────────────── */
 
 interface DonutLabelProps {
-  viewBox?: any;
+  viewBox?: {
+    cx?: number;
+    cy?: number;
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+  };
 }
 
 function renderDonutLabel(total: number) {

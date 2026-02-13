@@ -256,7 +256,7 @@ function StepIndicator({
 }
 
 function TypeStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
-  const options: { value: ContentType; label: string; Icon: any; desc: string }[] = [
+  const options: { value: ContentType; label: string; Icon: React.ElementType; desc: string }[] = [
     { value: "movie", label: "Movie", Icon: Film, desc: "Feature film" },
     { value: "series", label: "Series", Icon: Tv, desc: "Episodic show" },
     { value: "special", label: "Special", Icon: Sparkles, desc: "One-off event" },

@@ -68,6 +68,16 @@ Open [http://localhost:5173](http://localhost:5173) to view the app.
 
 To maintain a clean and stable codebase, follow this professional workflow for all changes.
 
+#### Pre-push Check
+
+Before pushing any code, run the local CI suite from the project root:
+
+```bash
+./scripts/client-ci.sh
+```
+
+This script automates: **Cleanup -> Install -> Lint -> Type-check -> Build -> Unit Test -> E2E Test**.
+
 ### 1. Branching Strategy
 
 We use a feature-branch workflow. Always branch off `develop` (or `main` if `develop` isn't available) for new work.

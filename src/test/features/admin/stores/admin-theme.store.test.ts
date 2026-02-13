@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { useAdminThemeStore } from "@/features/admin/stores/admin-theme.store";
+import {
+  type AdminThemeState,
+  useAdminThemeStore,
+} from "@/features/admin/stores/admin-theme.store";
 
 describe("useAdminThemeStore", () => {
   beforeEach(() => {
@@ -54,12 +57,13 @@ describe("useAdminThemeStore", () => {
   describe("onRehydrate", () => {
     it("should set data-admin-theme when rehydrated with valid state", () => {
       const { persist } = useAdminThemeStore;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const options = persist.getOptions() as any;
-      if (options.onRehydrate) {
-        const callback = options.onRehydrate();
+      const options = persist.getOptions() as {
+        onRehydrateStorage?: () => (state?: AdminThemeState) => void;
+      };
+      if (options.onRehydrateStorage) {
+        const callback = options.onRehydrateStorage();
         if (callback) {
-          callback({ theme: "dark", setTheme: () => {}, toggleTheme: () => {} }, undefined);
+          callback({ theme: "dark", setTheme: () => {}, toggleTheme: () => {} });
           expect(document.documentElement.getAttribute("data-admin-theme")).toBe("dark");
         }
       }
@@ -67,12 +71,13 @@ describe("useAdminThemeStore", () => {
 
     it("should handle undefined state in onRehydrate", () => {
       const { persist } = useAdminThemeStore;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const options = persist.getOptions() as any;
-      if (options.onRehydrate) {
-        const callback = options.onRehydrate();
+      const options = persist.getOptions() as {
+        onRehydrateStorage?: () => (state?: AdminThemeState) => void;
+      };
+      if (options.onRehydrateStorage) {
+        const callback = options.onRehydrateStorage();
         if (callback) {
-          expect(() => callback(undefined, undefined)).not.toThrow();
+          expect(() => callback(undefined)).not.toThrow();
         }
       }
     });

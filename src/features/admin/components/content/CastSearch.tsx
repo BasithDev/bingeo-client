@@ -42,7 +42,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   /* Close dropdown on outside click */
   useEffect(() => {
