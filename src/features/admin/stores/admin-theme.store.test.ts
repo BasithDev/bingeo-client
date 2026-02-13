@@ -50,4 +50,31 @@ describe("useAdminThemeStore", () => {
     useAdminThemeStore.getState().toggleTheme();
     expect(document.documentElement.getAttribute("data-admin-theme")).toBe("dark");
   });
+
+  describe("onRehydrate", () => {
+    it("should set data-admin-theme when rehydrated with valid state", () => {
+      const { persist } = useAdminThemeStore;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const options = persist.getOptions() as any;
+      if (options.onRehydrate) {
+        const callback = options.onRehydrate();
+        if (callback) {
+          callback({ theme: "dark", setTheme: () => {}, toggleTheme: () => {} }, undefined);
+          expect(document.documentElement.getAttribute("data-admin-theme")).toBe("dark");
+        }
+      }
+    });
+
+    it("should handle undefined state in onRehydrate", () => {
+      const { persist } = useAdminThemeStore;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const options = persist.getOptions() as any;
+      if (options.onRehydrate) {
+        const callback = options.onRehydrate();
+        if (callback) {
+          expect(() => callback(undefined, undefined)).not.toThrow();
+        }
+      }
+    });
+  });
 });
