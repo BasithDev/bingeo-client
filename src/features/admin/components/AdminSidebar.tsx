@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { ChevronDown, ChevronsLeft, ChevronsRight, LogOut, AlertTriangle } from "lucide-react";
-import { cn } from "@/utils/cn";
-import { useAdminSidebarStore } from "../stores/admin-sidebar.store";
-import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
-import { useAuthStore } from "@/stores/auth.store";
+import { AlertTriangle, ChevronDown, ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
+import { useState } from "react";
 import { Modal } from "@/components/ui/Modal";
-
+import { useAuthStore } from "@/stores/auth.store";
+import { cn } from "@/utils/cn";
+import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
+import { useAdminSidebarStore } from "../stores/admin-sidebar.store";
 
 function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
   const location = useLocation();
@@ -18,7 +17,7 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
 
   const isActive = item.path
     ? location.pathname === item.path
-    : item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false;
+    : (item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false);
 
   // Single link
   if (item.path && !item.children) {
@@ -96,7 +95,9 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
                   "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium",
                   "transition-colors duration-200",
                   "hover:bg-primary/8",
-                  childActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground",
+                  childActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 <child.icon className="h-4 w-4 shrink-0" />
@@ -151,16 +152,29 @@ export function AdminSidebar() {
         </button>
 
         {/* Header — logo */}
-        <div className={cn(
-          "flex h-16 items-center border-b border-border",
-          "transition-[padding] duration-300 ease-in-out",
-          collapsed ? "px-0 justify-center" : "px-4",
-        )}>
+        <div
+          className={cn(
+            "flex h-16 items-center border-b border-border",
+            "transition-[padding] duration-300 ease-in-out",
+            collapsed ? "px-0 justify-center" : "px-4",
+          )}
+        >
           <div className="flex items-center overflow-hidden">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 shrink-0">
               <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-primary">
-                <path d="M4 8L12 4L20 8V16L12 20L4 16V8Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                <path d="M9 11L11 13L15 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 11L11 13L15 9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
             <span
@@ -177,21 +191,20 @@ export function AdminSidebar() {
         </div>
 
         {/* Nav */}
-        <nav className={cn(
-          "flex-1 overflow-y-auto py-3 space-y-0.5",
-          "transition-[padding] duration-300 ease-in-out",
-          collapsed ? "px-1.5" : "px-2.5",
-        )}>
+        <nav
+          className={cn(
+            "flex-1 overflow-y-auto py-3 space-y-0.5",
+            "transition-[padding] duration-300 ease-in-out",
+            collapsed ? "px-1.5" : "px-2.5",
+          )}
+        >
           {adminNavConfig.map((item) => (
             <NavGroup key={item.title} item={item} collapsed={collapsed} />
           ))}
         </nav>
 
         {/* Footer — logout */}
-        <div className={cn(
-          "border-t border-border py-3",
-          collapsed ? "px-1.5" : "px-2.5",
-        )}>
+        <div className={cn("border-t border-border py-3", collapsed ? "px-1.5" : "px-2.5")}>
           <button
             type="button"
             onClick={() => setShowLogout(true)}
@@ -255,7 +268,8 @@ export function AdminSidebar() {
               Confirm Logout
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Are you sure you want to log out? You'll need to sign in again to access the admin panel.
+              Are you sure you want to log out? You'll need to sign in again to access the admin
+              panel.
             </p>
           </div>
         </div>

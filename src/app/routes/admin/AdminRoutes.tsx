@@ -1,11 +1,16 @@
 import { createRoute, redirect } from "@tanstack/react-router";
-import rootRoute from "../RootRoute";
-import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
-import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
-import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
-import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
-import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
 import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
+import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
+import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
+import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
+import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
+import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
+import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
+import { ContentDraftsPage } from "@/features/admin/pages/ContentDraftsPage";
+import { ContentUploadPage } from "@/features/admin/pages/ContentUploadPage";
+import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
+import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
+import rootRoute from "../RootRoute";
 
 // /admin → redirect to login
 const adminIndexRoute = createRoute({
@@ -54,7 +59,16 @@ const adminPlansManageRoute = createRoute({
 const adminContentUploadRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/content/upload",
-  component: () => <PlaceholderPage title="Upload Content" />,
+  component: ContentUploadPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    draft: (search.draft as string) || undefined,
+  }),
+});
+
+const adminContentDraftsRoute = createRoute({
+  getParentRoute: () => adminLayoutRoute,
+  path: "/admin/content/drafts",
+  component: ContentDraftsPage,
 });
 
 const adminContentManageRoute = createRoute({
@@ -74,25 +88,27 @@ const adminUsersRoute = createRoute({
 const adminAnalyticsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics",
-  component: () => <PlaceholderPage title="Analytics Overview" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/analytics/users" });
+  },
 });
 
 const adminAnalyticsUsersRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/users",
-  component: () => <PlaceholderPage title="User Analytics" />,
+  component: AnalyticsUsersPage,
 });
 
 const adminAnalyticsRevenueRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/revenue",
-  component: () => <PlaceholderPage title="Revenue" />,
+  component: AnalyticsRevenuePage,
 });
 
 const adminAnalyticsEngagementRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics/engagement",
-  component: () => <PlaceholderPage title="Engagement" />,
+  component: AnalyticsEngagementPage,
 });
 
 // ── Settings ─────────────────────────────────────
@@ -118,9 +134,7 @@ function PlaceholderPage({ title }: { title: string }) {
       >
         {title}
       </h1>
-      <p className="text-sm text-muted-foreground">
-        This page is under construction.
-      </p>
+      <p className="text-sm text-muted-foreground">This page is under construction.</p>
     </div>
   );
 }
@@ -133,6 +147,7 @@ export const AdminRoutes = [
     adminPlansRoute,
     adminPlansManageRoute,
     adminContentUploadRoute,
+    adminContentDraftsRoute,
     adminContentManageRoute,
     adminUsersRoute,
     adminAnalyticsRoute,

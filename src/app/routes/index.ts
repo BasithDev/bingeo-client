@@ -1,12 +1,9 @@
 import { createRouter } from "@tanstack/react-router";
+import { AdminRoutes } from "./admin/AdminRoutes";
 import rootRoute from "./RootRoute";
 import { UserRoutes } from "./user/UserRoutes";
-import { AdminRoutes } from "./admin/AdminRoutes";
 
-const routeTree = rootRoute.addChildren([
-  ...UserRoutes,
-  ...AdminRoutes,
-]);
+const routeTree = rootRoute.addChildren([...UserRoutes, ...AdminRoutes]);
 
 export const router = createRouter({
   routeTree,

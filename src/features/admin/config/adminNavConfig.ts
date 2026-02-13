@@ -1,18 +1,18 @@
 import {
-  LayoutDashboard,
-  Layers,
-  SlidersHorizontal,
-  FolderUp,
-  Library,
-  Users,
-  BarChart3,
-  TrendingUp,
-  DollarSign,
   Activity,
-  Settings,
-  Palette,
+  BarChart3,
   CreditCard,
+  DollarSign,
+  FileText,
+  FolderUp,
+  Layers,
+  LayoutDashboard,
+  Library,
   type LucideIcon,
+  Palette,
+  Settings,
+  SlidersHorizontal,
+  Users,
 } from "lucide-react";
 
 export interface NavSubItem {
@@ -47,6 +47,7 @@ export const adminNavConfig: NavItem[] = [
     icon: Library,
     children: [
       { title: "Upload", path: "/admin/content/upload", icon: FolderUp },
+      { title: "Drafts", path: "/admin/content/drafts", icon: FileText },
       { title: "Manage", path: "/admin/content/manage", icon: Library },
     ],
   },
@@ -59,7 +60,6 @@ export const adminNavConfig: NavItem[] = [
     title: "Analytics",
     icon: BarChart3,
     children: [
-      { title: "Overview", path: "/admin/analytics", icon: TrendingUp },
       { title: "Users", path: "/admin/analytics/users", icon: Users },
       { title: "Revenue", path: "/admin/analytics/revenue", icon: DollarSign },
       { title: "Engagement", path: "/admin/analytics/engagement", icon: Activity },

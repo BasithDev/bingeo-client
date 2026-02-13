@@ -1,4 +1,4 @@
-import { Sun, Moon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useAdminThemeStore } from "../stores/admin-theme.store";
 
 export function ThemeToggle() {

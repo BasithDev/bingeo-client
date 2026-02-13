@@ -17,11 +17,7 @@ export const mockPlans: Plan[] = [
     maxStreams: 1,
     maxQuality: "SD",
     contentAccess: "limited",
-    features: [
-      "Ad-supported streaming",
-      "Access to free catalog",
-      "Mobile-only viewing",
-    ],
+    features: ["Ad-supported streaming", "Access to free catalog", "Mobile-only viewing"],
     isActive: true,
     subscriberCount: 15,
     color: "#94a3b8",

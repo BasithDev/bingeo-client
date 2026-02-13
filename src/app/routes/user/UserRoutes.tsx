@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
-import rootRoute from "../RootRoute";
 import { HomePage } from "@/features/content/pages/HomePage";
+import rootRoute from "../RootRoute";
 
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,

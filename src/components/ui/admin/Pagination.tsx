@@ -45,7 +45,9 @@ export function Pagination({
   };
 
   return (
-    <div className={cn("flex flex-col sm:flex-row items-center justify-between gap-3 pt-4", className)}>
+    <div
+      className={cn("flex flex-col sm:flex-row items-center justify-between gap-3 pt-4", className)}
+    >
       {/* Info */}
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
         <span>
@@ -90,7 +92,10 @@ export function Pagination({
 
         {getPages().map((p, i) =>
           p === "..." ? (
-            <span key={`e-${i}`} className="flex h-8 w-8 items-center justify-center text-xs text-muted-foreground">
+            <span
+              key={`e-${i}`}
+              className="flex h-8 w-8 items-center justify-center text-xs text-muted-foreground"
+            >
               …
             </span>
           ) : (

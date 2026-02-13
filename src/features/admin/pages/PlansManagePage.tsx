@@ -1,21 +1,13 @@
+import { Monitor, Pencil, Plus, Trash2, Users } from "lucide-react";
 import { useState } from "react";
-import {
-  Plus,
-  Pencil,
-  Trash2,
-  Monitor,
-  Users,
-} from "lucide-react";
-import { cn } from "@/utils/cn";
-
-import { DataTable, type Column } from "@/components/ui/admin/DataTable";
+import { type Column, DataTable } from "@/components/ui/admin/DataTable";
 import { StatusBadge } from "@/components/ui/admin/StatusBadge";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
-
-import type { Plan } from "../types/admin.types";
+import { cn } from "@/utils/cn";
+import { type PlanFormData, PlanFormDrawer } from "../components/PlanFormModal";
 import { mockPlans } from "../data/mockPlans";
+import type { Plan } from "../types/admin.types";
 import { formatCurrency } from "../utils/helpers";
-import { PlanFormModal, type PlanFormData } from "../components/PlanFormModal";
 
 /* ── Quality badge colors ─────────────────────── */
 
@@ -50,13 +42,7 @@ export function PlansManagePage() {
   const handleFormSave = (data: PlanFormData) => {
     if (editTarget) {
       // Update existing
-      setPlans((prev) =>
-        prev.map((p) =>
-          p.id === editTarget.id
-            ? { ...p, ...data }
-            : p,
-        ),
-      );
+      setPlans((prev) => prev.map((p) => (p.id === editTarget.id ? { ...p, ...data } : p)));
     } else {
       // Create new
       const newPlan: Plan = {
@@ -117,7 +103,12 @@ export function PlansManagePage() {
       key: "quality",
       header: "Quality",
       render: (row) => (
-        <span className={cn("inline-flex px-2 py-0.5 rounded-md text-xs font-semibold", qualityBadge[row.maxQuality])}>
+        <span
+          className={cn(
+            "inline-flex px-2 py-0.5 rounded-md text-xs font-semibold",
+            qualityBadge[row.maxQuality],
+          )}
+        >
           {row.maxQuality}
         </span>
       ),
@@ -194,7 +185,10 @@ export function PlansManagePage() {
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: "var(--font-heading)" }}>
+          <h1
+            className="text-2xl font-bold text-foreground"
+            style={{ fontFamily: "var(--font-heading)" }}
+          >
             Manage Plans
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -223,10 +217,13 @@ export function PlansManagePage() {
         emptyMessage="No plans yet. Create your first plan."
       />
 
-      {/* Form Modal (create / edit) */}
-      <PlanFormModal
+      {/* Form Drawer (create / edit) */}
+      <PlanFormDrawer
         open={formOpen}
-        onClose={() => { setFormOpen(false); setEditTarget(null); }}
+        onClose={() => {
+          setFormOpen(false);
+          setEditTarget(null);
+        }}
         onSave={handleFormSave}
         editPlan={editTarget}
       />

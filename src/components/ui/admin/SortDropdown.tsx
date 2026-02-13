@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { ArrowUpDown, ArrowUp, ArrowDown, Check } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Check } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export interface SortOption {

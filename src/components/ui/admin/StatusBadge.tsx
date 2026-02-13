@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 const badgeVariants = cva(
@@ -27,9 +27,5 @@ export interface StatusBadgeProps extends VariantProps<typeof badgeVariants> {
 }
 
 export function StatusBadge({ variant, children, className }: StatusBadgeProps) {
-  return (
-    <span className={cn(badgeVariants({ variant }), className)}>
-      {children}
-    </span>
-  );
+  return <span className={cn(badgeVariants({ variant }), className)}>{children}</span>;
 }

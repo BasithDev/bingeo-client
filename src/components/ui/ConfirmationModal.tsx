@@ -1,5 +1,5 @@
-import { type ReactNode } from "react";
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { cn } from "@/utils/cn";
 
@@ -39,7 +39,12 @@ export function ConfirmationModal({
   cancelLabel = "Cancel",
 }: ConfirmationModalProps) {
   return (
-    <Modal open={open} onClose={onClose} size="sm" blur="sm" showCloseButton={false}
+    <Modal
+      open={open}
+      onClose={onClose}
+      size="sm"
+      blur="sm"
+      showCloseButton={false}
       footer={
         <div className="flex items-center justify-end gap-3">
           <button
