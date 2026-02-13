@@ -116,16 +116,38 @@ export const revenueByPlan = [
 ];
 
 export const subscriptionFunnel = [
-  { stage: "Free Users", count: 2100 },
-  { stage: "Upgraded to Basic", count: 480 },
-  { stage: "Upgraded to Premium", count: 195 },
+  { id: "funnel-free", stage: "Free Users", count: 2100 },
+  { id: "funnel-basic", stage: "Upgraded to Basic", count: 480 },
+  { id: "funnel-premium", stage: "Upgraded to Premium", count: 195 },
 ];
 
 export const recentTransactions = [
-  { user: "Myra Verma", amount: 499, plan: "Premium", method: "UPI", date: "2025-12-28T10:30:00Z" },
-  { user: "Rohan Joshi", amount: 199, plan: "Basic", method: "Card", date: "2025-12-28T09:15:00Z" },
-  { user: "Kavya Iyer", amount: 499, plan: "Premium", method: "UPI", date: "2025-12-27T18:42:00Z" },
   {
+    id: "tx-1",
+    user: "Myra Verma",
+    amount: 499,
+    plan: "Premium",
+    method: "UPI",
+    date: "2025-12-28T10:30:00Z",
+  },
+  {
+    id: "tx-2",
+    user: "Rohan Joshi",
+    amount: 199,
+    plan: "Basic",
+    method: "Card",
+    date: "2025-12-28T09:15:00Z",
+  },
+  {
+    id: "tx-3",
+    user: "Kavya Iyer",
+    amount: 499,
+    plan: "Premium",
+    method: "UPI",
+    date: "2025-12-27T18:42:00Z",
+  },
+  {
+    id: "tx-4",
     user: "Aditya Singh",
     amount: 199,
     plan: "Basic",
@@ -133,6 +155,7 @@ export const recentTransactions = [
     date: "2025-12-27T14:20:00Z",
   },
   {
+    id: "tx-5",
     user: "Sneha Patel",
     amount: 499,
     plan: "Premium",

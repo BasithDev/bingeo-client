@@ -26,12 +26,24 @@ const growthPeriods: { label: string; value: GrowthPeriod }[] = [
 
 /* ── Chart tooltip ────────────────────────────────── */
 
-function ChartTooltip({ active, payload, label }: any) {
+interface ChartPayloadEntry {
+  name: string;
+  value: number;
+  color?: string;
+}
+
+interface ChartTooltipProps {
+  active?: boolean;
+  payload?: ChartPayloadEntry[];
+  label?: string;
+}
+
+function ChartTooltip({ active, payload, label }: ChartTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-foreground mb-1">{label}</p>
-      {payload.map((entry: any) => (
+      {payload.map((entry) => (
         <p key={entry.name} style={{ color: entry.color }}>
           {entry.name}: {entry.value}
         </p>

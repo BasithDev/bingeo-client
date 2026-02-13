@@ -42,10 +42,21 @@ interface PlanFormDrawerProps {
 
 /* ── Reusable field wrapper ───────────────────── */
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  htmlFor,
+  children,
+}: {
+  label: string;
+  htmlFor?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+      <label
+        htmlFor={htmlFor}
+        className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider"
+      >
         {label}
       </label>
       {children}
@@ -56,16 +67,19 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 /* ── Select dropdown ─────────────────────────── */
 
 function SelectField({
+  id,
   value,
   onChange,
   options,
 }: {
+  id?: string;
   value: string;
   onChange: (v: string) => void;
   options: { label: string; value: string }[];
 }) {
   return (
     <select
+      id={id}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
@@ -115,7 +129,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
       setForm(emptyForm);
     }
     setFeatureInput("");
-  }, [editPlan, open]);
+  }, [editPlan]);
 
   /* Lock body scroll */
   useEffect(() => {
@@ -202,8 +216,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
             >
               {/* Name + Color */}
               <div className="grid grid-cols-[1fr_72px] gap-3">
-                <Field label="Plan Name">
+                <Field label="Plan Name" htmlFor="plan-name">
                   <input
+                    id="plan-name"
                     type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
@@ -212,8 +227,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Color">
+                <Field label="Color" htmlFor="plan-color">
                   <input
+                    id="plan-color"
                     type="color"
                     value={form.color}
                     onChange={(e) => update("color", e.target.value)}
@@ -224,8 +240,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
 
               {/* Price + Billing Cycle */}
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Price (₹)">
+                <Field label="Price (₹)" htmlFor="plan-price">
                   <input
+                    id="plan-price"
                     type="number"
                     min={0}
                     value={form.price}
@@ -233,8 +250,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Billing Cycle">
+                <Field label="Billing Cycle" htmlFor="plan-billing-cycle">
                   <SelectField
+                    id="plan-billing-cycle"
                     value={form.billingCycle}
                     onChange={(v) => update("billingCycle", v as PlanFormData["billingCycle"])}
                     options={[
@@ -247,8 +265,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
 
               {/* Max Streams + Max Quality */}
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Max Streams">
+                <Field label="Max Streams" htmlFor="plan-max-streams">
                   <input
+                    id="plan-max-streams"
                     type="number"
                     min={1}
                     max={10}
@@ -257,8 +276,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                     className={inputClass}
                   />
                 </Field>
-                <Field label="Max Quality">
+                <Field label="Max Quality" htmlFor="plan-max-quality">
                   <SelectField
+                    id="plan-max-quality"
                     value={form.maxQuality}
                     onChange={(v) => update("maxQuality", v as PlanFormData["maxQuality"])}
                     options={[
@@ -273,8 +293,9 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
 
               {/* Content Access + Active Toggle */}
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Content Access">
+                <Field label="Content Access" htmlFor="plan-content-access">
                   <SelectField
+                    id="plan-content-access"
                     value={form.contentAccess}
                     onChange={(v) => update("contentAccess", v as PlanFormData["contentAccess"])}
                     options={[
@@ -301,7 +322,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
               </div>
 
               {/* Features — tag input */}
-              <Field label="Features">
+              <Field label="Features" htmlFor="plan-features-input">
                 <div className="rounded-xl border border-border bg-background p-3 space-y-2.5">
                   {form.features.length > 0 && (
                     <div className="flex flex-wrap gap-1.5">
@@ -324,6 +345,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                   )}
                   <div className="flex items-center gap-2">
                     <input
+                      id="plan-features-input"
                       type="text"
                       value={featureInput}
                       onChange={(e) => setFeatureInput(e.target.value)}

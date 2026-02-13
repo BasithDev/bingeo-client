@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { ChevronDown, LogOut, Moon, Settings, Sun, User } from "lucide-react";
+import { ChevronDown, LogOut, Moon, Settings, Sun } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils/cn";
@@ -61,6 +61,7 @@ export function AdminHeader() {
         <div className="lg:hidden flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-primary">
+              <title>Bingeo Logo</title>
               <path
                 d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
                 stroke="currentColor"
@@ -87,7 +88,7 @@ export function AdminHeader() {
         {/* Breadcrumbs (desktop) */}
         <nav className="hidden lg:flex items-center gap-1.5 text-sm">
           {crumbs.map((crumb, i) => (
-            <span key={`${crumb}-${i}`} className="flex items-center gap-1.5">
+            <span key={crumb} className="flex items-center gap-1.5">
               {i > 0 && <span className="text-muted-foreground/40">/</span>}
               <span
                 className={

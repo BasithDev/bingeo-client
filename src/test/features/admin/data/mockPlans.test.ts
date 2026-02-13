@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { mockPlans } from "./mockPlans";
+import { describe, expect, it } from "vitest";
+import { mockPlans } from "@/features/admin/data/mockPlans";
 
 describe("mockPlans", () => {
   it("should have 3 plans", () => {
@@ -36,7 +36,7 @@ describe("mockPlans", () => {
 
   it("Free plan should have price 0", () => {
     const free = mockPlans.find((p) => p.name === "Free");
-    expect(free!.price).toBe(0);
+    expect(free?.price).toBe(0);
   });
 
   it("plans should have increasing prices", () => {

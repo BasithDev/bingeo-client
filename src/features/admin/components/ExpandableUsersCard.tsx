@@ -16,7 +16,7 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
     if (contentRef.current) {
       setContentHeight(contentRef.current.scrollHeight);
     }
-  }, [expanded, stats]);
+  }, []); // Only measure on mount, or we could use ResizeObserver for more robustness
 
   const previousTotal = 45; // mock: last month's total
   const growthPct = Math.round(((stats.total - previousTotal) / previousTotal) * 100);

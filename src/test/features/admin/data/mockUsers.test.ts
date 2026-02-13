@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { mockUsers } from "./mockUsers";
+import { describe, expect, it } from "vitest";
+import { mockUsers } from "@/features/admin/data/mockUsers";
 
 describe("mockUsers", () => {
   it("should be a non-empty array", () => {

@@ -70,7 +70,8 @@ export function DataTable<T>({
           <tbody className="divide-y divide-border">
             {loading ? (
               Array.from({ length: skeletonRows }).map((_, i) => (
-                <tr key={`sk-${i}`}>
+                // biome-ignore lint/suspicious/noArrayIndexKey: Order is fixed for skeletons
+                <tr key={`skeleton-row-${i}`}>
                   {columns.map((col) => (
                     <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
                       <div className="h-4 w-3/4 rounded-md bg-muted animate-pulse" />

@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useAdminSidebarStore } from "./admin-sidebar.store";
+import { beforeEach, describe, expect, it } from "vitest";
+import { useAdminSidebarStore } from "@/features/admin/stores/admin-sidebar.store";
 
 describe("useAdminSidebarStore", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // We need to test the ApiClient class directly, so let's import the module
 // and mock fetch globally
@@ -8,7 +8,7 @@ describe("ApiClient (apiClient)", () => {
   });
 
   it("should be importable", async () => {
-    const mod = await import("./client");
+    const mod = await import("@/services/api/client");
     expect(mod.apiClient).toBeDefined();
   });
 
@@ -24,7 +24,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       const result = await apiClient.get("/test");
 
       expect(fetch).toHaveBeenCalledWith(
@@ -47,7 +47,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       const payload = { email: "test@example.com" };
       const result = await apiClient.post("/login", payload);
 
@@ -71,7 +71,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.post("/logout");
 
       expect(fetch).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.put("/user/1", { name: "Updated" });
 
       expect(fetch).toHaveBeenCalledWith(
@@ -114,7 +114,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.put("/user/1/activate");
 
       expect(fetch).toHaveBeenCalledWith(
@@ -135,7 +135,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.patch("/user/1", { name: "Patched" });
 
       expect(fetch).toHaveBeenCalledWith(
@@ -154,7 +154,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.patch("/user/1/verify");
 
       expect(fetch).toHaveBeenCalledWith(
@@ -175,7 +175,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.delete("/user/1");
 
       expect(fetch).toHaveBeenCalledWith(
@@ -197,7 +197,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await expect(apiClient.get("/missing")).rejects.toEqual(mockError);
     });
 
@@ -211,7 +211,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await expect(apiClient.get("/error")).rejects.toEqual({
         message: "An unexpected error occurred",
         code: "UNKNOWN_ERROR",
@@ -230,7 +230,7 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       const result = await apiClient.delete("/user/1");
       expect(result).toEqual({});
     });
@@ -247,13 +247,10 @@ describe("ApiClient (apiClient)", () => {
         }),
       );
 
-      const { apiClient } = await import("./client");
+      const { apiClient } = await import("@/services/api/client");
       await apiClient.get("https://external.api.com/data");
 
-      expect(fetch).toHaveBeenCalledWith(
-        "https://external.api.com/data",
-        expect.any(Object),
-      );
+      expect(fetch).toHaveBeenCalledWith("https://external.api.com/data", expect.any(Object));
     });
   });
 });

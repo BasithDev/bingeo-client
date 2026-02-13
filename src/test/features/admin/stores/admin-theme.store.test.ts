@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useAdminThemeStore } from "./admin-theme.store";
+import { beforeEach, describe, expect, it } from "vitest";
+import { useAdminThemeStore } from "@/features/admin/stores/admin-theme.store";
 
 describe("useAdminThemeStore", () => {
   beforeEach(() => {

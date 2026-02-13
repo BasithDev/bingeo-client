@@ -19,7 +19,9 @@ export function AdminMobileNav() {
   return (
     <>
       {/* Backdrop — fades in */}
-      <div
+      <button
+        type="button"
+        aria-label="Close submenu"
         className={cn(
           "lg:hidden fixed inset-0 z-40 transition-all duration-300",
           expandedItem
@@ -27,6 +29,11 @@ export function AdminMobileNav() {
             : "bg-transparent backdrop-blur-0 pointer-events-none",
         )}
         onClick={() => setExpandedItem(null)}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            setExpandedItem(null);
+          }
+        }}
       />
 
       {/* Submenu panel — slides up from bottom */}

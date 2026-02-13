@@ -27,12 +27,25 @@ import { formatCurrency, formatDate } from "../utils/helpers";
 
 /* ── Chart tooltip ────────────────────────────── */
 
-function ChartTip({ active, payload, label }: any) {
+interface ChartPayloadEntry {
+  name: string;
+  value: number;
+  color?: string;
+  fill?: string;
+}
+
+interface ChartTipProps {
+  active?: boolean;
+  payload?: ChartPayloadEntry[];
+  label?: string;
+}
+
+function ChartTip({ active, payload, label }: ChartTipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-foreground mb-1">{label}</p>
-      {payload.map((e: any) => (
+      {payload.map((e) => (
         <p key={e.name} style={{ color: e.color ?? e.fill }}>
           {e.name}: {formatCurrency(e.value)}
         </p>
@@ -288,7 +301,7 @@ export function AnalyticsRevenuePage() {
             {subscriptionFunnel.map((step, i) => {
               const pct = Math.round((step.count / funnelMax) * 100);
               return (
-                <div key={step.stage}>
+                <div key={step.id}>
                   <div className="flex items-center justify-between text-xs mb-1.5">
                     <span className="font-medium text-foreground">{step.stage}</span>
                     <span className="text-muted-foreground font-semibold">
@@ -342,8 +355,8 @@ export function AnalyticsRevenuePage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {recentTransactions.map((t, i) => (
-                <tr key={i} className="hover:bg-muted/30 transition-colors">
+              {recentTransactions.map((t) => (
+                <tr key={t.id} className="hover:bg-muted/30 transition-colors">
                   <td className="py-2.5 font-medium text-foreground">{t.user}</td>
                   <td className="py-2.5 text-emerald-500 font-semibold">
                     {formatCurrency(t.amount)}
