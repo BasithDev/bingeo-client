@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { adminNavConfig } from "./adminNavConfig";
+import { describe, expect, it } from "vitest";
+import { adminNavConfig } from "@/features/admin/config/adminNavConfig";
 
 describe("adminNavConfig", () => {
   it("should be a non-empty array", () => {
@@ -10,22 +10,22 @@ describe("adminNavConfig", () => {
   it("should include Dashboard as a top-level item", () => {
     const dashboard = adminNavConfig.find((nav) => nav.title === "Dashboard");
     expect(dashboard).toBeDefined();
-    expect(dashboard!.path).toBe("/admin/dashboard");
+    expect(dashboard?.path).toBe("/admin/dashboard");
   });
 
   it("should include Plans with children", () => {
     const plans = adminNavConfig.find((nav) => nav.title === "Plans");
     expect(plans).toBeDefined();
-    expect(plans!.children).toBeDefined();
-    expect(plans!.children!.length).toBeGreaterThanOrEqual(2);
+    expect(plans?.children).toBeDefined();
+    expect(plans?.children?.length).toBeGreaterThanOrEqual(2);
   });
 
   it("should include Content section with Upload, Drafts, Manage", () => {
     const content = adminNavConfig.find((nav) => nav.title === "Content");
     expect(content).toBeDefined();
-    expect(content!.children).toBeDefined();
+    expect(content?.children).toBeDefined();
 
-    const titles = content!.children!.map((c) => c.title);
+    const titles = content?.children?.map((c) => c.title);
     expect(titles).toContain("Upload");
     expect(titles).toContain("Drafts");
     expect(titles).toContain("Manage");
@@ -34,15 +34,15 @@ describe("adminNavConfig", () => {
   it("should include Users as a standalone item", () => {
     const users = adminNavConfig.find((nav) => nav.title === "Users");
     expect(users).toBeDefined();
-    expect(users!.path).toBe("/admin/users");
+    expect(users?.path).toBe("/admin/users");
   });
 
   it("should include Analytics with child routes", () => {
     const analytics = adminNavConfig.find((nav) => nav.title === "Analytics");
     expect(analytics).toBeDefined();
-    expect(analytics!.children).toBeDefined();
+    expect(analytics?.children).toBeDefined();
 
-    const titles = analytics!.children!.map((c) => c.title);
+    const titles = analytics?.children?.map((c) => c.title);
     expect(titles).toContain("Users");
     expect(titles).toContain("Revenue");
     expect(titles).toContain("Engagement");
@@ -51,9 +51,9 @@ describe("adminNavConfig", () => {
   it("should include Settings with children", () => {
     const settings = adminNavConfig.find((nav) => nav.title === "Settings");
     expect(settings).toBeDefined();
-    expect(settings!.children).toBeDefined();
+    expect(settings?.children).toBeDefined();
 
-    const titles = settings!.children!.map((c) => c.title);
+    const titles = settings?.children?.map((c) => c.title);
     expect(titles).toContain("General");
     expect(titles).toContain("Appearance");
   });

@@ -7,7 +7,12 @@ import { cn } from "@/utils/cn";
 import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
 import { useAdminSidebarStore } from "../stores/admin-sidebar.store";
 
-function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
+interface NavGroupProps {
+  item: NavItem;
+  collapsed: boolean;
+}
+
+function NavGroup({ item, collapsed }: NavGroupProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(() => {
@@ -19,44 +24,76 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
     ? location.pathname === item.path
     : (item.children?.some((c) => location.pathname.startsWith(c.path)) ?? false);
 
-  // Single link
   if (item.path && !item.children) {
-    return (
-      <Link
-        to={item.path}
-        className={cn(
-          "flex items-center rounded-xl text-sm font-medium",
-          "transition-[background-color,color] duration-200",
-          "hover:bg-primary/8",
-          isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground",
-          collapsed ? "h-10 w-10 justify-center mx-auto" : "gap-3 px-3 py-2.5",
-        )}
-        title={collapsed ? item.title : undefined}
-      >
-        <item.icon className="h-[18px] w-[18px] shrink-0" />
-        {!collapsed && <span>{item.title}</span>}
-      </Link>
-    );
+    return <SidebarLink item={item} collapsed={collapsed} isActive={isActive} />;
   }
 
-  // Group with children
-  const defaultPath = item.children?.[0]?.path;
+  return (
+    <SidebarGroup
+      item={item}
+      collapsed={collapsed}
+      isActive={isActive}
+      open={open}
+      setOpen={setOpen}
+      onGroupClick={() => {
+        const defaultPath = item.children?.[0]?.path;
+        if (collapsed && defaultPath) {
+          navigate({ to: defaultPath });
+        } else {
+          setOpen((v) => !v);
+        }
+      }}
+    />
+  );
+}
 
+function SidebarLink({
+  item,
+  collapsed,
+  isActive,
+}: {
+  item: NavItem;
+  collapsed: boolean;
+  isActive: boolean;
+}) {
+  return (
+    <Link
+      to={item.path}
+      className={cn(
+        "flex items-center rounded-xl text-sm font-medium transition-[background-color,color] duration-200 hover:bg-primary/8",
+        isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground",
+        collapsed ? "h-10 w-10 justify-center mx-auto" : "gap-3 px-3 py-2.5",
+      )}
+      title={collapsed ? item.title : undefined}
+    >
+      <item.icon className="h-[18px] w-[18px] shrink-0" />
+      {!collapsed && <span>{item.title}</span>}
+    </Link>
+  );
+}
+
+function SidebarGroup({
+  item,
+  collapsed,
+  isActive,
+  open,
+  onGroupClick,
+}: {
+  item: NavItem;
+  collapsed: boolean;
+  isActive: boolean;
+  open: boolean;
+  setOpen: (v: boolean | ((prev: boolean) => boolean)) => void;
+  onGroupClick: () => void;
+}) {
+  const location = useLocation();
   return (
     <div>
       <button
         type="button"
-        onClick={() => {
-          if (collapsed && defaultPath) {
-            navigate({ to: defaultPath });
-          } else {
-            setOpen((v) => !v);
-          }
-        }}
+        onClick={onGroupClick}
         className={cn(
-          "flex items-center rounded-xl text-sm font-medium cursor-pointer",
-          "transition-[background-color,color] duration-200",
-          "hover:bg-primary/8",
+          "flex items-center rounded-xl text-sm font-medium cursor-pointer transition-[background-color,color] duration-200 hover:bg-primary/8",
           isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
           collapsed ? "h-10 w-10 justify-center mx-auto" : "w-full gap-3 px-3 py-2.5",
         )}
@@ -76,35 +113,28 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
         )}
       </button>
 
-      {/* Submenu — animated height */}
       <div
         className={cn(
-          "overflow-hidden",
-          "transition-[max-height,opacity] duration-300 ease-in-out",
+          "overflow-hidden transition-[max-height,opacity] duration-300 ease-in-out",
           !collapsed && open ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0",
         )}
       >
         <div className="ml-4 mt-1 space-y-0.5 border-l border-border pl-3">
-          {item.children?.map((child) => {
-            const childActive = location.pathname === child.path;
-            return (
-              <Link
-                key={child.path}
-                to={child.path}
-                className={cn(
-                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium",
-                  "transition-colors duration-200",
-                  "hover:bg-primary/8",
-                  childActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                <child.icon className="h-4 w-4 shrink-0" />
-                <span>{child.title}</span>
-              </Link>
-            );
-          })}
+          {item.children?.map((child) => (
+            <Link
+              key={child.path}
+              to={child.path}
+              className={cn(
+                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors duration-200 hover:bg-primary/8",
+                location.pathname === child.path
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <child.icon className="h-4 w-4 shrink-0" />
+              <span>{child.title}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
@@ -162,6 +192,7 @@ export function AdminSidebar() {
           <div className="flex items-center overflow-hidden">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 shrink-0">
               <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-primary">
+                <title>Bingeo Logo</title>
                 <path
                   d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
                   stroke="currentColor"

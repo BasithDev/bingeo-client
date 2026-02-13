@@ -168,50 +168,19 @@ export function Modal({
           >
             {/* ── Header ──────────── */}
             {hasHeader && (
-              <div
-                className={cn(
-                  "flex items-center gap-3 border-b border-white/6",
-                  padding === "lg" ? "px-8 py-5" : padding === "sm" ? "px-4 py-3" : "px-6 py-4",
-                )}
-              >
-                <div className="flex-1 min-w-0">{header}</div>
-                {showCloseButton && (
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-xl shrink-0",
-                      "text-muted-foreground/60 hover:text-foreground hover:bg-white/6",
-                      "transition-all duration-200 cursor-pointer",
-                    )}
-                    aria-label="Close"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
+              <ModalHeader
+                header={header}
+                padding={padding}
+                onClose={onClose}
+                showCloseButton={showCloseButton}
+              />
             )}
 
             {/* ── Body ────────────── */}
-            <div
-              className={cn(
-                padding === "lg" ? "px-8 py-6" : padding === "sm" ? "px-4 py-3" : "px-6 py-5",
-              )}
-            >
-              {children}
-            </div>
+            <div className={cn(getPaddingClass(padding))}>{children}</div>
 
             {/* ── Footer ──────────── */}
-            {footer && (
-              <div
-                className={cn(
-                  "border-t border-white/6",
-                  padding === "lg" ? "px-8 py-5" : padding === "sm" ? "px-4 py-3" : "px-6 py-4",
-                )}
-              >
-                {footer}
-              </div>
-            )}
+            {footer && <ModalFooter footer={footer} padding={padding} />}
           </motion.div>
         </motion.div>
       )}
@@ -219,4 +188,63 @@ export function Modal({
   );
 
   return createPortal(modal, portalTarget ?? document.body);
+}
+
+/* ── Helpers ────────────────────────────────────────── */
+
+function getPaddingClass(padding: ModalProps["padding"]) {
+  if (padding === "lg") return "px-8 py-6";
+  if (padding === "sm") return "px-4 py-3";
+  return "px-6 py-5";
+}
+
+function getHeaderFooterPaddingClass(padding: ModalProps["padding"]) {
+  if (padding === "lg") return "px-8 py-5";
+  if (padding === "sm") return "px-4 py-3";
+  return "px-6 py-4";
+}
+
+function ModalHeader({
+  header,
+  padding,
+  onClose,
+  showCloseButton,
+}: {
+  header: ReactNode;
+  padding: ModalProps["padding"];
+  onClose: () => void;
+  showCloseButton: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 border-b border-white/6",
+        getHeaderFooterPaddingClass(padding),
+      )}
+    >
+      <div className="flex-1 min-w-0">{header}</div>
+      {showCloseButton && (
+        <button
+          type="button"
+          onClick={onClose}
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-xl shrink-0",
+            "text-muted-foreground/60 hover:text-foreground hover:bg-white/6",
+            "transition-all duration-200 cursor-pointer",
+          )}
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function ModalFooter({ footer, padding }: { footer: ReactNode; padding: ModalProps["padding"] }) {
+  return (
+    <div className={cn("border-t border-white/6", getHeaderFooterPaddingClass(padding))}>
+      {footer}
+    </div>
+  );
 }

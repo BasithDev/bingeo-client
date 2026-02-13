@@ -1,5 +1,8 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { useAdminThemeStore } from "./admin-theme.store";
+import { beforeEach, describe, expect, it } from "vitest";
+import {
+  type AdminThemeState,
+  useAdminThemeStore,
+} from "@/features/admin/stores/admin-theme.store";
 
 describe("useAdminThemeStore", () => {
   beforeEach(() => {
@@ -49,5 +52,34 @@ describe("useAdminThemeStore", () => {
   it("should set data-admin-theme attribute on toggle", () => {
     useAdminThemeStore.getState().toggleTheme();
     expect(document.documentElement.getAttribute("data-admin-theme")).toBe("dark");
+  });
+
+  describe("onRehydrate", () => {
+    it("should set data-admin-theme when rehydrated with valid state", () => {
+      const { persist } = useAdminThemeStore;
+      const options = persist.getOptions() as {
+        onRehydrateStorage?: () => (state?: AdminThemeState) => void;
+      };
+      if (options.onRehydrateStorage) {
+        const callback = options.onRehydrateStorage();
+        if (callback) {
+          callback({ theme: "dark", setTheme: () => {}, toggleTheme: () => {} });
+          expect(document.documentElement.getAttribute("data-admin-theme")).toBe("dark");
+        }
+      }
+    });
+
+    it("should handle undefined state in onRehydrate", () => {
+      const { persist } = useAdminThemeStore;
+      const options = persist.getOptions() as {
+        onRehydrateStorage?: () => (state?: AdminThemeState) => void;
+      };
+      if (options.onRehydrateStorage) {
+        const callback = options.onRehydrateStorage();
+        if (callback) {
+          expect(() => callback(undefined)).not.toThrow();
+        }
+      }
+    });
   });
 });

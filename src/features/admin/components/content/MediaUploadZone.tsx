@@ -2,8 +2,8 @@ import { Upload } from "lucide-react";
 
 export function MediaUploadZone() {
   return (
-    <div className="space-y-3">
-      <label className="text-sm font-medium text-foreground">Media Upload</label>
+    <fieldset className="space-y-3">
+      <legend className="text-sm font-medium text-foreground block">Media Upload</legend>
       <div className="rounded-xl border-2 border-dashed border-border bg-muted/10 py-16 flex flex-col items-center justify-center gap-3">
         <div className="h-14 w-14 rounded-2xl bg-muted/50 flex items-center justify-center">
           <Upload className="h-6 w-6 text-muted-foreground" />
@@ -23,6 +23,6 @@ export function MediaUploadZone() {
           Choose Files
         </button>
       </div>
-    </div>
+    </fieldset>
   );
 }

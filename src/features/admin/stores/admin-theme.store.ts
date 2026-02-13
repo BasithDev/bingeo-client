@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 type AdminTheme = "light" | "dark";
 
-interface AdminThemeState {
+export interface AdminThemeState {
   theme: AdminTheme;
   setTheme: (theme: AdminTheme) => void;
   toggleTheme: () => void;
@@ -27,8 +27,8 @@ export const useAdminThemeStore = create<AdminThemeState>()(
     }),
     {
       name: "bingeo-admin-theme",
-      onRehydrate: () => {
-        return (state) => {
+      onRehydrateStorage: () => {
+        return (state?: AdminThemeState) => {
           if (state) {
             document.documentElement.setAttribute("data-admin-theme", state.theme);
           }

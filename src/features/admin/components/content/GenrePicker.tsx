@@ -12,8 +12,8 @@ export function GenrePicker({ selected, onChange }: GenrePickerProps) {
   };
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-foreground">Genres</label>
+    <fieldset className="space-y-2">
+      <legend className="text-sm font-medium text-foreground block">Genres</legend>
       <div className="flex flex-wrap gap-2">
         {GENRES.map((g) => {
           const active = selected.includes(g);
@@ -40,6 +40,6 @@ export function GenrePicker({ selected, onChange }: GenrePickerProps) {
           {selected.length} genre{selected.length > 1 ? "s" : ""} selected
         </p>
       )}
-    </div>
+    </fieldset>
   );
 }

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { mockDrafts, GENRES } from "./mockContent";
+import { describe, expect, it } from "vitest";
+import { GENRES, mockDrafts } from "@/features/admin/data/mockContent";
 
 describe("GENRES", () => {
   it("should be a non-empty array", () => {
@@ -93,7 +93,7 @@ describe("mockDrafts", () => {
     const withPoster = mockDrafts.filter((d) => d.posterUrl);
     expect(withPoster.length).toBeGreaterThan(0);
     for (const d of withPoster) {
-      expect(d.posterUrl!.startsWith("http")).toBe(true);
+      expect(d.posterUrl?.startsWith("http")).toBe(true);
     }
   });
 

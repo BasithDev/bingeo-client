@@ -93,7 +93,8 @@ export function Pagination({
         {getPages().map((p, i) =>
           p === "..." ? (
             <span
-              key={`e-${i}`}
+              // biome-ignore lint/suspicious/noArrayIndexKey: Ellipsis position is stable
+              key={`pagination-ellipsis-${i}`}
               className="flex h-8 w-8 items-center justify-center text-xs text-muted-foreground"
             >
               …

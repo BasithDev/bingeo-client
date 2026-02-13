@@ -27,12 +27,25 @@ import {
 
 /* ── Chart tooltip ────────────────────────────── */
 
-function ChartTip({ active, payload, label }: any) {
+interface ChartPayloadEntry {
+  name: string;
+  value: number;
+  color?: string;
+  fill?: string;
+}
+
+interface ChartTipProps {
+  active?: boolean;
+  payload?: ChartPayloadEntry[];
+  label?: string;
+}
+
+function ChartTip({ active, payload, label }: ChartTipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
       <p className="font-semibold text-foreground mb-1">{label}</p>
-      {payload.map((e: any) => (
+      {payload.map((e) => (
         <p key={e.name} style={{ color: e.color ?? e.fill }}>
           {e.name}: {e.value.toLocaleString("en-IN")}
         </p>
@@ -43,8 +56,19 @@ function ChartTip({ active, payload, label }: any) {
 
 /* ── Donut center label ───────────────────────── */
 
+interface DonutLabelProps {
+  viewBox?: {
+    cx?: number;
+    cy?: number;
+    x?: number;
+    y?: number;
+    width?: number;
+    height?: number;
+  };
+}
+
 function renderDonutLabel(total: number) {
-  return (props: any) => {
+  return (props: DonutLabelProps) => {
     const { viewBox } = props;
     const cx = viewBox?.cx ?? 0;
     const cy = viewBox?.cy ?? 0;

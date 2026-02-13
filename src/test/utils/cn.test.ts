@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { cn } from "./cn";
+import { describe, expect, it } from "vitest";
+import { cn } from "@/utils/cn";
 
 describe("cn (class name merger)", () => {
   it("should merge simple class names", () => {

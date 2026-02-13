@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { adminLoginSchema } from "./loginSchema";
+import { describe, expect, it } from "vitest";
+import { adminLoginSchema } from "@/features/admin/schemas/loginSchema";
 
 describe("adminLoginSchema", () => {
   it("should validate correct login data", () => {

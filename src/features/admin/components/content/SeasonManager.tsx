@@ -91,9 +91,11 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <fieldset className="space-y-4">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-foreground">Seasons & Episodes</label>
+        <legend id="season-manager-label" className="text-sm font-medium text-foreground">
+          Seasons & Episodes
+        </legend>
         <button
           type="button"
           onClick={addSeason}
@@ -123,9 +125,10 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
               className="rounded-xl border border-border bg-card overflow-hidden"
             >
               {/* Season header */}
-              <div
+              <button
+                type="button"
                 className={cn(
-                  "flex items-center gap-3 px-4 py-3 cursor-pointer",
+                  "flex items-center gap-3 w-full px-4 py-3 cursor-pointer",
                   "hover:bg-muted/30 transition-colors",
                 )}
                 onClick={() => toggleExpand(season.number)}
@@ -143,17 +146,19 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                   onClick={(e) => e.stopPropagation()}
                   className="flex-1 bg-transparent text-sm font-medium text-foreground focus:outline-none"
                   placeholder="Season title"
+                  aria-label={`Season ${season.number} title`}
                 />
                 <span className="text-[10px] text-muted-foreground mr-2">
                   {season.episodes.length} ep{season.episodes.length !== 1 ? "s" : ""}
                 </span>
                 <button
                   type="button"
+                  className="p-1 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeSeason(sIdx);
                   }}
-                  className="p-1 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer"
+                  aria-label={`Remove Season ${season.number}`}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
@@ -162,14 +167,17 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                 ) : (
                   <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 )}
-              </div>
+              </button>
 
               {/* Episodes */}
               {expanded && (
-                <div className="border-t border-border px-4 py-3 space-y-3">
-                  {season.episodes.map((ep, eIdx) => (
+                <div
+                  id={`season-${season.number}-episodes`}
+                  className="border-t border-border px-4 py-3 space-y-3"
+                >
+                  {season.episodes.map((ep, epIdx) => (
                     <div
-                      key={eIdx}
+                      key={`season-${season.number}-episode-${ep.number}`}
                       className="rounded-lg border border-border/60 bg-muted/10 p-3 space-y-2"
                     >
                       <div className="flex items-center gap-2">
@@ -179,28 +187,31 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                         <input
                           type="text"
                           value={ep.title}
-                          onChange={(e) => updateEpisode(sIdx, eIdx, "title", e.target.value)}
+                          onChange={(e) => updateEpisode(sIdx, epIdx, "title", e.target.value)}
                           placeholder="Episode title"
                           className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none"
+                          aria-label={`Season ${season.number} Episode ${ep.number} title`}
                         />
                         <input
                           type="text"
                           value={ep.duration}
-                          onChange={(e) => updateEpisode(sIdx, eIdx, "duration", e.target.value)}
+                          onChange={(e) => updateEpisode(sIdx, epIdx, "duration", e.target.value)}
                           placeholder="Duration"
                           className="w-20 text-right bg-transparent text-xs text-muted-foreground placeholder:text-muted-foreground/40 focus:outline-none"
+                          aria-label={`Season ${season.number} Episode ${ep.number} duration`}
                         />
                         <button
                           type="button"
-                          onClick={() => removeEpisode(sIdx, eIdx)}
+                          onClick={() => removeEpisode(sIdx, epIdx)}
                           className="p-1 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer shrink-0"
+                          aria-label={`Remove Season ${season.number} Episode ${ep.number}`}
                         >
                           <Trash2 className="h-3 w-3" />
                         </button>
                       </div>
                       <textarea
                         value={ep.plot}
-                        onChange={(e) => updateEpisode(sIdx, eIdx, "plot", e.target.value)}
+                        onChange={(e) => updateEpisode(sIdx, epIdx, "plot", e.target.value)}
                         placeholder="Episode plot / description..."
                         rows={2}
                         className="w-full bg-transparent text-xs text-muted-foreground placeholder:text-muted-foreground/40 focus:outline-none resize-none"
@@ -224,6 +235,6 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
           );
         })}
       </div>
-    </div>
+    </fieldset>
   );
 }

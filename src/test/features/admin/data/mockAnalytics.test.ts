@@ -1,21 +1,21 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  usersKPIs,
-  userGrowthData,
-  planDistribution,
   ageDemographics,
+  deviceBreakdown,
+  engagementKPIs,
+  peakViewingHours,
+  planDistribution,
   recentSignups,
+  recentTransactions,
+  revenueByPlan,
   revenueKPIs,
   revenueOverTime,
-  revenueByPlan,
   subscriptionFunnel,
-  recentTransactions,
-  engagementKPIs,
-  watchHoursOverTime,
-  peakViewingHours,
   topContent,
-  deviceBreakdown,
-} from "./mockAnalytics";
+  userGrowthData,
+  usersKPIs,
+  watchHoursOverTime,
+} from "@/features/admin/data/mockAnalytics";
 
 describe("mockAnalytics data", () => {
   /* ── Users Analytics ──────────────────────── */

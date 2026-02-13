@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { formatDate, formatCurrency } from "./helpers";
+import { describe, expect, it } from "vitest";
+import { formatCurrency, formatDate } from "@/features/admin/utils/helpers";
 
 describe("formatDate", () => {
   it("should format ISO date to readable format", () => {

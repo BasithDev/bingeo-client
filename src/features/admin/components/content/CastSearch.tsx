@@ -42,7 +42,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   /* Close dropdown on outside click */
   useEffect(() => {
@@ -123,13 +123,16 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
 
   return (
     <div className="space-y-3">
-      <label className="text-sm font-medium text-foreground">Cast</label>
+      <label htmlFor="cast-search" className="text-sm font-medium text-foreground">
+        Cast
+      </label>
 
       {/* Search input */}
       <div ref={wrapperRef} className="relative">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
+            id="cast-search"
             type="text"
             value={query}
             onChange={(e) => handleInput(e.target.value)}

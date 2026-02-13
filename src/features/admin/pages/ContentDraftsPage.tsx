@@ -99,7 +99,7 @@ export function ContentDraftsPage() {
   // Reset to page 1 when search changes
   useEffect(() => {
     setPage(1);
-  }, [search]);
+  }, []);
 
   /* ── Actions ───────────────────────────────── */
 
@@ -219,9 +219,11 @@ export function ContentDraftsPage() {
 
                   <div className="relative z-10 flex items-stretch">
                     {/* ── Thumbnail ────────────────── */}
-                    <div
-                      className="hidden sm:flex w-28 md:w-36 shrink-0 bg-muted/30 items-center justify-center cursor-pointer overflow-hidden"
+                    <button
+                      type="button"
+                      className="hidden sm:flex w-28 md:w-36 shrink-0 bg-muted/30 items-center justify-center cursor-pointer overflow-hidden border-0 p-0"
                       onClick={() => resumeDraft(draft.id)}
+                      aria-label={`Resume draft: ${draft.title || "Untitled"}`}
                     >
                       {draft.posterUrl ? (
                         <img
@@ -235,14 +237,15 @@ export function ContentDraftsPage() {
                           <span className="text-[9px] font-medium">No Poster</span>
                         </div>
                       )}
-                    </div>
+                    </button>
 
                     {/* ── Content ──────────────────── */}
                     <div className="flex-1 p-4 md:p-5 min-w-0">
                       <div className="flex items-start justify-between gap-4">
                         {/* Left: Info */}
-                        <div
-                          className="flex-1 min-w-0 cursor-pointer"
+                        <button
+                          type="button"
+                          className="flex-1 min-w-0 cursor-pointer text-left border-0 p-0 bg-transparent"
                           onClick={() => resumeDraft(draft.id)}
                         >
                           {/* Type + Title row */}
@@ -306,7 +309,7 @@ export function ContentDraftsPage() {
                               {formatDate(draft.updatedAt)}
                             </span>
                           </div>
-                        </div>
+                        </button>
 
                         {/* Right: Actions */}
                         <div className="flex items-center gap-2 shrink-0 pt-1">

@@ -34,6 +34,7 @@ export function BingeoLogo({
             fill="none"
             className={`${size === "sm" ? "w-4 h-4" : size === "lg" ? "w-8 h-8" : "w-5 h-5"} text-white`}
           >
+            <title>Bingeo Logo Mark</title>
             <path
               d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
               stroke="currentColor"

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Film, Lock, Mail, Play, Users } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -36,6 +36,10 @@ export function AdminLoginPage() {
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
   const [showForm, setShowForm] = useState(true);
+
+  useEffect(() => {
+    document.title = "Admin Login | Bingeo";
+  }, []);
 
   const {
     register,
@@ -95,6 +99,7 @@ export function AdminLoginPage() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
               <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white">
+                <title>Bingeo Logo Mark</title>
                 <path
                   d="M4 8L12 4L20 8V16L12 20L4 16V8Z"
                   stroke="currentColor"
