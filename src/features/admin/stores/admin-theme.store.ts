@@ -14,26 +14,15 @@ export const useAdminThemeStore = create<AdminThemeState>()(
     (set, get) => ({
       theme: "light",
 
-      setTheme: (theme) => {
-        document.documentElement.setAttribute("data-admin-theme", theme);
-        set({ theme });
-      },
+      setTheme: (theme) => set({ theme }),
 
       toggleTheme: () => {
         const next = get().theme === "light" ? "dark" : "light";
-        document.documentElement.setAttribute("data-admin-theme", next);
         set({ theme: next });
       },
     }),
     {
       name: "bingeo-admin-theme",
-      onRehydrateStorage: () => {
-        return (state?: AdminThemeState) => {
-          if (state) {
-            document.documentElement.setAttribute("data-admin-theme", state.theme);
-          }
-        };
-      },
     },
   ),
 );

@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { ChevronDown, LogOut, Moon, Settings, Sun } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { authService } from "@/services/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils/cn";
 import { useAdminThemeStore } from "../stores/admin-theme.store";
@@ -177,9 +178,14 @@ export function AdminHeader() {
             {/* Logout */}
             <button
               type="button"
-              onClick={() => {
-                logout();
+              onClick={async () => {
                 setDropdownOpen(false);
+                try {
+                  await authService.logout();
+                } catch {
+                  // Even if API fails, clear state and redirect
+                }
+                logout();
                 window.location.href = "/admin/login";
               }}
               className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"

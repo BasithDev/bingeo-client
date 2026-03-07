@@ -1,7 +1,10 @@
 import { createRoute, redirect } from "@tanstack/react-router";
+import { AdminLoader } from "@/features/admin/components/AdminLoader";
 import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
 import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
+import { AdminForgotPasswordPage } from "@/features/admin/pages/AdminForgotPasswordPage";
 import { AdminLoginPage } from "@/features/admin/pages/AdminLoginPage";
+import { AdminResetPasswordPage } from "@/features/admin/pages/AdminResetPasswordPage";
 import { AdminUsersPage } from "@/features/admin/pages/AdminUsersPage";
 import { AnalyticsEngagementPage } from "@/features/admin/pages/AnalyticsEngagementPage";
 import { AnalyticsRevenuePage } from "@/features/admin/pages/AnalyticsRevenuePage";
@@ -10,6 +13,10 @@ import { ContentDraftsPage } from "@/features/admin/pages/ContentDraftsPage";
 import { ContentUploadPage } from "@/features/admin/pages/ContentUploadPage";
 import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
 import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
+import {
+  redirectToAdminDashboardIfAuth,
+  redirectToAdminLoginIfNotAuth,
+} from "@/app/guards/auth.guards";
 import rootRoute from "../RootRoute";
 
 // /admin → redirect to login
@@ -21,18 +28,43 @@ const adminIndexRoute = createRoute({
   },
 });
 
-// /admin/login — outside layout (no sidebar on login)
+// /admin/login — public, outside layout (no sidebar)
+// If already logged in as admin, redirect to dashboard
 const adminLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin/login",
   component: AdminLoginPage,
+  beforeLoad: redirectToAdminDashboardIfAuth,
+  pendingComponent: AdminLoader,
 });
 
-// Admin layout wrapper — parent for all post-login admin pages
+// /admin/forgot-password — public, outside layout
+const adminForgotPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/forgot-password",
+  component: AdminForgotPasswordPage,
+  beforeLoad: redirectToAdminDashboardIfAuth,
+  pendingComponent: AdminLoader,
+});
+
+// /admin/reset-password — public, outside layout
+const adminResetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin/reset-password",
+  component: AdminResetPasswordPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    userId: (search.userId as string) || "",
+  }),
+  pendingComponent: AdminLoader,
+});
+
+// Admin layout wrapper — parent for all protected admin pages
 const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "admin-layout",
   component: AdminLayout,
+  beforeLoad: redirectToAdminLoginIfNotAuth,
+  pendingComponent: AdminLoader,
 });
 
 // ── Dashboard ────────────────────────────────────
@@ -142,6 +174,8 @@ function PlaceholderPage({ title }: { title: string }) {
 export const AdminRoutes = [
   adminIndexRoute,
   adminLoginRoute,
+  adminForgotPasswordRoute,
+  adminResetPasswordRoute,
   adminLayoutRoute.addChildren([
     adminDashboardRoute,
     adminPlansRoute,
