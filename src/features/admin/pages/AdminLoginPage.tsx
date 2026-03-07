@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Film, Lock, Mail, Play, Users } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,28 +9,10 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PasswordInput } from "@/components/ui/PasswordInput";
 import { toast } from "@/components/ui/Toast";
+import { authService } from "@/services/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { BingeoLogo } from "../components/BingeoLogo";
 import { type AdminLoginFormData, adminLoginSchema } from "../schemas/loginSchema";
-
-// Simulated login API — replace with real API call later
-async function loginAdmin(data: AdminLoginFormData) {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  if (data.email === "admin@bingeo.com" && data.password === "admin123") {
-    return {
-      user: {
-        id: "admin-1",
-        email: data.email,
-        name: "Admin",
-        role: "admin" as const,
-        subscription: "premium" as const,
-      },
-    };
-  }
-
-  throw new Error("Invalid email or password");
-}
 
 export function AdminLoginPage() {
   const navigate = useNavigate();
@@ -51,17 +33,24 @@ export function AdminLoginPage() {
   });
 
   const loginMutation = useMutation({
-    mutationFn: loginAdmin,
-    onSuccess: (data) => {
+    mutationFn: authService.login,
+    onSuccess: async (data) => {
+      // Admin role guard — reject non-admin users
+      if (data.user.role !== "admin") {
+        await authService.logout();
+        toast.error("Admin access only. You do not have permission.");
+        return;
+      }
+
       setUser(data.user);
       toast.success("Welcome back!");
       setShowForm(false);
       setTimeout(() => {
-        navigate({ to: "/admin/dashboard" });
+        navigate({ to: "/admin/dashboard", replace: true });
       }, 300);
     },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    onError: (error: { message?: string; error?: string }) => {
+      toast.error(error.error || error.message || "Login failed");
     },
   });
 
@@ -207,6 +196,7 @@ export function AdminLoginPage() {
               icon={<Mail className="h-4 w-4" />}
               error={errors.email?.message}
               autoComplete="email"
+              disabled={loginMutation.isPending || loginMutation.isSuccess}
               {...register("email")}
             />
 
@@ -215,12 +205,12 @@ export function AdminLoginPage() {
                 <label htmlFor="admin-password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <button
-                  type="button"
+                <Link
+                  to="/admin/forgot-password"
                   className="text-xs font-medium text-violet hover:underline cursor-pointer"
                 >
                   Forgot password?
-                </button>
+                </Link>
               </div>
               <PasswordInput
                 id="admin-password"
@@ -228,6 +218,7 @@ export function AdminLoginPage() {
                 icon={<Lock className="h-4 w-4" />}
                 error={errors.password?.message}
                 autoComplete="current-password"
+                disabled={loginMutation.isPending || loginMutation.isSuccess}
                 {...register("password")}
               />
             </div>
@@ -237,9 +228,10 @@ export function AdminLoginPage() {
               fullWidth
               size="lg"
               loading={loginMutation.isPending}
+              disabled={loginMutation.isPending || loginMutation.isSuccess}
               id="admin-login-submit"
             >
-              {loginMutation.isPending ? (
+              {loginMutation.isPending || loginMutation.isSuccess ? (
                 "Signing in..."
               ) : (
                 <>

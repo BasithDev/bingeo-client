@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Home Page", () => {
   test("should display welcome message", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("h1")).toContainText("Bingeo");
+    await expect(page.locator("h1")).toContainText("Premium Cinema");
   });
 
   test("should have correct title", async ({ page }) => {

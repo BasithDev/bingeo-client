@@ -10,39 +10,16 @@ export const apiConfig = {
   endpoints: {
     // Identity Service
     identity: {
-      base: `${API_BASE_URL}/api/identity`,
-      login: `${API_BASE_URL}/api/identity/auth/login`,
-      register: `${API_BASE_URL}/api/identity/auth/register`,
-      logout: `${API_BASE_URL}/api/identity/auth/logout`,
-      refresh: `${API_BASE_URL}/api/identity/auth/refresh`,
-      profile: `${API_BASE_URL}/api/identity/users/me`,
-      devices: `${API_BASE_URL}/api/identity/devices`,
-    },
-
-    // Payment Service
-    payment: {
-      base: `${API_BASE_URL}/api/payment`,
-      plans: `${API_BASE_URL}/api/payment/plans`,
-      subscription: `${API_BASE_URL}/api/payment/subscription`,
-      checkout: `${API_BASE_URL}/api/payment/checkout`,
-    },
-
-    // Content Service
-    content: {
-      base: `${API_BASE_URL}/api/content`,
-      movies: `${API_BASE_URL}/api/content/movies`,
-      series: `${API_BASE_URL}/api/content/series`,
-      categories: `${API_BASE_URL}/api/content/categories`,
-      search: `${API_BASE_URL}/api/content/search`,
-      watchlist: `${API_BASE_URL}/api/content/watchlist`,
-    },
-
-    // Streaming Service
-    streaming: {
-      base: `${API_BASE_URL}/api/streaming`,
-      playback: `${API_BASE_URL}/api/streaming/playback`,
-      token: `${API_BASE_URL}/api/streaming/token`,
-      progress: `${API_BASE_URL}/api/streaming/progress`,
+      base: API_BASE_URL,
+      login: `${API_BASE_URL}/api/auth/login`,
+      register: `${API_BASE_URL}/api/auth/register`,
+      logout: `${API_BASE_URL}/api/auth/logout`,
+      refresh: `${API_BASE_URL}/api/auth/refresh`,
+      me: `${API_BASE_URL}/api/auth/me`,
+      verifyOtp: `${API_BASE_URL}/api/auth/verify-otp`,
+      resendOtp: `${API_BASE_URL}/api/auth/resend-otp`,
+      forgotPassword: `${API_BASE_URL}/api/auth/forgot-password`,
+      resetPassword: `${API_BASE_URL}/api/auth/reset-password`,
     },
   },
 } as const;
