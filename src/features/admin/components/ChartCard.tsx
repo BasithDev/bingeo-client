@@ -7,12 +7,10 @@ import {
 import { type ReactNode, useState } from "react";
 import { cn } from "@/utils/cn";
 
-/* ── Time range options ───────────────────────── */
 
 const ranges = ["7D", "30D", "90D", "1Y"] as const;
 export type TimeRange = (typeof ranges)[number];
 
-/* ── Chart style options ──────────────────────── */
 
 export type ChartStyle = "area" | "bar" | "line";
 
@@ -22,28 +20,16 @@ const styleIcons: Record<ChartStyle, typeof AreaIcon> = {
   line: LineIcon,
 };
 
-/* ── Props ────────────────────────────────────── */
-
-export interface ChartCardProps {
+export interface IChartCardProps {
   title: string;
-  /** Optional subtitle / helper text */
   subtitle?: string;
-  /**
-   * If `chartStyles` is provided, `children` must be a render function
-   * that receives the current chart style. Otherwise, children is normal JSX.
-   */
   children: ReactNode | ((style: ChartStyle) => ReactNode);
   className?: string;
-  /** If false, hides the time-range pills and refetch button. Default true. */
   controls?: boolean;
-  /** Available chart styles for this card. Pass e.g. ["area", "bar", "line"]. */
   chartStyles?: ChartStyle[];
-  /** Default chart style */
   defaultStyle?: ChartStyle;
-  /** Called when the user picks a new range or clicks refetch. */
   onRangeChange?: (range: TimeRange) => void;
   onRefetch?: () => void;
-  /** Default selected range */
   defaultRange?: TimeRange;
 }
 
@@ -58,7 +44,7 @@ export function ChartCard({
   onRangeChange,
   onRefetch,
   defaultRange = "30D",
-}: ChartCardProps) {
+}: IChartCardProps) {
   const [range, setRange] = useState<TimeRange>(defaultRange);
   const [spinning, setSpinning] = useState(false);
   const [style, setStyle] = useState<ChartStyle>(defaultStyle ?? chartStyles?.[0] ?? "area");
@@ -76,7 +62,7 @@ export function ChartCard({
 
   return (
     <div className={cn("rounded-2xl border border-border bg-card p-5", className)}>
-      {/* Header */}
+  
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-2.5">
           <div>
@@ -92,7 +78,7 @@ export function ChartCard({
 
         {controls && (
           <div className="flex items-center gap-1.5 shrink-0">
-            {/* Chart style switcher */}
+        
             {chartStyles && chartStyles.length > 1 && (
               <div className="flex items-center gap-0.5 p-0.5 bg-muted rounded-lg">
                 {chartStyles.map((s) => {
@@ -117,8 +103,6 @@ export function ChartCard({
                 })}
               </div>
             )}
-
-            {/* Time range pills */}
             <div className="flex items-center gap-0.5 p-0.5 bg-muted rounded-lg">
               {ranges.map((r) => (
                 <button
@@ -138,7 +122,7 @@ export function ChartCard({
               ))}
             </div>
 
-            {/* Refetch */}
+        
             <button
               type="button"
               onClick={handleRefetch}
@@ -155,7 +139,7 @@ export function ChartCard({
         )}
       </div>
 
-      {/* Body — render function for chart style or plain children */}
+  
       {typeof children === "function" ? children(style) : children}
     </div>
   );

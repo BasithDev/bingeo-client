@@ -1,11 +1,3 @@
-/**
- * Static mock plan data for the admin Plans pages.
- *
- * This file serves as the data contract for backend development.
- * The shape of Plan and the response structure here should be
- * mirrored by the backend API (GET /api/admin/plans).
- */
-
 import type { Plan } from "../types/admin.types";
 
 export const mockPlans: Plan[] = [

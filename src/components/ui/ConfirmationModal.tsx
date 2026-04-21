@@ -3,26 +3,16 @@ import type { ReactNode } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { cn } from "@/utils/cn";
 
-export interface ConfirmationModalProps {
-  /** Whether the modal is visible */
+export interface IConfirmationModalProps {
   open: boolean;
-  /** Called when the modal should close (cancel / backdrop / escape) */
   onClose: () => void;
-  /** Lucide icon rendered in the top circle */
   icon: LucideIcon;
-  /** Tailwind classes for the icon circle, e.g. "text-destructive bg-destructive/10" */
   iconColor: string;
-  /** Modal title */
   title: string;
-  /** Description — supports ReactNode for bold/strong fragments */
   description: ReactNode;
-  /** Confirm button label */
   confirmLabel: string;
-  /** Tailwind classes for the confirm button */
   confirmColor?: string;
-  /** Called when confirm is clicked */
   onConfirm: () => void;
-  /** Cancel button label (default: "Cancel") */
   cancelLabel?: string;
 }
 
@@ -37,7 +27,7 @@ export function ConfirmationModal({
   confirmColor = "bg-destructive text-white hover:bg-destructive/90",
   onConfirm,
   cancelLabel = "Cancel",
-}: ConfirmationModalProps) {
+}: IConfirmationModalProps) {
   return (
     <Modal
       open={open}

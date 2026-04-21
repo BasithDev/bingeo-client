@@ -2,36 +2,26 @@ import { Inbox } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
-/* ── Column definition ─────────────────────────── */
-
-export interface Column<T> {
+export interface IColumn<T> {
   key: string;
   header: string;
   render: (row: T, index: number) => ReactNode;
-  /** Optional className for the <th> and <td> */
   className?: string;
-  /** Minimum width (CSS value) */
   minWidth?: string;
 }
 
-/* ── Props ─────────────────────────────────────── */
-
-export interface DataTableProps<T> {
-  columns: Column<T>[];
+export interface IDataTableProps<T> {
+  columns: IColumn<T>[];
   data: T[];
   loading?: boolean;
-  /** Number of skeleton rows to show when loading (default: 8) */
   skeletonRows?: number;
   emptyIcon?: ReactNode;
   emptyMessage?: string;
-  /** Unique key extractor — falls back to index */
+  emptyAction?: ReactNode;
   rowKey?: (row: T, index: number) => string | number;
-  /** Footer slot — typically Pagination */
   footer?: ReactNode;
   className?: string;
 }
-
-/* ── Component ─────────────────────────────────── */
 
 export function DataTable<T>({
   columns,
@@ -40,15 +30,15 @@ export function DataTable<T>({
   skeletonRows = 8,
   emptyIcon,
   emptyMessage = "No data found.",
+  emptyAction,
   rowKey,
   footer,
   className,
-}: DataTableProps<T>) {
+}: IDataTableProps<T>) {
   return (
     <div className={cn("rounded-2xl border border-border bg-card overflow-hidden", className)}>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          {/* ── Head ── */}
           <thead>
             <tr className="border-b border-border bg-muted/40">
               {columns.map((col) => (
@@ -66,11 +56,9 @@ export function DataTable<T>({
             </tr>
           </thead>
 
-          {/* ── Body ── */}
           <tbody className="divide-y divide-border">
             {loading ? (
               Array.from({ length: skeletonRows }).map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: Order is fixed for skeletons
                 <tr key={`skeleton-row-${i}`}>
                   {columns.map((col) => (
                     <td key={col.key} className={cn("px-4 py-3.5", col.className)}>
@@ -89,6 +77,7 @@ export function DataTable<T>({
                       </div>
                     )}
                     <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+                    {emptyAction}
                   </div>
                 </td>
               </tr>
@@ -109,8 +98,6 @@ export function DataTable<T>({
           </tbody>
         </table>
       </div>
-
-      {/* ── Footer ── */}
       {footer && <div className="border-t border-border px-4 py-2">{footer}</div>}
     </div>
   );

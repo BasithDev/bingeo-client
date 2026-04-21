@@ -106,7 +106,6 @@ export function AdminResetPasswordPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left panel – branding */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-white relative overflow-hidden">
         <div className="relative z-10">
           <BingeoLogo />
@@ -132,7 +131,6 @@ export function AdminResetPasswordPage() {
         <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-violet/5 blur-3xl" />
       </div>
 
-      {/* Right panel – form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#fafafa] px-6 py-12">
         <motion.div
           className="w-full max-w-[400px]"
@@ -159,7 +157,6 @@ export function AdminResetPasswordPage() {
           </p>
 
           <form onSubmit={onSubmit} className="space-y-5" id="admin-reset-password-form">
-            {/* OTP inputs */}
             <div>
               <label htmlFor="admin-otp-0" className="mb-2 block text-sm font-medium text-gray-700">
                 Verification Code
@@ -168,7 +165,6 @@ export function AdminResetPasswordPage() {
                 {otp.map((digit, i) => (
                   <input
                     key={`admin-otp-${
-                      // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length OTP
                       i
                     }`}
                     ref={(el: HTMLInputElement | null) => {
@@ -189,7 +185,6 @@ export function AdminResetPasswordPage() {
               </div>
             </div>
 
-            {/* New Password */}
             <PasswordInput
               id="admin-new-password"
               label="New Password"
@@ -200,7 +195,6 @@ export function AdminResetPasswordPage() {
               disabled={resetMutation.isPending}
             />
 
-            {/* Confirm Password */}
             <div>
               <PasswordInput
                 id="admin-confirm-password"

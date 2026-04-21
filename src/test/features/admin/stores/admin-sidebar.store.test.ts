@@ -3,7 +3,6 @@ import { useAdminSidebarStore } from "@/features/admin/stores/admin-sidebar.stor
 
 describe("useAdminSidebarStore", () => {
   beforeEach(() => {
-    // Reset state between tests
     useAdminSidebarStore.setState({ collapsed: false });
   });
 

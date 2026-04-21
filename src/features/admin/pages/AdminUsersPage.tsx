@@ -12,6 +12,7 @@ import { ExpandableUsersCard } from "../components/ExpandableUsersCard";
 import { QuickStatsCard } from "../components/QuickStatsCard";
 import { UserGrowthCard } from "../components/UserGrowthCard";
 import { mockUsers } from "../data/mockUsers";
+import { useAdminUsers, useToggleBlockUser } from "../hooks/useAdminUsers";
 import type { AdminUser } from "../types/admin.types";
 import { formatCurrency, formatDate } from "../utils/helpers";
 
@@ -40,8 +41,6 @@ const planFilterOptions = [
 ];
 
 export function AdminUsersPage() {
-  const [users, setUsers] = useState<AdminUser[]>(mockUsers);
-  const [loading] = useState(false);
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState("");
   const [sortBy, setSortBy] = useState("joinedAt");
@@ -51,58 +50,28 @@ export function AdminUsersPage() {
   const [blockTarget, setBlockTarget] = useState<AdminUser | null>(null);
   const [removeSubTarget, setRemoveSubTarget] = useState<AdminUser | null>(null);
 
+  const { data, isLoading: loading, refetch } = useAdminUsers({
+    page,
+    pageSize,
+    search,
+    plan: planFilter,
+    sortBy,
+    sortDir,
+  });
+
+  const toggleBlockMutation = useToggleBlockUser();
+
+  const usersList = data?.data || [];
+  const totalUsers = data?.total || 0;
+  const totalPages = Math.max(1, Math.ceil(totalUsers / pageSize));
+
   const stats = useMemo(() => {
-    const total = users.length;
-    const premium = users.filter((u) => u.plan === "premium").length;
-    const basic = users.filter((u) => u.plan === "basic").length;
-    const free = users.filter((u) => u.plan === "free").length;
+    const total = mockUsers.length;
+    const premium = mockUsers.filter((u) => u.plan === "premium").length;
+    const basic = mockUsers.filter((u) => u.plan === "basic").length;
+    const free = mockUsers.filter((u) => u.plan === "free").length;
     return { total, premium, basic, free };
-  }, [users]);
-
-  const processedData = useMemo(() => {
-    let result = [...users];
-
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (u) =>
-          u.name.toLowerCase().includes(q) ||
-          u.email.toLowerCase().includes(q) ||
-          u.phone.includes(q),
-      );
-    }
-
-    if (planFilter) {
-      result = result.filter((u) => u.plan === planFilter);
-    }
-
-    result.sort((a, b) => {
-      let cmp = 0;
-      switch (sortBy) {
-        case "joinedAt":
-          cmp = new Date(a.joinedAt).getTime() - new Date(b.joinedAt).getTime();
-          break;
-        case "age":
-          cmp = a.age - b.age;
-          break;
-        case "totalPaid":
-          cmp = a.totalPaid - b.totalPaid;
-          break;
-        case "totalWatchHours":
-          cmp = a.totalWatchHours - b.totalWatchHours;
-          break;
-        case "name":
-          cmp = a.name.localeCompare(b.name);
-          break;
-      }
-      return sortDir === "asc" ? cmp : -cmp;
-    });
-
-    return result;
-  }, [users, search, planFilter, sortBy, sortDir]);
-
-  const totalPages = Math.max(1, Math.ceil(processedData.length / pageSize));
-  const paginatedData = processedData.slice((page - 1) * pageSize, page * pageSize);
+  }, []);
 
   const handleSearch = (v: string) => {
     setSearch(v);
@@ -113,21 +82,18 @@ export function AdminUsersPage() {
     setPage(1);
   };
 
-  const handleBlockConfirm = () => {
+  const handleBlockConfirm = async () => {
     if (!blockTarget) return;
-    setUsers((prev) =>
-      prev.map((u) => (u.id === blockTarget.id ? { ...u, isBlocked: !u.isBlocked } : u)),
-    );
-    setBlockTarget(null);
+    try {
+      await toggleBlockMutation.mutateAsync(blockTarget.id);
+    } finally {
+      setBlockTarget(null);
+    }
   };
 
   const handleRemoveSubConfirm = () => {
     if (!removeSubTarget) return;
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === removeSubTarget.id ? { ...u, plan: "free" as const, totalPaid: 0 } : u,
-      ),
-    );
+    console.log("Remove subscription depends on future payments service wireup.");
     setRemoveSubTarget(null);
   };
 
@@ -151,7 +117,6 @@ export function AdminUsersPage() {
         return (
           <div className="flex items-center gap-1.5">
             <StatusBadge variant={badge.variant}>{badge.label}</StatusBadge>
-            {row.isBlocked && <StatusBadge variant="error">Blocked</StatusBadge>}
           </div>
         );
       },
@@ -272,16 +237,25 @@ export function AdminUsersPage() {
 
           <DataTable
             columns={columns}
-            data={paginatedData}
+            data={usersList}
             loading={loading}
             rowKey={(row) => row.id}
             emptyMessage="No users match your filters."
+            emptyAction={
+              <button
+                type="button"
+                onClick={() => refetch()}
+                className="inline-flex items-center justify-center rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Retry
+              </button>
+            }
             footer={
               <Pagination
                 currentPage={page}
                 totalPages={totalPages}
                 pageSize={pageSize}
-                total={processedData.length}
+                total={totalUsers}
                 onPageChange={setPage}
                 onPageSizeChange={(s) => {
                   setPageSize(s);
@@ -295,7 +269,7 @@ export function AdminUsersPage() {
         <div className="xl:w-[35%] space-y-4">
           <ExpandableUsersCard stats={stats} />
           <UserGrowthCard />
-          <QuickStatsCard users={users} />
+          <QuickStatsCard users={mockUsers} />
         </div>
       </div>
 

@@ -26,22 +26,20 @@ import {
   watchHoursOverTime,
 } from "../data/mockAnalytics";
 
-interface ChartPayloadEntry {
+interface IChartPayloadEntry {
   name: string;
   value: number;
   color?: string;
   fill?: string;
 }
 
-interface ChartTipProps {
+interface IChartTipProps {
   active?: boolean;
-  payload?: ChartPayloadEntry[];
+  payload?: IChartPayloadEntry[];
   label?: string;
 }
 
-/* ── Chart tooltip ────────────────────────────── */
-
-function ChartTip({ active, payload, label }: ChartTipProps) {
+function ChartTip({ active, payload, label }: IChartTipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
@@ -55,7 +53,7 @@ function ChartTip({ active, payload, label }: ChartTipProps) {
   );
 }
 
-interface DonutLabelProps {
+interface IDonutLabelProps {
   viewBox?: {
     cx?: number;
     cy?: number;
@@ -66,9 +64,9 @@ interface DonutLabelProps {
   };
 }
 
-/* ── Donut center label ───────────────────────── */
 
-function renderDonutLabel(props: DonutLabelProps) {
+
+function renderDonutLabel(props: IDonutLabelProps) {
   const { viewBox } = props;
   const cx = viewBox?.cx ?? 0;
   const cy = viewBox?.cy ?? 0;
@@ -83,8 +81,6 @@ function renderDonutLabel(props: DonutLabelProps) {
     </text>
   );
 }
-
-/* ── Completion rate bar ─────────────────────── */
 
 function CompletionBar({ rate }: { rate: number }) {
   return (
@@ -103,7 +99,7 @@ function CompletionBar({ rate }: { rate: number }) {
   );
 }
 
-/* ── Switchable watch hours chart ─────────────── */
+
 
 function WatchHoursChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
@@ -175,7 +171,7 @@ function WatchHoursChart({ style }: { style: ChartStyle }) {
   );
 }
 
-/* ── Switchable peak viewing hours chart ──────── */
+
 
 function PeakHoursChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
@@ -245,18 +241,11 @@ function PeakHoursChart({ style }: { style: ChartStyle }) {
     </BarChart>
   );
 }
-
-/* ══════════════════════════════════════════════════
-   Analytics – Engagement Page
-   Layout:  KPIs
-            3/5 + 2/5: watch hours | device donut
-            2-col: peak hours | top content
-   ══════════════════════════════════════════════════ */
+   
 
 export function AnalyticsEngagementPage() {
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1
           className="text-2xl font-bold text-foreground"
@@ -269,7 +258,7 @@ export function AnalyticsEngagementPage() {
         </p>
       </div>
 
-      {/* KPI row */}
+
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={Clock}
@@ -300,7 +289,6 @@ export function AnalyticsEngagementPage() {
         />
       </div>
 
-      {/* Watch hours (wide) | Device donut (narrow) */}
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-5">
         <ChartCard
           title="Watch Hours Overview"
@@ -351,7 +339,6 @@ export function AnalyticsEngagementPage() {
         </ChartCard>
       </div>
 
-      {/* Peak hours | Top content */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
         <ChartCard
           title="Peak Viewing Hours"

@@ -1,17 +1,17 @@
 import { forwardRef, type TextareaHTMLAttributes } from "react";
 import { cn } from "@/utils/cn";
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface ITextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
 }
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Textarea = forwardRef<HTMLTextAreaElement, ITextareaProps>(
   ({ className, label, error, id, ...props }, ref) => {
     return (
       <div className="space-y-1.5">
         {label && (
-          <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+          <label htmlFor={id} className="block text-sm font-medium text-foreground">
             {label}
           </label>
         )}
@@ -19,14 +19,14 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={id}
           className={cn(
-            "w-full rounded-xl border border-gray-200 bg-gray-50/60",
-            "px-4 py-3 text-sm font-medium text-gray-900",
-            "placeholder:text-gray-400",
+            "w-full rounded-xl border border-border bg-background",
+            "px-4 py-3 text-sm font-medium text-foreground",
+            "placeholder:text-muted-foreground",
             "outline-none transition-all duration-200",
-            "hover:border-gray-300",
-            "focus:border-violet/40 focus:bg-white focus:ring-2 focus:ring-violet/10",
+            "hover:border-border/80",
+            "focus:border-primary/40 focus:ring-2 focus:ring-primary/20",
             "resize-none",
-            error && "border-red-300 focus:border-red-400 focus:ring-red-100",
+            error && "border-destructive/60 focus:border-destructive/80 focus:ring-destructive/20",
             className,
           )}
           {...props}
@@ -39,4 +39,4 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
 Textarea.displayName = "Textarea";
 
-export { Textarea, type TextareaProps };
+export { Textarea, type ITextareaProps };

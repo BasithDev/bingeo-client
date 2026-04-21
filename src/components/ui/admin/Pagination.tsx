@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
 
-export interface PaginationProps {
+export interface IPaginationProps {
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -21,11 +21,11 @@ export function Pagination({
   onPageSizeChange,
   pageSizeOptions = [10, 20, 50],
   className,
-}: PaginationProps) {
+}: IPaginationProps) {
   const start = (currentPage - 1) * pageSize + 1;
   const end = Math.min(currentPage * pageSize, total);
 
-  /** Build a compact page list with ellipsis */
+  
   const getPages = (): (number | "...")[] => {
     if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
 
@@ -48,7 +48,7 @@ export function Pagination({
     <div
       className={cn("flex flex-col sm:flex-row items-center justify-between gap-3 pt-4", className)}
     >
-      {/* Info */}
+      
       <div className="flex items-center gap-3 text-sm text-muted-foreground">
         <span>
           Showing <span className="font-medium text-foreground">{start}</span>–
@@ -74,7 +74,7 @@ export function Pagination({
         )}
       </div>
 
-      {/* Page buttons */}
+      
       <div className="flex items-center gap-1">
         <button
           type="button"
@@ -93,7 +93,6 @@ export function Pagination({
         {getPages().map((p, i) =>
           p === "..." ? (
             <span
-              // biome-ignore lint/suspicious/noArrayIndexKey: Ellipsis position is stable
               key={`pagination-ellipsis-${i}`}
               className="flex h-8 w-8 items-center justify-center text-xs text-muted-foreground"
             >

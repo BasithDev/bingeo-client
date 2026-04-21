@@ -38,7 +38,6 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-8">
-      {/* Background gradient effects */}
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-1/4 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
@@ -52,7 +51,6 @@ export function ForgotPasswordPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Logo */}
         <Link to="/" className="mb-10 flex items-center justify-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet/20 backdrop-blur-sm">
             <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-violet-light">
@@ -80,7 +78,6 @@ export function ForgotPasswordPage() {
           </span>
         </Link>
 
-        {/* Card */}
         <div className="rounded-2xl border border-border bg-card/60 p-8 backdrop-blur-xl">
           <div className="mb-8 text-center">
             <h1

@@ -45,11 +45,8 @@ describe("useAdminThemeStore", () => {
   });
 
   it("should not set DOM attributes directly (AdminLayout handles that)", () => {
-    // After the refactor, store actions no longer call setAttribute.
-    // AdminLayout's useEffect is responsible for syncing DOM.
     useAdminThemeStore.getState().setTheme("dark");
     expect(useAdminThemeStore.getState().theme).toBe("dark");
-    // DOM attribute is NOT set by the store:
     expect(document.documentElement.getAttribute("data-admin-theme")).toBeNull();
   });
 

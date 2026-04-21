@@ -8,12 +8,12 @@ import { cn } from "@/utils/cn";
 import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
 import { useAdminSidebarStore } from "../stores/admin-sidebar.store";
 
-interface NavGroupProps {
+interface INavGroupProps {
   item: NavItem;
   collapsed: boolean;
 }
 
-function NavGroup({ item, collapsed }: NavGroupProps) {
+function NavGroup({ item, collapsed }: INavGroupProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(() => {
@@ -167,7 +167,6 @@ export function AdminSidebar() {
           collapsed ? "w-[68px]" : "w-[280px]",
         )}
       >
-        {/* Collapse toggle — centered on the right border edge */}
         <button
           type="button"
           onClick={toggleCollapsed}
@@ -187,7 +186,7 @@ export function AdminSidebar() {
           )}
         </button>
 
-        {/* Header — logo */}
+        
         <div
           className={cn(
             "flex h-16 items-center border-b border-border",
@@ -227,7 +226,7 @@ export function AdminSidebar() {
           </div>
         </div>
 
-        {/* Nav */}
+        
         <nav
           className={cn(
             "flex-1 overflow-y-auto py-3 space-y-0.5",
@@ -240,7 +239,7 @@ export function AdminSidebar() {
           ))}
         </nav>
 
-        {/* Footer — logout */}
+        
         <div className={cn("border-t border-border py-3", collapsed ? "px-1.5" : "px-2.5")}>
           <button
             type="button"
@@ -259,7 +258,7 @@ export function AdminSidebar() {
         </div>
       </aside>
 
-      {/* Logout confirmation modal */}
+      
       <Modal
         open={showLogout}
         onClose={() => setShowLogout(false)}

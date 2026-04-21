@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowRight,
   Calendar,
@@ -6,7 +7,6 @@ import {
   ChevronRight,
   Clock,
   Film,
-  Image as ImageIcon,
   Plus,
   Search,
   Sparkles,
@@ -15,13 +15,13 @@ import {
   Tv,
   Users as UsersIcon,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
-import { mockDrafts } from "../data/mockContent";
+import { contentService } from "@/services/api";
 import type { ContentMetadata, ContentType } from "../types/content.types";
 import { formatDate } from "../utils/helpers";
 
-/* ── Constants ────────────────────────────────── */
+
 
 const PAGE_SIZE = 5;
 
@@ -49,35 +49,24 @@ const TYPE_META: Record<
   },
 };
 
-/* ══════════════════════════════════════════════════
-   ContentDraftsPage
-   ══════════════════════════════════════════════════ */
+
+   
+   
 
 export function ContentDraftsPage() {
   const navigate = useNavigate();
-  const [drafts, setDrafts] = useState<ContentMetadata[]>([]);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  /* Load from localStorage, seed with mock if empty */
-  useEffect(() => {
-    const stored = localStorage.getItem("bingeo-drafts");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setDrafts(parsed.length > 0 ? parsed : mockDrafts);
-        if (parsed.length === 0) localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-      } catch {
-        setDrafts(mockDrafts);
-        localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-      }
-    } else {
-      setDrafts(mockDrafts);
-      localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-    }
-  }, []);
+  const draftsQuery = useQuery<ContentMetadata[]>({
+    queryKey: ["content", "drafts"],
+    queryFn: () => contentService.listDrafts(),
+  });
 
-  /* ── Derived data ──────────────────────────── */
+  const drafts = draftsQuery.data ?? [];
+
+  
 
   const filtered = useMemo(() => {
     if (!search.trim()) return drafts;
@@ -96,17 +85,21 @@ export function ContentDraftsPage() {
   const currentPage = Math.min(page, totalPages);
   const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-  // Reset to page 1 when search changes
-  useEffect(() => {
+  useMemo(() => {
     setPage(1);
-  }, []);
+  }, [search]);
 
-  /* ── Actions ───────────────────────────────── */
+  
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => contentService.deleteDraft(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["content", "drafts"] });
+    },
+  });
 
   const deleteDraft = (id: string) => {
-    const updated = drafts.filter((d) => d.id !== id);
-    setDrafts(updated);
-    localStorage.setItem("bingeo-drafts", JSON.stringify(updated));
+    deleteMutation.mutate(id);
   };
 
   const resumeDraft = (id: string) => {
@@ -115,7 +108,7 @@ export function ContentDraftsPage() {
 
   return (
     <div className="space-y-6">
-      {/* ── Header ──────────────────────────────── */}
+      
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1
@@ -146,7 +139,7 @@ export function ContentDraftsPage() {
         </button>
       </div>
 
-      {/* ── Search bar ──────────────────────────── */}
+      
       <div className="relative max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <input
@@ -160,8 +153,6 @@ export function ContentDraftsPage() {
           )}
         />
       </div>
-
-      {/* ── Empty state ─────────────────────────── */}
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-muted/10 py-20 text-center">
           <div className="h-16 w-16 mx-auto rounded-2xl bg-muted/50 flex items-center justify-center mb-4">
@@ -195,7 +186,7 @@ export function ContentDraftsPage() {
         </div>
       ) : (
         <>
-          {/* ── Draft list ────────────────────────── */}
+          
           <div className="space-y-3">
             {paginated.map((draft) => {
               const meta = TYPE_META[draft.type];
@@ -209,7 +200,7 @@ export function ContentDraftsPage() {
                     "hover:border-primary/25 transition-all duration-200",
                   )}
                 >
-                  {/* Gradient accent on hover */}
+                  
                   <div
                     className={cn(
                       "absolute inset-0 bg-linear-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none",
@@ -218,37 +209,16 @@ export function ContentDraftsPage() {
                   />
 
                   <div className="relative z-10 flex items-stretch">
-                    {/* ── Thumbnail ────────────────── */}
-                    <button
-                      type="button"
-                      className="hidden sm:flex w-28 md:w-36 shrink-0 bg-muted/30 items-center justify-center cursor-pointer overflow-hidden border-0 p-0"
-                      onClick={() => resumeDraft(draft.id)}
-                      aria-label={`Resume draft: ${draft.title || "Untitled"}`}
-                    >
-                      {draft.posterUrl ? (
-                        <img
-                          src={draft.posterUrl}
-                          alt={draft.title}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center gap-1.5 text-muted-foreground/40">
-                          <ImageIcon className="h-8 w-8" />
-                          <span className="text-[9px] font-medium">No Poster</span>
-                        </div>
-                      )}
-                    </button>
-
-                    {/* ── Content ──────────────────── */}
+          
                     <div className="flex-1 p-4 md:p-5 min-w-0">
                       <div className="flex items-start justify-between gap-4">
-                        {/* Left: Info */}
+              
                         <button
                           type="button"
                           className="flex-1 min-w-0 cursor-pointer text-left border-0 p-0 bg-transparent"
                           onClick={() => resumeDraft(draft.id)}
                         >
-                          {/* Type + Title row */}
+                
                           <div className="flex items-center gap-2.5 mb-1.5">
                             <div
                               className={cn(
@@ -266,7 +236,7 @@ export function ContentDraftsPage() {
                             </div>
                           </div>
 
-                          {/* Plot */}
+                          
                           {draft.plot ? (
                             <p className="text-sm text-muted-foreground line-clamp-1 mt-1 ml-[42px]">
                               {draft.plot}
@@ -277,7 +247,7 @@ export function ContentDraftsPage() {
                             </p>
                           )}
 
-                          {/* Meta row */}
+                          
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 ml-[42px] text-xs text-muted-foreground">
                             <span className={cn("font-semibold", meta.glow)}>{meta.label}</span>
                             {draft.duration && (
@@ -311,7 +281,7 @@ export function ContentDraftsPage() {
                           </div>
                         </button>
 
-                        {/* Right: Actions */}
+                        
                         <div className="flex items-center gap-2 shrink-0 pt-1">
                           <button
                             type="button"
@@ -344,7 +314,7 @@ export function ContentDraftsPage() {
             })}
           </div>
 
-          {/* ── Pagination ────────────────────────── */}
+          
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-muted-foreground">

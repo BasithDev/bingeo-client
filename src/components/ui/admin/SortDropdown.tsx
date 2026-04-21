@@ -2,13 +2,13 @@ import { ArrowDown, ArrowUp, ArrowUpDown, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
-export interface SortOption {
+export interface ISortOption {
   label: string;
   value: string;
 }
 
-export interface SortDropdownProps {
-  options: SortOption[];
+export interface ISortDropdownProps {
+  options: ISortOption[];
   value: string;
   direction: "asc" | "desc";
   onChange: (value: string) => void;
@@ -23,7 +23,7 @@ export function SortDropdown({
   onChange,
   onDirectionChange,
   className,
-}: SortDropdownProps) {
+}: ISortDropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

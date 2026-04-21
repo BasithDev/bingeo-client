@@ -2,11 +2,6 @@ import { describe, expect, it } from "vitest";
 import { AnalyticsUsersPage } from "@/features/admin/pages/AnalyticsUsersPage";
 import { render, screen } from "@/test/test-utils";
 
-/* ══════════════════════════════════════════════════
-   AnalyticsUsersPage Integration Test
-   Verifies that the page renders correctly with mock data.
-   ══════════════════════════════════════════════════ */
-
 describe("AnalyticsUsersPage", () => {
   it("renders the page title and description", () => {
     render(<AnalyticsUsersPage />);
@@ -19,8 +14,6 @@ describe("AnalyticsUsersPage", () => {
 
   it("renders all KPI stat cards with correct values", () => {
     render(<AnalyticsUsersPage />);
-
-    // Values from mockAnalytics.ts
     expect(screen.getByText("Total Users")).toBeInTheDocument();
     expect(screen.getByText("4,820")).toBeInTheDocument();
 

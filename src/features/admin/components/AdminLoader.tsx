@@ -1,9 +1,5 @@
 import { motion } from "framer-motion";
 
-/**
- * AdminLoader — branded loading spinner for admin page transitions.
- * Used as pendingComponent in admin layout routes.
- */
 export function AdminLoader() {
   return (
     <div
@@ -16,7 +12,6 @@ export function AdminLoader() {
         gap: "1.5rem",
       }}
     >
-      {/* Spinning ring */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
@@ -29,7 +24,6 @@ export function AdminLoader() {
         }}
       />
 
-      {/* Loading text */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: [0.4, 1, 0.4] }}

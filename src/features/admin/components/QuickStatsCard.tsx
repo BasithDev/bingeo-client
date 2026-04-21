@@ -3,11 +3,11 @@ import { useMemo } from "react";
 import { cn } from "@/utils/cn";
 import type { AdminUser } from "../types/admin.types";
 
-interface QuickStatsCardProps {
+interface IQuickStatsCardProps {
   users: AdminUser[];
 }
 
-export function QuickStatsCard({ users }: QuickStatsCardProps) {
+export function QuickStatsCard({ users }: IQuickStatsCardProps) {
   const quickStats = useMemo(
     () => [
       {

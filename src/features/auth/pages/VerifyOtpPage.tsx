@@ -8,7 +8,7 @@ import { authService } from "@/services/api";
 import { useAuthStore } from "@/stores/auth.store";
 
 const OTP_LENGTH = 6;
-const RESEND_COOLDOWN = 60; // seconds
+const RESEND_COOLDOWN = 60
 
 export function VerifyOtpPage() {
   const navigate = useNavigate();
@@ -22,14 +22,14 @@ export function VerifyOtpPage() {
     document.title = "Verify Email | Bingeo";
   }, []);
 
-  // Cooldown timer
+  
   useEffect(() => {
     if (cooldown <= 0) return;
     const timer = setInterval(() => setCooldown((c) => c - 1), 1000);
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  // Auto-focus first input
+  
   useEffect(() => {
     inputRefs.current[0]?.focus();
   }, []);
@@ -43,7 +43,7 @@ export function VerifyOtpPage() {
     },
     onError: (error: { message?: string; error?: string; code?: string }) => {
       toast.error(error.error || error.message || "Verification failed");
-      // Clear OTP on error
+      
       setOtp(Array(OTP_LENGTH).fill(""));
       inputRefs.current[0]?.focus();
     },
@@ -62,19 +62,19 @@ export function VerifyOtpPage() {
 
   const handleChange = useCallback(
     (index: number, value: string) => {
-      // Only allow digits
+      
       if (value && !/^\d$/.test(value)) return;
 
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // Auto-focus next input
+      
       if (value && index < OTP_LENGTH - 1) {
         inputRefs.current[index + 1]?.focus();
       }
 
-      // Auto-submit when all filled
+      
       if (newOtp.every((d) => d !== "") && userId) {
         verifyMutation.mutate({ userId, otp: newOtp.join("") });
       }
@@ -103,11 +103,11 @@ export function VerifyOtpPage() {
       }
       setOtp(newOtp);
 
-      // Focus last filled or next empty
+      
       const focusIndex = Math.min(pasted.length, OTP_LENGTH - 1);
       inputRefs.current[focusIndex]?.focus();
 
-      // Auto-submit if fully pasted
+      
       if (newOtp.every((d) => d !== "") && userId) {
         verifyMutation.mutate({ userId, otp: newOtp.join("") });
       }
@@ -135,7 +135,7 @@ export function VerifyOtpPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
-      {/* Background gradient effects */}
+      
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-1/4 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
@@ -149,7 +149,7 @@ export function VerifyOtpPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Logo */}
+        
         <Link to="/" className="mb-10 flex items-center justify-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet/20 backdrop-blur-sm">
             <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-violet-light">
@@ -177,14 +177,14 @@ export function VerifyOtpPage() {
           </span>
         </Link>
 
-        {/* Card */}
+        
         <div className="rounded-2xl border border-border bg-card/60 p-8 backdrop-blur-xl">
-          {/* Icon */}
+          
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet/10">
             <MailCheck className="h-8 w-8 text-violet-light" />
           </div>
 
-          {/* Header */}
+          
           <div className="mb-8 text-center">
             <h1
               className="text-2xl font-bold text-foreground"
@@ -199,12 +199,12 @@ export function VerifyOtpPage() {
             </p>
           </div>
 
-          {/* OTP Inputs */}
+          
           <div className="flex justify-center gap-3" id="otp-inputs">
             {otp.map((digit, i) => (
               <input
                 key={`otp-${
-                  // biome-ignore lint/suspicious/noArrayIndexKey: OTP inputs are fixed-length
+                  
                   i
                 }`}
                 ref={(el: HTMLInputElement | null) => {
@@ -224,7 +224,7 @@ export function VerifyOtpPage() {
             ))}
           </div>
 
-          {/* Verify button (fallback) */}
+          
           <button
             type="button"
             onClick={() => {
@@ -246,7 +246,7 @@ export function VerifyOtpPage() {
             )}
           </button>
 
-          {/* Resend */}
+          
           <div className="mt-6 text-center">
             <p className="text-xs text-muted-foreground">Didn&apos;t receive the code?</p>
             <button
@@ -264,7 +264,7 @@ export function VerifyOtpPage() {
           </div>
         </div>
 
-        {/* Back to register */}
+        
         <p className="mt-8 text-center text-sm text-muted-foreground">
           <Link
             to="/register"

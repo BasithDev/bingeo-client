@@ -1,19 +1,11 @@
 import { create } from "zustand";
 import { authService } from "@/services/api";
 
-/**
- * Auth state - NOT persisted (tokens managed via httpOnly cookies)
- * On app start, initAuth() calls /api/auth/me to restore the session.
- */
-interface AuthState {
-  // Auth status
+interface IAuthState {
   isAuthenticated: boolean;
-  /** True only during login/logout API calls — for UI spinners */
   isLoading: boolean;
-  /** True until the first initAuth() completes — route guards wait on this */
   isInitializing: boolean;
 
-  // User info (minimal, from token)
   user: {
     id: string;
     email: string;
@@ -22,17 +14,16 @@ interface AuthState {
     subscription: "free" | "premium";
   } | null;
 
-  // Actions
-  setUser: (user: AuthState["user"]) => void;
+  setUser: (user: IAuthState["user"]) => void;
   setLoading: (loading: boolean) => void;
   logout: () => void;
   initAuth: () => Promise<void>;
 }
 
-export const useAuthStore = create<AuthState>()((set) => ({
+export const useAuthStore = create<IAuthState>()((set) => ({
   isAuthenticated: false,
   isLoading: false,
-  isInitializing: true, // starts true — guards wait for this to become false
+  isInitializing: true,
   user: null,
 
   setUser: (user) =>
@@ -56,7 +47,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
       const { user } = await authService.refresh();
       set({ user, isAuthenticated: true, isLoading: false, isInitializing: false });
     } catch {
-      // No valid session — cookies expired or missing
+  
       set({ user: null, isAuthenticated: false, isLoading: false, isInitializing: false });
     }
   },

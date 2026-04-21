@@ -60,7 +60,6 @@ export function HomePage() {
       navigate({ to: "/", replace: true });
     },
     onError: () => {
-      // Even if API fails, clear local state
       logout();
       navigate({ to: "/", replace: true });
     },
@@ -68,7 +67,7 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navbar */}
+      
       <nav className="border-b border-border bg-background/90 backdrop-blur-xl">
         <div className="flex items-center justify-between px-6 py-4 lg:px-10">
           <Link to="/" className="flex items-center gap-2.5">
@@ -121,9 +120,9 @@ export function HomePage() {
         </div>
       </nav>
 
-      {/* Content */}
+      
       <main className="px-6 py-8 lg:px-10">
-        {/* Greeting */}
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -141,7 +140,7 @@ export function HomePage() {
           <p className="mt-2 text-muted-foreground">Here's what's happening on Bingeo today</p>
         </motion.div>
 
-        {/* Stats */}
+        
         <motion.div
           className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3"
           initial={{ opacity: 0, y: 20 }}
@@ -173,7 +172,7 @@ export function HomePage() {
           ))}
         </motion.div>
 
-        {/* Continue Watching */}
+        
         <motion.div
           className="mt-10"
           initial={{ opacity: 0, y: 20 }}
@@ -197,7 +196,7 @@ export function HomePage() {
                       <Play className="h-6 w-6 text-white/70" />
                     </div>
                   </div>
-                  {/* Progress bar */}
+                  
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
                     <div className="h-full bg-violet" style={{ width: `${30 + movie.id * 15}%` }} />
                   </div>

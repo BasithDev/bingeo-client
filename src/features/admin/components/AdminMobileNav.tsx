@@ -3,10 +3,6 @@ import { useState } from "react";
 import { cn } from "@/utils/cn";
 import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
 
-/**
- * Bottom navigation bar for mobile (< lg).
- * Shows top-level nav items. Items with submenus open an animated popover above the bar.
- */
 export function AdminMobileNav() {
   const location = useLocation();
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -18,7 +14,6 @@ export function AdminMobileNav() {
 
   return (
     <>
-      {/* Backdrop — fades in */}
       <button
         type="button"
         aria-label="Close submenu"
@@ -36,7 +31,6 @@ export function AdminMobileNav() {
         }}
       />
 
-      {/* Submenu panel — slides up from bottom */}
       <div
         className={cn(
           "lg:hidden fixed left-2 right-2 z-50 rounded-2xl border border-border bg-card shadow-xl p-2",
@@ -68,7 +62,6 @@ export function AdminMobileNav() {
             })}
       </div>
 
-      {/* Bottom nav bar */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-card/95 backdrop-blur-md safe-area-bottom">
         <div className="flex overflow-x-auto scrollbar-hide px-1 py-1.5">
           {adminNavConfig.map((item) => {

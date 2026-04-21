@@ -1,4 +1,5 @@
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Film, Save, Sparkles, Tv } from "lucide-react";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { Input } from "@/components/ui/Input";
@@ -8,17 +9,16 @@ import { CastSearch } from "../components/content/CastSearch";
 import { GenrePicker } from "../components/content/GenrePicker";
 import { MediaUploadZone } from "../components/content/MediaUploadZone";
 import { SeasonManager } from "../components/content/SeasonManager";
-import type { CastMember, ContentMetadata, ContentType, Season } from "../types/content.types";
+import type { ICastMember, IContentMetadata, ContentType, ISeason } from "../types/content.types";
+import { contentService } from "@/services/api";
 
-/* ── Step definitions ─────────────────────────── */
-
-interface StepDef {
+interface IStepDef {
   key: string;
   label: string;
   description: string;
 }
 
-const ALL_STEPS: StepDef[] = [
+const ALL_STEPS: IStepDef[] = [
   { key: "type", label: "Type", description: "Choose content type" },
   { key: "details", label: "Details", description: "Metadata & info" },
   { key: "cast", label: "Cast", description: "Search & add cast" },
@@ -26,35 +26,33 @@ const ALL_STEPS: StepDef[] = [
   { key: "media", label: "Media", description: "Upload content" },
 ];
 
-function getSteps(contentType: ContentType | null): StepDef[] {
+function getSteps(contentType: ContentType | null): IStepDef[] {
   if (contentType !== "series") {
     return ALL_STEPS.filter((s) => s.key !== "seasons");
   }
   return ALL_STEPS;
 }
 
-/* ── Form state ───────────────────────────────── */
-
-interface FormState {
+interface IFormState {
   type: ContentType | null;
   title: string;
   plot: string;
   duration: string;
   posterUrl: string;
   genres: string[];
-  cast: CastMember[];
-  seasons: Season[];
+  cast: ICastMember[];
+  seasons: ISeason[];
 }
 
 type Action =
   | { kind: "SET_TYPE"; payload: ContentType }
   | { kind: "SET_FIELD"; field: "title" | "plot" | "duration" | "posterUrl"; value: string }
   | { kind: "SET_GENRES"; payload: string[] }
-  | { kind: "SET_CAST"; payload: CastMember[] }
-  | { kind: "SET_SEASONS"; payload: Season[] }
-  | { kind: "LOAD_DRAFT"; payload: FormState };
+  | { kind: "SET_CAST"; payload: ICastMember[] }
+  | { kind: "SET_SEASONS"; payload: ISeason[] }
+  | { kind: "LOAD_DRAFT"; payload: IFormState };
 
-function reducer(state: FormState, action: Action): FormState {
+function reducer(state: IFormState, action: Action): IFormState {
   switch (action.kind) {
     case "SET_TYPE":
       return {
@@ -77,7 +75,7 @@ function reducer(state: FormState, action: Action): FormState {
   }
 }
 
-const INITIAL: FormState = {
+const INITIAL: IFormState = {
   type: null,
   title: "",
   plot: "",
@@ -88,10 +86,6 @@ const INITIAL: FormState = {
   seasons: [],
 };
 
-/* ══════════════════════════════════════════════════
-   ContentUploadPage
-   ══════════════════════════════════════════════════ */
-
 export function ContentUploadPage() {
   const navigate = useNavigate();
   const { draft: draftId } = useSearch({ strict: false }) as { draft?: string };
@@ -101,10 +95,9 @@ export function ContentUploadPage() {
 
   useEffect(() => {
     if (!draftId) return;
-    try {
-      const stored: ContentMetadata[] = JSON.parse(localStorage.getItem("bingeo-drafts") ?? "[]");
-      const f = stored.find((d) => d.id === draftId);
-      if (f) {
+    (async () => {
+      try {
+        const f = await contentService.getDraft(draftId);
         editingIdRef.current = f.id;
         dispatch({
           kind: "LOAD_DRAFT",
@@ -120,10 +113,10 @@ export function ContentUploadPage() {
           },
         });
         setStepIdx(1);
+      } catch {
+        // ignore load errors for now
       }
-    } catch {
-      /* ignore */
-    }
+    })();
   }, [draftId]);
 
   const steps = getSteps(state.type);
@@ -136,10 +129,14 @@ export function ContentUploadPage() {
     return true;
   }, [currentStep, state.type, state.title]);
 
-  const saveDraft = () => {
-    const drafts: ContentMetadata[] = JSON.parse(localStorage.getItem("bingeo-drafts") ?? "[]");
+  const queryClient = useQueryClient();
+
+  const saveDraft = async () => {
     const now = new Date().toISOString();
-    const data: Partial<ContentMetadata> = {
+    const data: IContentMetadata = {
+      id: editingIdRef.current ?? `draft-${Date.now()}`,
+      status: "draft",
+      createdAt: now,
       title: state.title || "Untitled",
       type: state.type ?? "movie",
       genres: state.genres,
@@ -151,26 +148,8 @@ export function ContentUploadPage() {
       updatedAt: now,
     };
 
-    if (editingIdRef.current) {
-      const idx = drafts.findIndex((d) => d.id === editingIdRef.current);
-      if (idx !== -1) {
-        drafts[idx] = {
-          ...drafts[idx],
-          ...data,
-          updatedAt: now,
-        } as ContentMetadata;
-      }
-    } else {
-      const draft: ContentMetadata = {
-        ...(data as ContentMetadata),
-        id: `draft-${Date.now()}`,
-        status: "draft",
-        createdAt: now,
-      };
-      drafts.push(draft);
-    }
-
-    localStorage.setItem("bingeo-drafts", JSON.stringify(drafts));
+    await contentService.saveDraft(data);
+    await queryClient.invalidateQueries({ queryKey: ["content", "drafts"] });
     navigate({ to: "/admin/content/drafts" });
   };
 
@@ -208,14 +187,12 @@ export function ContentUploadPage() {
   );
 }
 
-/* ── Sub-components ──────────────────────────── */
-
 function StepIndicator({
   steps,
   currentIdx,
   onStepClick,
 }: {
-  steps: StepDef[];
+  steps: IStepDef[];
   currentIdx: number;
   onStepClick: (i: number) => void;
 }) {
@@ -255,7 +232,7 @@ function StepIndicator({
   );
 }
 
-function TypeStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
+function TypeStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
   const options: { value: ContentType; label: string; Icon: React.ElementType; desc: string }[] = [
     { value: "movie", label: "Movie", Icon: Film, desc: "Feature film" },
     { value: "series", label: "Series", Icon: Tv, desc: "Episodic show" },
@@ -288,7 +265,7 @@ function TypeStep({ state, dispatch }: { state: FormState; dispatch: React.Dispa
   );
 }
 
-function DetailsStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
+function DetailsStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
   return (
     <div className="space-y-5 max-w-2xl mx-auto">
       <Input
@@ -297,13 +274,6 @@ function DetailsStep({ state, dispatch }: { state: FormState; dispatch: React.Di
         placeholder="e.g. Inception"
         value={state.title}
         onChange={(e) => dispatch({ kind: "SET_FIELD", field: "title", value: e.target.value })}
-      />
-      <Input
-        id="content-poster"
-        label="Poster URL"
-        placeholder="https://..."
-        value={state.posterUrl}
-        onChange={(e) => dispatch({ kind: "SET_FIELD", field: "posterUrl", value: e.target.value })}
       />
       <div className="space-y-1.5">
         <Textarea
@@ -323,13 +293,13 @@ function DetailsStep({ state, dispatch }: { state: FormState; dispatch: React.Di
   );
 }
 
-function CastStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
+function CastStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
   return (
     <CastSearch cast={state.cast} onChange={(v) => dispatch({ kind: "SET_CAST", payload: v })} />
   );
 }
 
-function SeasonsStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
+function SeasonsStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
   return (
     <SeasonManager
       seasons={state.seasons}
@@ -338,11 +308,11 @@ function SeasonsStep({ state, dispatch }: { state: FormState; dispatch: React.Di
   );
 }
 
-function MediaStep({ state, dispatch }: { state: FormState; dispatch: React.Dispatch<Action> }) {
+function MediaStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div className="space-y-1.5">
-        <label htmlFor="pu" className="text-sm font-medium">
+        <label htmlFor="pu" className="text-sm font-medium text-foreground">
           Poster URL
         </label>
         <input
@@ -352,7 +322,7 @@ function MediaStep({ state, dispatch }: { state: FormState; dispatch: React.Disp
           onChange={(e) =>
             dispatch({ kind: "SET_FIELD", field: "posterUrl", value: e.target.value })
           }
-          className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm"
+          className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
       </div>
       <MediaUploadZone />

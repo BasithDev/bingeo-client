@@ -8,12 +8,6 @@ import {
 import { type RenderOptions, render } from "@testing-library/react";
 import type React from "react";
 
-/* ══════════════════════════════════════════════════
-   Test Utils
-   Provides a custom render with all necessary application providers.
-   ══════════════════════════════════════════════════ */
-
-// Create a fresh QueryClient for each test to ensure isolation
 const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
@@ -27,16 +21,11 @@ const createTestQueryClient = () =>
 function AllTheProviders({ children }: { children: React.ReactNode }) {
   const queryClient = createTestQueryClient();
 
-  // For basic component tests that don't need routing logic,
-  // we still provide a minimal router context if needed.
-  // Specialized routing tests should use the router-specific helpers below.
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
 
 const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, "wrapper">) =>
   render(ui, { wrapper: AllTheProviders, ...options });
-
-// Helper to render with TanStack Router context
 export function renderWithRouter(ui: React.ReactElement, { routePath = "/" } = {}) {
   const rootRoute = createRootRoute({
     component: () => ui,

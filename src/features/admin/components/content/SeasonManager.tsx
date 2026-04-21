@@ -3,12 +3,12 @@ import { useState } from "react";
 import { cn } from "@/utils/cn";
 import type { Episode, Season } from "../../types/content.types";
 
-interface SeasonManagerProps {
+interface ISeasonManagerProps {
   seasons: Season[];
   onChange: (seasons: Season[]) => void;
 }
 
-export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
+export function SeasonManager({ seasons, onChange }: ISeasonManagerProps) {
   const [expandedSeasons, setExpandedSeasons] = useState<Set<number>>(
     new Set(seasons.map((s) => s.number)),
   );
@@ -20,8 +20,6 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
       return next;
     });
   };
-
-  /* ── Season CRUD ─────────────────────────────── */
 
   const addSeason = () => {
     const num = seasons.length + 1;
@@ -48,8 +46,6 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
   const updateSeasonTitle = (idx: number, title: string) => {
     onChange(seasons.map((s, i) => (i === idx ? { ...s, title } : s)));
   };
-
-  /* ── Episode CRUD ────────────────────────────── */
 
   const addEpisode = (seasonIdx: number) => {
     onChange(
@@ -124,7 +120,6 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
               key={season.number}
               className="rounded-xl border border-border bg-card overflow-hidden"
             >
-              {/* Season header */}
               <button
                 type="button"
                 className={cn(
@@ -169,7 +164,6 @@ export function SeasonManager({ seasons, onChange }: SeasonManagerProps) {
                 )}
               </button>
 
-              {/* Episodes */}
               {expanded && (
                 <div
                   id={`season-${season.number}-episodes`}
