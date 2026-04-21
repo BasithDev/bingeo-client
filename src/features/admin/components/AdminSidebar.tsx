@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { AlertTriangle, ChevronDown, ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Modal } from "@/components/ui/Modal";
+import { authService } from "@/services/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { cn } from "@/utils/cn";
 import { adminNavConfig, type NavItem } from "../config/adminNavConfig";
@@ -146,8 +147,13 @@ export function AdminSidebar() {
   const { logout } = useAuthStore();
   const [showLogout, setShowLogout] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setShowLogout(false);
+    try {
+      await authService.logout();
+    } catch {
+      // Even if API fails, clear local state and redirect
+    }
     logout();
     window.location.href = "/admin/login";
   };
