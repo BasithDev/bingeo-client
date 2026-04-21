@@ -3,6 +3,7 @@ import { authService } from "@/services/api";
 
 interface IAuthState {
   isAuthenticated: boolean;
+  /** True only during login/logout API calls — for UI spinners */
   isLoading: boolean;
   isInitializing: boolean;
 
