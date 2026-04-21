@@ -1,9 +1,4 @@
 import { Film, LayoutDashboard, TrendingUp, Users } from "lucide-react";
-
-/**
- * Admin Dashboard — placeholder page with stat cards.
- * Will be replaced with real data once APIs are ready.
- */
 export function AdminDashboardPage() {
   const stats = [
     {
@@ -38,7 +33,6 @@ export function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page header */}
       <div>
         <h1
           className="text-2xl font-bold text-foreground"
@@ -51,7 +45,6 @@ export function AdminDashboardPage() {
         </p>
       </div>
 
-      {/* Stats grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <div
@@ -72,7 +65,6 @@ export function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Recent activity placeholder */}
       <div className="rounded-2xl border border-border bg-card p-6">
         <h2
           className="text-lg font-semibold text-foreground mb-4"

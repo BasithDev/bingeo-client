@@ -1,39 +1,35 @@
-/* ══════════════════════════════════════════════════
-   Content types for admin content upload flow.
-   ══════════════════════════════════════════════════ */
-
 export type ContentType = "movie" | "series" | "special";
 export type ContentStatus = "draft" | "uploading" | "published";
 
-export interface Episode {
+export interface IEpisode {
   number: number;
   title: string;
   plot: string;
-  duration: string; // "45m", "1h 02m", etc.
+  duration: string;
 }
 
-export interface Season {
+export interface ISeason {
   number: number;
-  title: string; // "Season 1", editable
-  episodes: Episode[];
+  title: string;
+  episodes: IEpisode[];
 }
 
-export interface CastMember {
-  id: number; // TMDb person ID
+export interface ICastMember {
+  id: number; 
   name: string;
-  character: string; // role in this content
-  profilePath: string; // TMDb image path
+  character: string;
+  profilePath: string; 
 }
 
-export interface ContentMetadata {
+export interface IContentMetadata {
   id: string;
   title: string;
   type: ContentType;
   genres: string[];
   plot: string;
-  duration: string; // "2h 15m" — manual or auto from video
-  cast: CastMember[];
-  seasons: Season[]; // only used when type === "series"
+  duration: string;
+  cast: ICastMember[];
+  seasons: ISeason[]; 
   posterUrl?: string;
   status: ContentStatus;
   createdAt: string;

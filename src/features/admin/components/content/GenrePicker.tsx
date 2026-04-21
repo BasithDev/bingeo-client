@@ -1,12 +1,12 @@
 import { cn } from "@/utils/cn";
 import { GENRES } from "../../data/mockContent";
 
-interface GenrePickerProps {
+interface IGenrePickerProps {
   selected: string[];
   onChange: (genres: string[]) => void;
 }
 
-export function GenrePicker({ selected, onChange }: GenrePickerProps) {
+export function GenrePicker({ selected, onChange }: IGenrePickerProps) {
   const toggle = (genre: string) => {
     onChange(selected.includes(genre) ? selected.filter((g) => g !== genre) : [...selected, genre]);
   };

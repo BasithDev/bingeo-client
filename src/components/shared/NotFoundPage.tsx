@@ -16,7 +16,7 @@ export function NotFoundPage() {
         position: "relative",
       }}
     >
-      {/* Ambient glow */}
+      
       <div
         style={{
           position: "absolute",
@@ -43,7 +43,7 @@ export function NotFoundPage() {
           maxWidth: "480px",
         }}
       >
-        {/* 404 number */}
+        
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -62,7 +62,7 @@ export function NotFoundPage() {
           404
         </motion.div>
 
-        {/* Title */}
+        
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ export function NotFoundPage() {
           Page not found
         </motion.h1>
 
-        {/* Description */}
+        
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,7 +93,6 @@ export function NotFoundPage() {
           The page you're looking for doesn't exist or has been moved.
         </motion.p>
 
-        {/* Back to home button */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

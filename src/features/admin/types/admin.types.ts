@@ -1,4 +1,4 @@
-export interface AdminUser {
+export interface IAdminUser {
   id: string;
   name: string;
   email: string;
@@ -12,7 +12,7 @@ export interface AdminUser {
   joinedAt: string;
 }
 
-export interface Plan {
+export interface IPlan {
   id: string;
   name: string;
   price: number;

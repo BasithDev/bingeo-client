@@ -15,20 +15,20 @@ import {
   Users,
 } from "lucide-react";
 
-export interface NavSubItem {
+export interface INavSubItem {
   title: string;
   path: string;
   icon: LucideIcon;
 }
 
-export interface NavItem {
+export interface INavItem {
   title: string;
   icon: LucideIcon;
   path?: string;
-  children?: NavSubItem[];
+  children?: INavSubItem[];
 }
 
-export const adminNavConfig: NavItem[] = [
+export const adminNavConfig: INavItem[] = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,

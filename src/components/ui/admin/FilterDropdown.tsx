@@ -2,15 +2,15 @@ import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
-export interface FilterOption {
+export interface IFilterOption {
   label: string;
   value: string;
 }
 
-export interface FilterDropdownProps {
+export interface IFilterDropdownProps {
   label: string;
   value: string;
-  options: FilterOption[];
+  options: IFilterOption[];
   onChange: (value: string) => void;
   className?: string;
 }
@@ -21,11 +21,10 @@ export function FilterDropdown({
   options,
   onChange,
   className,
-}: FilterDropdownProps) {
+}: IFilterDropdownProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);

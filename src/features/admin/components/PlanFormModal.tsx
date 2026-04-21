@@ -1,13 +1,12 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/utils/cn";
 import type { Plan } from "../types/admin.types";
 
-/* ── Form state type ──────────────────────────── */
 
-interface PlanFormData {
+interface IPlanFormData {
   name: string;
   price: number;
   billingCycle: "monthly" | "yearly";
@@ -19,7 +18,7 @@ interface PlanFormData {
   color: string;
 }
 
-const emptyForm: PlanFormData = {
+const emptyForm: IPlanFormData = {
   name: "",
   price: 0,
   billingCycle: "monthly",
@@ -31,16 +30,14 @@ const emptyForm: PlanFormData = {
   color: "#3b82f6",
 };
 
-/* ── Props ────────────────────────────────────── */
 
-interface PlanFormDrawerProps {
+interface IPlanFormDrawerProps {
   open: boolean;
   onClose: () => void;
-  onSave: (data: PlanFormData) => void;
+  onSave: (data: IPlanFormData) => void;
   editPlan?: Plan | null;
 }
 
-/* ── Reusable field wrapper ───────────────────── */
 
 function Field({
   label,
@@ -64,7 +61,7 @@ function Field({
   );
 }
 
-/* ── Select dropdown ─────────────────────────── */
+
 
 function SelectField({
   id,
@@ -100,18 +97,18 @@ function SelectField({
 const inputClass =
   "w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-150";
 
-/* ══════════════════════════════════════════════════
-   Plan Form Drawer — slides in from the right
-   ══════════════════════════════════════════════════ */
 
-export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDrawerProps) {
-  const [form, setForm] = useState<PlanFormData>(emptyForm);
+   
+   
+
+export function PlanFormDrawer({ open, onClose, onSave, editPlan }: IPlanFormDrawerProps) {
+  const [form, setForm] = useState<IPlanFormData>(emptyForm);
   const [featureInput, setFeatureInput] = useState("");
   const panelRef = useRef<HTMLDivElement>(null);
 
   const isEditing = !!editPlan;
 
-  /* Sync form when editPlan changes */
+  
   useEffect(() => {
     if (editPlan) {
       setForm({
@@ -131,7 +128,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
     setFeatureInput("");
   }, [editPlan]);
 
-  /* Lock body scroll */
+  
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -141,7 +138,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
     }
   }, [open]);
 
-  const update = <K extends keyof PlanFormData>(key: K, value: PlanFormData[K]) =>
+  const update = <K extends keyof IPlanFormData>(key: K, value: IPlanFormData[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
   const addFeature = () => {
@@ -158,16 +155,13 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
       form.features.filter((f) => f !== feat),
     );
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    onSave(form);
-  };
+
 
   return createPortal(
     <AnimatePresence>
       {open && (
         <>
-          {/* Overlay */}
+          
           <motion.div
             className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -177,7 +171,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
             onClick={onClose}
           />
 
-          {/* Drawer panel */}
+          
           <motion.div
             ref={panelRef}
             className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-border bg-card shadow-2xl"
@@ -186,7 +180,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 350, mass: 0.8 }}
           >
-            {/* Header */}
+            
             <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <div>
                 <h2
@@ -208,13 +202,11 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
               </button>
             </div>
 
-            {/* Scrollable form body */}
-            <form
+            <div
               id="plan-drawer-form"
-              onSubmit={handleSubmit}
               className="flex-1 overflow-y-auto px-6 py-5 space-y-5"
             >
-              {/* Name + Color */}
+              
               <div className="grid grid-cols-[1fr_72px] gap-3">
                 <Field label="Plan Name" htmlFor="plan-name">
                   <input
@@ -238,7 +230,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                 </Field>
               </div>
 
-              {/* Price + Billing Cycle */}
+              
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Price (₹)" htmlFor="plan-price">
                   <input
@@ -254,7 +246,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                   <SelectField
                     id="plan-billing-cycle"
                     value={form.billingCycle}
-                    onChange={(v) => update("billingCycle", v as PlanFormData["billingCycle"])}
+                    onChange={(v) => update("billingCycle", v as IPlanFormData["billingCycle"])}
                     options={[
                       { label: "Monthly", value: "monthly" },
                       { label: "Yearly", value: "yearly" },
@@ -263,7 +255,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                 </Field>
               </div>
 
-              {/* Max Streams + Max Quality */}
+              
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Max Streams" htmlFor="plan-max-streams">
                   <input
@@ -280,7 +272,7 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                   <SelectField
                     id="plan-max-quality"
                     value={form.maxQuality}
-                    onChange={(v) => update("maxQuality", v as PlanFormData["maxQuality"])}
+                    onChange={(v) => update("maxQuality", v as IPlanFormData["maxQuality"])}
                     options={[
                       { label: "SD (480p)", value: "SD" },
                       { label: "HD (720p)", value: "HD" },
@@ -291,13 +283,12 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                 </Field>
               </div>
 
-              {/* Content Access + Active Toggle */}
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Content Access" htmlFor="plan-content-access">
                   <SelectField
                     id="plan-content-access"
                     value={form.contentAccess}
-                    onChange={(v) => update("contentAccess", v as PlanFormData["contentAccess"])}
+                    onChange={(v) => update("contentAccess", v as IPlanFormData["contentAccess"])}
                     options={[
                       { label: "Limited", value: "limited" },
                       { label: "Standard", value: "standard" },
@@ -321,7 +312,6 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                 </Field>
               </div>
 
-              {/* Features — tag input */}
               <Field label="Features" htmlFor="plan-features-input">
                 <div className="rounded-xl border border-border bg-background p-3 space-y-2.5">
                   {form.features.length > 0 && (
@@ -368,9 +358,8 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                   </div>
                 </div>
               </Field>
-            </form>
+            </div>
 
-            {/* Footer — sticky at bottom */}
             <div className="border-t border-border px-6 py-4 flex items-center justify-end gap-3">
               <button
                 type="button"
@@ -380,8 +369,8 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
                 Cancel
               </button>
               <button
-                type="submit"
-                form="plan-drawer-form"
+                type="button"
+                onClick={() => onSave(form)}
                 className="px-5 py-2 rounded-xl text-sm font-semibold cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-150"
               >
                 {isEditing ? "Save Changes" : "Create Plan"}
@@ -395,4 +384,4 @@ export function PlanFormDrawer({ open, onClose, onSave, editPlan }: PlanFormDraw
   );
 }
 
-export type { PlanFormData };
+export type { IPlanFormData as PlanFormData };

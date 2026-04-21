@@ -1,13 +1,3 @@
-/**
- * Static mock user data for the admin Users page.
- *
- * This file serves as the data contract for backend development.
- * The shape of AdminUser and the response structure here should be
- * mirrored by the backend API (GET /api/admin/users).
- *
- * When the real API is ready, replace the import in AdminUsersPage
- * with a fetch call using the same AdminUser type.
- */
 
 import type { AdminUser } from "../types/admin.types";
 

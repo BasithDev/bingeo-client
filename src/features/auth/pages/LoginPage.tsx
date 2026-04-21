@@ -59,7 +59,7 @@ export function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
-      {/* Background gradient effects */}
+      
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute -top-1/4 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full opacity-20 blur-[120px]"
@@ -77,7 +77,7 @@ export function LoginPage() {
         animate={{ opacity: showForm ? 1 : 0, y: showForm ? 0 : -10 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Logo */}
+        
         <Link to="/" className="mb-10 flex items-center justify-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet/20 backdrop-blur-sm">
             <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-violet-light">
@@ -105,9 +105,9 @@ export function LoginPage() {
           </span>
         </Link>
 
-        {/* Card */}
+        
         <div className="rounded-2xl border border-border bg-card/60 p-8 backdrop-blur-xl">
-          {/* Header */}
+          
           <div className="mb-8 text-center">
             <h1
               className="text-2xl font-bold text-foreground"
@@ -118,7 +118,7 @@ export function LoginPage() {
             <p className="mt-1.5 text-sm text-muted-foreground">Sign in to continue streaming</p>
           </div>
 
-          {/* Google OAuth */}
+          
           <a
             href={`${API_BASE_URL}/api/auth/google`}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm font-medium text-foreground transition-all duration-200 hover:bg-secondary"
@@ -145,7 +145,7 @@ export function LoginPage() {
             Continue with Google
           </a>
 
-          {/* Divider */}
+          
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -154,7 +154,6 @@ export function LoginPage() {
             <div className="h-px flex-1 bg-border" />
           </div>
 
-          {/* Form */}
           <form onSubmit={onSubmit} className="space-y-5" id="login-form">
             <div className="space-y-1.5">
               <label htmlFor="login-email" className="block text-sm font-medium text-foreground/80">
@@ -242,7 +241,7 @@ export function LoginPage() {
           </form>
         </div>
 
-        {/* Footer */}
+        
         <p className="mt-8 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
           <Link to="/register" className="font-medium text-violet-light hover:underline">

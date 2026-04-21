@@ -9,7 +9,6 @@ import { HomePage } from "@/features/content/pages/HomePage";
 import { LandingPage } from "@/features/content/pages/LandingPage";
 import rootRoute from "../RootRoute";
 
-/** Public landing page — redirects to /home if already authenticated */
 const landingRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
@@ -17,7 +16,6 @@ const landingRoute = createRoute({
   beforeLoad: redirectToHomeIfAuth,
 });
 
-/** Authenticated home dashboard */
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/home",
@@ -39,7 +37,6 @@ const registerRoute = createRoute({
   beforeLoad: redirectToHomeIfAuth,
 });
 
-/** OTP verification — public (user arrives here after register or unverified login) */
 const verifyRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/verify",
@@ -49,7 +46,7 @@ const verifyRoute = createRoute({
   }),
 });
 
-/** Forgot password — public */
+
 const forgotPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/forgot-password",
@@ -57,7 +54,6 @@ const forgotPasswordRoute = createRoute({
   beforeLoad: redirectToHomeIfAuth,
 });
 
-/** Reset password — public (user arrives here after forgot-password with OTP) */
 const resetPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/reset-password",

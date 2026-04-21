@@ -57,7 +57,6 @@ describe("useAuthStore", () => {
 
   describe("logout", () => {
     it("should clear user and reset state", () => {
-      // First set a user
       useAuthStore.getState().setUser({
         id: "1",
         email: "test@example.com",
@@ -65,8 +64,6 @@ describe("useAuthStore", () => {
         role: "admin",
         subscription: "premium",
       });
-
-      // Then logout
       useAuthStore.getState().logout();
       const state = useAuthStore.getState();
 

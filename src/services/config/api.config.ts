@@ -1,25 +1,28 @@
-/**
- * API Configuration
- * Centralized configuration for backend service endpoints
- */
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "http://localhost:5000/api";
 
 export const apiConfig = {
-  baseUrl: API_BASE_URL,
+  baseUrl: GATEWAY_URL,
   endpoints: {
-    // Identity Service
     identity: {
-      base: API_BASE_URL,
-      login: `${API_BASE_URL}/api/auth/login`,
-      register: `${API_BASE_URL}/api/auth/register`,
-      logout: `${API_BASE_URL}/api/auth/logout`,
-      refresh: `${API_BASE_URL}/api/auth/refresh`,
-      me: `${API_BASE_URL}/api/auth/me`,
-      verifyOtp: `${API_BASE_URL}/api/auth/verify-otp`,
-      resendOtp: `${API_BASE_URL}/api/auth/resend-otp`,
-      forgotPassword: `${API_BASE_URL}/api/auth/forgot-password`,
-      resetPassword: `${API_BASE_URL}/api/auth/reset-password`,
+      base: `${GATEWAY_URL}/identity`,
+      login: `${GATEWAY_URL}/identity/auth/login`,
+      register: `${GATEWAY_URL}/identity/auth/register`,
+      logout: `${GATEWAY_URL}/identity/auth/logout`,
+      refresh: `${GATEWAY_URL}/identity/auth/refresh`,
+      me: `${GATEWAY_URL}/identity/auth/me`,
+      verifyOtp: `${GATEWAY_URL}/identity/auth/verify-otp`,
+      resendOtp: `${GATEWAY_URL}/identity/auth/resend-otp`,
+      forgotPassword: `${GATEWAY_URL}/identity/auth/forgot-password`,
+      resetPassword: `${GATEWAY_URL}/identity/auth/reset-password`,
+    },
+    admin: {
+      users: `${GATEWAY_URL}/identity/admin/users`,
+      toggleUserBlock: (userId: string) =>
+        `${GATEWAY_URL}/identity/admin/users/${userId}/toggle-block`,
+    },
+    content: {
+      drafts: `${GATEWAY_URL}/content/admin/drafts`,
+      draftById: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}`,
     },
   },
 } as const;

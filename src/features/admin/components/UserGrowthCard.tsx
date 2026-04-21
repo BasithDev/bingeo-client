@@ -14,7 +14,7 @@ import { cn } from "@/utils/cn";
 
 import { mockGrowth, mockGrowthChart } from "../data/mockUsers";
 
-/* ── Growth period types ──────────────────────────── */
+
 
 type GrowthPeriod = "week" | "month" | "year";
 
@@ -24,21 +24,21 @@ const growthPeriods: { label: string; value: GrowthPeriod }[] = [
   { label: "Year", value: "year" },
 ];
 
-/* ── Chart tooltip ────────────────────────────────── */
 
-interface ChartPayloadEntry {
+
+interface IChartPayloadEntry {
   name: string;
   value: number;
   color?: string;
 }
 
-interface ChartTooltipProps {
+interface IChartTooltipProps {
   active?: boolean;
-  payload?: ChartPayloadEntry[];
+  payload?: IChartPayloadEntry[];
   label?: string;
 }
 
-function ChartTooltip({ active, payload, label }: ChartTooltipProps) {
+function ChartTooltip({ active, payload, label }: IChartTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
@@ -52,7 +52,7 @@ function ChartTooltip({ active, payload, label }: ChartTooltipProps) {
   );
 }
 
-/* ── Component ────────────────────────────────────── */
+
 
 export function UserGrowthCard() {
   const [growthPeriod, setGrowthPeriod] = useState<GrowthPeriod>("month");
@@ -102,8 +102,6 @@ export function UserGrowthCard() {
         </div>
         <p className="text-[11px] text-muted-foreground mt-0.5">new users this {growthPeriod}</p>
       </div>
-
-      {/* Area Chart */}
       <div className="h-[160px] -mx-2">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={mockGrowthChart} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>

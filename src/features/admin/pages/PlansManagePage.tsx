@@ -9,7 +9,7 @@ import { mockPlans } from "../data/mockPlans";
 import type { Plan } from "../types/admin.types";
 import { formatCurrency } from "../utils/helpers";
 
-/* ── Quality badge colors ─────────────────────── */
+
 
 const qualityBadge: Record<Plan["maxQuality"], string> = {
   SD: "text-slate-500 bg-slate-500/10",
@@ -18,9 +18,9 @@ const qualityBadge: Record<Plan["maxQuality"], string> = {
   "4K": "text-amber-500 bg-amber-500/10",
 };
 
-/* ══════════════════════════════════════════════════
-   Plans Manage Page
-   ══════════════════════════════════════════════════ */
+
+   
+   
 
 export function PlansManagePage() {
   const [plans, setPlans] = useState<Plan[]>(mockPlans);
@@ -28,7 +28,7 @@ export function PlansManagePage() {
   const [editTarget, setEditTarget] = useState<Plan | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Plan | null>(null);
 
-  /* ── Handlers ──────────────────────────────── */
+  
   const handleCreate = () => {
     setEditTarget(null);
     setFormOpen(true);
@@ -41,10 +41,8 @@ export function PlansManagePage() {
 
   const handleFormSave = (data: PlanFormData) => {
     if (editTarget) {
-      // Update existing
       setPlans((prev) => prev.map((p) => (p.id === editTarget.id ? { ...p, ...data } : p)));
     } else {
-      // Create new
       const newPlan: Plan = {
         id: `plan_${Date.now()}`,
         subscriberCount: 0,
@@ -62,7 +60,7 @@ export function PlansManagePage() {
     setDeleteTarget(null);
   };
 
-  /* ── Table columns ─────────────────────────── */
+  
   const columns: Column<Plan>[] = [
     {
       key: "name",
@@ -182,7 +180,6 @@ export function PlansManagePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-end justify-between">
         <div>
           <h1
@@ -209,7 +206,6 @@ export function PlansManagePage() {
         </button>
       </div>
 
-      {/* Table */}
       <DataTable
         columns={columns}
         data={plans}
@@ -217,7 +213,6 @@ export function PlansManagePage() {
         emptyMessage="No plans yet. Create your first plan."
       />
 
-      {/* Form Drawer (create / edit) */}
       <PlanFormDrawer
         open={formOpen}
         onClose={() => {
@@ -228,7 +223,6 @@ export function PlansManagePage() {
         editPlan={editTarget}
       />
 
-      {/* Delete Confirmation */}
       <ConfirmationModal
         open={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

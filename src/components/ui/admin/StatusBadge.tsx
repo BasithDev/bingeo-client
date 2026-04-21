@@ -21,11 +21,11 @@ const badgeVariants = cva(
   },
 );
 
-export interface StatusBadgeProps extends VariantProps<typeof badgeVariants> {
+export interface IStatusBadgeProps extends VariantProps<typeof badgeVariants> {
   children: ReactNode;
   className?: string;
 }
 
-export function StatusBadge({ variant, children, className }: StatusBadgeProps) {
+export function StatusBadge({ variant, children, className }: IStatusBadgeProps) {
   return <span className={cn(badgeVariants({ variant }), className)}>{children}</span>;
 }

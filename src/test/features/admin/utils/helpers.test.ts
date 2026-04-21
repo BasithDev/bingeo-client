@@ -4,7 +4,6 @@ import { formatCurrency, formatDate } from "@/features/admin/utils/helpers";
 describe("formatDate", () => {
   it("should format ISO date to readable format", () => {
     const result = formatDate("2025-12-20T10:30:00Z");
-    // en-IN locale: "20 Dec 2025"
     expect(result).toContain("Dec");
     expect(result).toContain("2025");
     expect(result).toContain("20");
@@ -24,7 +23,6 @@ describe("formatDate", () => {
 
   it("should format end-of-year dates", () => {
     const result = formatDate("2025-12-31T23:59:59Z");
-    // In IST (+5:30), this becomes Jan 1 2026, so check for either year
     expect(result).toMatch(/2025|2026/);
   });
 });

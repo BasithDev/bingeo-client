@@ -3,7 +3,7 @@ import { Check, Film, Monitor, Smartphone, Tv, Users, Zap } from "lucide-react";
 import { mockPlans } from "../data/mockPlans";
 import type { Plan } from "../types/admin.types";
 
-/* ── Quality & access labels ────────────────────── */
+
 
 const qualityLabel: Record<Plan["maxQuality"], string> = {
   SD: "480p",
@@ -25,18 +25,18 @@ const qualityIcon: Record<Plan["maxQuality"], typeof Smartphone> = {
   "4K": Tv,
 };
 
-/* ── Plan card component ────────────────────────── */
+
 
 function PlanCard({ plan }: { plan: Plan }) {
   const QualityIcon = qualityIcon[plan.maxQuality];
 
   return (
     <div className="group relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5">
-      {/* Color accent bar at top */}
+      
       <div className="h-1" style={{ background: plan.color }} />
 
       <div className="flex flex-col flex-1 p-6">
-        {/* Header */}
+        
         <div className="mb-6">
           <div className="flex items-center gap-2.5 mb-3">
             <div
@@ -61,7 +61,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             </div>
           </div>
 
-          {/* Price */}
+          
           <div className="flex items-baseline gap-0.5">
             {plan.price === 0 ? (
               <span className="text-3xl font-bold text-foreground tracking-tight">Free</span>
@@ -80,7 +80,7 @@ function PlanCard({ plan }: { plan: Plan }) {
           </div>
         </div>
 
-        {/* Specs row */}
+        
         <div className="grid grid-cols-3 gap-2 mb-6">
           {[
             {
@@ -117,7 +117,7 @@ function PlanCard({ plan }: { plan: Plan }) {
           ))}
         </div>
 
-        {/* Content access detail */}
+        
         <div className="rounded-xl bg-muted/30 px-3.5 py-2.5 mb-5">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground">Content Access</span>
@@ -127,10 +127,10 @@ function PlanCard({ plan }: { plan: Plan }) {
           </div>
         </div>
 
-        {/* Divider */}
+        
         <div className="border-t border-border" />
 
-        {/* Features */}
+        
         <div className="mt-5 flex-1">
           <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             What's included
@@ -154,16 +154,16 @@ function PlanCard({ plan }: { plan: Plan }) {
   );
 }
 
-/* ══════════════════════════════════════════════════
-   Plans Overview Page
-   ══════════════════════════════════════════════════ */
+
+   
+   
 
 export function PlansOverviewPage() {
   const plans = mockPlans;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div>
         <h1
           className="text-2xl font-bold text-foreground"
@@ -176,7 +176,7 @@ export function PlansOverviewPage() {
         </p>
       </div>
 
-      {/* Plan cards — 3 columns */}
+      
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         {plans.map((plan) => (
           <PlanCard key={plan.id} plan={plan} />

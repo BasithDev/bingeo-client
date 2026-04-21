@@ -25,22 +25,21 @@ import {
 } from "../data/mockAnalytics";
 import { formatCurrency, formatDate } from "../utils/helpers";
 
-/* ── Chart tooltip ────────────────────────────── */
 
-interface ChartPayloadEntry {
+interface IChartPayloadEntry {
   name: string;
   value: number;
   color?: string;
   fill?: string;
 }
 
-interface ChartTipProps {
+interface IChartTipProps {
   active?: boolean;
-  payload?: ChartPayloadEntry[];
+  payload?: IChartPayloadEntry[];
   label?: string;
 }
 
-function ChartTip({ active, payload, label }: ChartTipProps) {
+function ChartTip({ active, payload, label }: IChartTipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
@@ -54,11 +53,9 @@ function ChartTip({ active, payload, label }: ChartTipProps) {
   );
 }
 
-/* ── Funnel colors ───────────────────────────── */
 
 const funnelColors = ["#94a3b8", "#3b82f6", "#7c3aed"];
 
-/* ── Shared axis props ───────────────────────── */
 
 const xProps = {
   dataKey: "month",
@@ -74,7 +71,6 @@ const yProps = {
 } as const;
 const sharedMargin = { top: 4, right: 4, left: -10, bottom: 0 };
 
-/* ── Switchable revenue chart ─────────────────── */
 
 function RevenueChart({ style }: { style: ChartStyle }) {
   if (style === "bar") {
@@ -132,7 +128,6 @@ function RevenueChart({ style }: { style: ChartStyle }) {
   );
 }
 
-/* ── Switchable revenue-by-plan chart ─────────── */
 
 function RevenueByPlanChart({ style }: { style: ChartStyle }) {
   if (style === "area") {
@@ -201,7 +196,6 @@ function RevenueByPlanChart({ style }: { style: ChartStyle }) {
     );
   }
 
-  // Default: stacked bar
   return (
     <BarChart data={revenueByPlan} margin={sharedMargin}>
       <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -215,20 +209,12 @@ function RevenueByPlanChart({ style }: { style: ChartStyle }) {
   );
 }
 
-/* ══════════════════════════════════════════════════
-   Analytics – Revenue Page
-   Layout:  KPIs
-            3/5 + 2/5: revenue chart | subscription funnel
-            full-width: revenue by plan
-            full-width: recent transactions
-   ══════════════════════════════════════════════════ */
-
 export function AnalyticsRevenuePage() {
   const funnelMax = subscriptionFunnel[0].count;
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div>
         <h1
           className="text-2xl font-bold text-foreground"
@@ -241,7 +227,6 @@ export function AnalyticsRevenuePage() {
         </p>
       </div>
 
-      {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={DollarSign}
@@ -272,7 +257,7 @@ export function AnalyticsRevenuePage() {
         />
       </div>
 
-      {/* Revenue chart | Funnel */}
+      
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-5">
         <ChartCard
           title="Revenue Overview"
@@ -290,7 +275,7 @@ export function AnalyticsRevenuePage() {
           )}
         </ChartCard>
 
-        {/* Subscription Funnel */}
+        
         <ChartCard
           title="Subscription Funnel"
           subtitle="Free → paid conversion"
@@ -325,7 +310,7 @@ export function AnalyticsRevenuePage() {
         </ChartCard>
       </div>
 
-      {/* Revenue by Plan — switchable */}
+      
       <ChartCard
         title="Revenue by Plan"
         subtitle="Basic vs Premium contribution per month"
@@ -341,7 +326,6 @@ export function AnalyticsRevenuePage() {
         )}
       </ChartCard>
 
-      {/* Recent Transactions table */}
       <ChartCard title="Recent Transactions" subtitle="Latest 5 payments" controls={false}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

@@ -41,7 +41,6 @@ export function AdminHeader() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -56,9 +55,7 @@ export function AdminHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border bg-card/80 backdrop-blur-md px-4 md:px-6">
-      {/* Left: mobile logo + breadcrumbs */}
       <div className="flex items-center gap-3">
-        {/* Mobile logo */}
         <div className="lg:hidden flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-primary">
@@ -86,7 +83,6 @@ export function AdminHeader() {
           </span>
         </div>
 
-        {/* Breadcrumbs (desktop) */}
         <nav className="hidden lg:flex items-center gap-1.5 text-sm">
           {crumbs.map((crumb, i) => (
             <span key={crumb} className="flex items-center gap-1.5">
@@ -103,7 +99,6 @@ export function AdminHeader() {
         </nav>
       </div>
 
-      {/* Right: Admin profile dropdown */}
       <div className="relative" ref={dropdownRef}>
         <button
           type="button"
@@ -115,7 +110,6 @@ export function AdminHeader() {
             dropdownOpen && "bg-muted",
           )}
         >
-          {/* Avatar */}
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary text-sm font-semibold">
             {user?.name?.charAt(0).toUpperCase() || "A"}
           </div>
@@ -135,16 +129,13 @@ export function AdminHeader() {
           />
         </button>
 
-        {/* Dropdown */}
         {dropdownOpen && (
           <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-border bg-card shadow-lg py-1.5 z-50">
-            {/* User info */}
             <div className="px-4 py-2.5 border-b border-border">
               <p className="text-sm font-medium text-foreground">{user?.name || "Admin"}</p>
               <p className="text-xs text-muted-foreground">{user?.email || "admin@bingeo.com"}</p>
             </div>
 
-            {/* Theme toggle */}
             <button
               type="button"
               onClick={() => {
@@ -160,7 +151,6 @@ export function AdminHeader() {
               <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
             </button>
 
-            {/* Settings */}
             <button
               type="button"
               onClick={() => {
@@ -175,7 +165,6 @@ export function AdminHeader() {
 
             <div className="my-1 border-t border-border" />
 
-            {/* Logout */}
             <button
               type="button"
               onClick={async () => {

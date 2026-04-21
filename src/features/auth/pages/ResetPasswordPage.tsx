@@ -174,7 +174,6 @@ export function ResetPasswordPage() {
           </div>
 
           <form onSubmit={onSubmit} className="space-y-5" id="reset-password-form">
-            {/* OTP Inputs */}
             <div>
               <label
                 htmlFor="reset-otp-0"
@@ -185,10 +184,7 @@ export function ResetPasswordPage() {
               <div className="flex justify-center gap-3">
                 {otp.map((digit, i) => (
                   <input
-                    key={`reset-otp-${
-                      // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length OTP
-                      i
-                    }`}
+                    key={`reset-otp-${i}`}
                     ref={(el: HTMLInputElement | null) => {
                       inputRefs.current[i] = el;
                     }}
@@ -207,7 +203,7 @@ export function ResetPasswordPage() {
               </div>
             </div>
 
-            {/* New Password */}
+
             <div className="space-y-1.5">
               <label
                 htmlFor="new-password"
@@ -239,7 +235,6 @@ export function ResetPasswordPage() {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div className="space-y-1.5">
               <label
                 htmlFor="confirm-password"
@@ -291,7 +286,6 @@ export function ResetPasswordPage() {
             </button>
           </form>
 
-          {/* Resend */}
           <div className="mt-5 text-center">
             <p className="text-xs text-muted-foreground">Didn&apos;t receive the code?</p>
             <Link

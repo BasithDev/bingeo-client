@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Check, ChevronRight, Play, Search, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-// ── Plans data ───────────────────────────────────────────
 const plans = [
   {
     name: "Free",
@@ -32,7 +31,6 @@ const plans = [
   },
 ];
 
-// ── Trending movie data (static for now) ─────────────────────
 const trendingMovies = [
   {
     id: 1,
@@ -89,7 +87,7 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Navbar ──────────────────────────────────────── */}
+      
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
@@ -98,7 +96,7 @@ export function LandingPage() {
         }`}
       >
         <div className="flex items-center justify-between px-6 py-4 lg:px-10">
-          {/* Logo */}
+          
           <Link to="/" className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet/20">
               <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-violet-light">
@@ -126,7 +124,7 @@ export function LandingPage() {
             </span>
           </Link>
 
-          {/* Search + Start Watching */}
+          
           <div className="flex items-center gap-3">
             <div className="hidden items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-2 sm:flex">
               <Search className="h-4 w-4 text-muted-foreground" />
@@ -147,9 +145,9 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* ── Hero ───────────────────────────────────────── */}
+      
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 lg:px-10">
-        {/* Background gradients */}
+        
         <div className="pointer-events-none absolute inset-0">
           <div
             className="absolute inset-0"
@@ -169,7 +167,7 @@ export function LandingPage() {
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl text-center">
-          {/* Badge */}
+          
           <motion.div
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-violet/30 bg-violet/10 px-4 py-1.5"
             initial={{ opacity: 0, y: 20 }}
@@ -185,7 +183,7 @@ export function LandingPage() {
             </span>
           </motion.div>
 
-          {/* Headline */}
+          
           <motion.h1
             className="text-5xl font-extrabold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl"
             style={{ fontFamily: "var(--font-heading)" }}
@@ -201,7 +199,7 @@ export function LandingPage() {
             Awaits
           </motion.h1>
 
-          {/* Subtitle */}
+          
           <motion.p
             className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl"
             initial={{ opacity: 0, y: 20 }}
@@ -212,7 +210,7 @@ export function LandingPage() {
             independent cinema and global blockbusters at your fingertips.
           </motion.p>
 
-          {/* CTAs */}
+          
           <motion.div
             className="mt-10 flex flex-wrap items-center justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
@@ -237,10 +235,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Trending Now ───────────────────────────────── */}
+      
       <section className="relative px-6 pb-20 lg:px-10">
         <div>
-          {/* Section header */}
+          
           <div className="mb-8 flex items-end justify-between">
             <div>
               <h2
@@ -259,7 +257,7 @@ export function LandingPage() {
             </button>
           </div>
 
-          {/* Movie cards — horizontal scroll */}
+          
           <div className="scrollbar-hide -mx-2 flex gap-4 overflow-x-auto px-2 pb-4">
             {trendingMovies.map((movie, i) => (
               <motion.div
@@ -269,22 +267,22 @@ export function LandingPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * i, duration: 0.4 }}
               >
-                {/* Poster */}
+                
                 <div
                   className={`group relative h-[280px] w-[190px] overflow-hidden rounded-xl bg-linear-to-br ${movie.gradient} sm:h-[320px] sm:w-[220px]`}
                 >
-                  {/* Overlay shimmer */}
+                  
                   <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  {/* Centered icon */}
+                  
                   <div className="flex h-full items-center justify-center">
                     <div className="rounded-full bg-white/10 p-4 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
                       <Play className="h-8 w-8 text-white/70" />
                     </div>
                   </div>
-                  {/* Hover border glow */}
+                  
                   <div className="absolute inset-0 rounded-xl border border-white/0 transition-all duration-300 group-hover:border-white/20 group-hover:shadow-[0_0_30px_rgba(124,58,237,0.2)]" />
                 </div>
-                {/* Title */}
+                
                 <h3
                   className="mt-3 text-sm font-bold text-foreground"
                   style={{ fontFamily: "var(--font-heading)" }}
@@ -300,10 +298,10 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Plans ──────────────────────────────────────── */}
+      
       <section ref={plansRef} className="relative px-6 pb-20 pt-10 lg:px-10">
         <div>
-          {/* Section header */}
+          
           <div className="mb-12 text-center">
             <h2
               className="text-3xl font-bold text-foreground sm:text-4xl"
@@ -316,7 +314,7 @@ export function LandingPage() {
             </p>
           </div>
 
-          {/* Plan cards */}
+          
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
             {plans.map((plan) => (
               <div
@@ -375,7 +373,6 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── Footer ─────────────────────────────────────── */}
       <footer className="border-t border-border px-6 py-8 lg:px-10">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2">

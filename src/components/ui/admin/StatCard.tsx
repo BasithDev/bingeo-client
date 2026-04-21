@@ -2,17 +2,16 @@ import NumberFlow from "@number-flow/react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/utils/cn";
 
-export interface StatCardProps {
+export interface IStatCardProps {
   icon: LucideIcon;
   label: string;
   value: number;
   change?: string;
-  /** Tailwind classes for the icon container, e.g. "text-blue-500 bg-blue-500/10" */
   color?: string;
   className?: string;
 }
 
-export function StatCard({ icon: Icon, label, value, change, color, className }: StatCardProps) {
+export function StatCard({ icon: Icon, label, value, change, color, className }: IStatCardProps) {
   const isPositive = change?.startsWith("+");
   const isNegative = change?.startsWith("-");
 

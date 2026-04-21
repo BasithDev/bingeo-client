@@ -18,7 +18,6 @@ import {
 } from "@/features/admin/data/mockAnalytics";
 
 describe("mockAnalytics data", () => {
-  /* ── Users Analytics ──────────────────────── */
 
   describe("usersKPIs", () => {
     it("should have totalUsers, newSignups, churnRate, activeRate", () => {
@@ -84,8 +83,6 @@ describe("mockAnalytics data", () => {
     });
   });
 
-  /* ── Revenue Analytics ────────────────────── */
-
   describe("revenueKPIs", () => {
     it("should have totalRevenue, mrr, arpu, growthPct", () => {
       expect(typeof revenueKPIs.totalRevenue).toBe("number");
@@ -150,8 +147,6 @@ describe("mockAnalytics data", () => {
       }
     });
   });
-
-  /* ── Engagement Analytics ─────────────────── */
 
   describe("engagementKPIs", () => {
     it("should have totalWatchHours, avgSessionMin, peakConcurrent, completionRate", () => {

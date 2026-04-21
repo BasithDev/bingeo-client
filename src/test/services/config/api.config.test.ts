@@ -10,7 +10,6 @@ describe("apiConfig", () => {
   describe("identity endpoints", () => {
     it("should have all required identity endpoints", () => {
       const { identity } = apiConfig.endpoints;
-      // base points to the identity service root (no prefix — single service in dev)
       expect(identity.base).toBeDefined();
       expect(identity.login).toContain("/auth/login");
       expect(identity.register).toContain("/auth/register");

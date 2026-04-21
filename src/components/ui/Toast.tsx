@@ -1,9 +1,5 @@
 import { Toaster, toast } from "sonner";
 
-/**
- * Pre-configured Toaster for the app.
- * Drop this into the root layout / providers.
- */
 export function AppToaster() {
   return (
     <Toaster
@@ -22,5 +18,4 @@ export function AppToaster() {
   );
 }
 
-// Re-export toast for convenient usage
 export { toast };

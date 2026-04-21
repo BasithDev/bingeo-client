@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowRight,
   Calendar,
@@ -6,7 +7,6 @@ import {
   ChevronRight,
   Clock,
   Film,
-  Image as ImageIcon,
   Plus,
   Search,
   Sparkles,
@@ -15,13 +15,13 @@ import {
   Tv,
   Users as UsersIcon,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
-import { mockDrafts } from "../data/mockContent";
-import type { ContentMetadata, ContentType } from "../types/content.types";
+import { contentService } from "@/services/api";
+import type { IContentMetadata as ContentMetadata, ContentType } from "../types/content.types";
 import { formatDate } from "../utils/helpers";
 
-/* ── Constants ────────────────────────────────── */
+
 
 const PAGE_SIZE = 5;
 
@@ -49,35 +49,24 @@ const TYPE_META: Record<
   },
 };
 
-/* ══════════════════════════════════════════════════
-   ContentDraftsPage
-   ══════════════════════════════════════════════════ */
+
+   
+   
 
 export function ContentDraftsPage() {
   const navigate = useNavigate();
-  const [drafts, setDrafts] = useState<ContentMetadata[]>([]);
+  const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  /* Load from localStorage, seed with mock if empty */
-  useEffect(() => {
-    const stored = localStorage.getItem("bingeo-drafts");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setDrafts(parsed.length > 0 ? parsed : mockDrafts);
-        if (parsed.length === 0) localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-      } catch {
-        setDrafts(mockDrafts);
-        localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-      }
-    } else {
-      setDrafts(mockDrafts);
-      localStorage.setItem("bingeo-drafts", JSON.stringify(mockDrafts));
-    }
-  }, []);
+  const draftsQuery = useQuery<ContentMetadata[]>({
+    queryKey: ["content", "drafts"],
+    queryFn: () => contentService.listDrafts(),
+  });
 
-  /* ── Derived data ──────────────────────────── */
+  const drafts = draftsQuery.data ?? [];
+
+  
 
   const filtered = useMemo(() => {
     if (!search.trim()) return drafts;
@@ -96,17 +85,21 @@ export function ContentDraftsPage() {
   const currentPage = Math.min(page, totalPages);
   const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-  // Reset to page 1 when search changes
-  useEffect(() => {
+  useMemo(() => {
     setPage(1);
-  }, []);
+  }, [search]);
 
-  /* ── Actions ───────────────────────────────── */
+  
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => contentService.deleteDraft(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["content", "drafts"] });
+    },
+  });
 
   const deleteDraft = (id: string) => {
-    const updated = drafts.filter((d) => d.id !== id);
-    setDrafts(updated);
-    localStorage.setItem("bingeo-drafts", JSON.stringify(updated));
+    deleteMutation.mutate(id);
   };
 
   const resumeDraft = (id: string) => {
@@ -115,7 +108,7 @@ export function ContentDraftsPage() {
 
   return (
     <div className="space-y-6">
-      {/* ── Header ──────────────────────────────── */}
+      
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1
@@ -146,7 +139,7 @@ export function ContentDraftsPage() {
         </button>
       </div>
 
-      {/* ── Search bar ──────────────────────────── */}
+      
       <div className="relative max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <input
@@ -160,8 +153,6 @@ export function ContentDraftsPage() {
           )}
         />
       </div>
-
-      {/* ── Empty state ─────────────────────────── */}
       {filtered.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-muted/10 py-20 text-center">
           <div className="h-16 w-16 mx-auto rounded-2xl bg-muted/50 flex items-center justify-center mb-4">
@@ -195,156 +186,153 @@ export function ContentDraftsPage() {
         </div>
       ) : (
         <>
-          {/* ── Draft list ────────────────────────── */}
-          <div className="space-y-3">
+          {/* Grid Layout - Smaller Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {paginated.map((draft) => {
-              const meta = TYPE_META[draft.type];
+              const meta = TYPE_META[draft.type as ContentType] || TYPE_META.movie;
               const totalEpisodes = draft.seasons.reduce((sum, s) => sum + s.episodes.length, 0);
+              const topCast = draft.cast.slice(0, 3);
+              const remainingCast = draft.cast.length - 3;
 
               return (
                 <div
                   key={draft.id}
                   className={cn(
-                    "group relative rounded-2xl border border-border bg-card overflow-hidden",
-                    "hover:border-primary/25 transition-all duration-200",
+                    "group relative flex flex-col rounded-xl border border-border bg-card overflow-hidden",
+                    "hover:border-primary/40 hover:shadow-xl transition-all duration-300",
                   )}
                 >
-                  {/* Gradient accent on hover */}
-                  <div
-                    className={cn(
-                      "absolute inset-0 bg-linear-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none",
-                      meta.accent,
-                    )}
-                  />
-
-                  <div className="relative z-10 flex items-stretch">
-                    {/* ── Thumbnail ────────────────── */}
-                    <button
-                      type="button"
-                      className="hidden sm:flex w-28 md:w-36 shrink-0 bg-muted/30 items-center justify-center cursor-pointer overflow-hidden border-0 p-0"
-                      onClick={() => resumeDraft(draft.id)}
-                      aria-label={`Resume draft: ${draft.title || "Untitled"}`}
-                    >
-                      {draft.posterUrl ? (
-                        <img
-                          src={draft.posterUrl}
-                          alt={draft.title}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex flex-col items-center gap-1.5 text-muted-foreground/40">
-                          <ImageIcon className="h-8 w-8" />
-                          <span className="text-[9px] font-medium">No Poster</span>
-                        </div>
+                  {/* Poster Placeholder Area - Reduced height */}
+                  <div className="relative aspect-[16/10] bg-muted/20 overflow-hidden flex items-center justify-center">
+                    <div
+                      className={cn(
+                        "absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-30 transition-opacity duration-500",
+                        meta.accent,
                       )}
-                    </button>
+                    />
+                    
+                    {/* Icon */}
+                    <div className={cn(
+                      "relative z-10 h-10 w-10 rounded-xl bg-background/40 backdrop-blur-sm flex items-center justify-center",
+                      "border border-white/5 transition-transform duration-500 group-hover:scale-110",
+                      meta.glow
+                    )}>
+                      <meta.Icon className="h-5 w-5" />
+                    </div>
 
-                    {/* ── Content ──────────────────── */}
-                    <div className="flex-1 p-4 md:p-5 min-w-0">
-                      <div className="flex items-start justify-between gap-4">
-                        {/* Left: Info */}
-                        <button
-                          type="button"
-                          className="flex-1 min-w-0 cursor-pointer text-left border-0 p-0 bg-transparent"
-                          onClick={() => resumeDraft(draft.id)}
-                        >
-                          {/* Type + Title row */}
-                          <div className="flex items-center gap-2.5 mb-1.5">
-                            <div
-                              className={cn(
-                                "h-8 w-8 rounded-lg flex items-center justify-center shrink-0",
-                                "bg-muted/60",
-                                meta.glow,
-                              )}
-                            >
-                              <meta.Icon className="h-4 w-4" />
-                            </div>
-                            <div className="min-w-0">
-                              <h3 className="text-base md:text-lg font-bold text-foreground truncate group-hover:text-primary transition-colors">
-                                {draft.title || "Untitled"}
-                              </h3>
-                            </div>
-                          </div>
+                    {/* Hover Actions Overlay - Compact */}
+                    <div className="absolute inset-0 z-30 bg-background/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => resumeDraft(draft.id)}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-primary-foreground",
+                          "transition-all duration-300 hover:scale-105 group/btn overflow-hidden max-w-[40px] hover:max-w-[120px]"
+                        )}
+                        title="Resume editing"
+                      >
+                        <ArrowRight className="h-4 w-4 shrink-0" />
+                        <span className="text-[10px] whitespace-nowrap opacity-0 group-hover/btn:opacity-100 font-bold uppercase tracking-tight">Resume</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteDraft(draft.id)}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 text-red-500",
+                          "transition-all duration-300 hover:scale-105 group/del overflow-hidden max-w-[40px] hover:max-w-[120px] border border-red-500/20"
+                        )}
+                        title="Delete draft"
+                      >
+                        <Trash2 className="h-4 w-4 shrink-0" />
+                        <span className="text-[10px] whitespace-nowrap opacity-0 group-hover/del:opacity-100 font-bold uppercase tracking-tight">Delete</span>
+                      </button>
+                    </div>
+                  </div>
 
-                          {/* Plot */}
-                          {draft.plot ? (
-                            <p className="text-sm text-muted-foreground line-clamp-1 mt-1 ml-[42px]">
-                              {draft.plot}
-                            </p>
-                          ) : (
-                            <p className="text-sm text-muted-foreground/40 italic mt-1 ml-[42px]">
-                              No description added
-                            </p>
-                          )}
+                  {/* Content Info */}
+                  <div className="p-3.5 flex-1 flex flex-col gap-2.5">
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h3 className="text-sm font-bold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                          {draft.title || "Untitled Draft"}
+                        </h3>
+                        <span className={cn("text-[9px] font-black uppercase shrink-0 transition-colors", meta.glow)}>
+                          {meta.label}
+                        </span>
+                      </div>
+                      
+                      <p className="text-[11px] text-muted-foreground line-clamp-1 opacity-70">
+                        {draft.plot || "No plot added..."}
+                      </p>
+                    </div>
 
-                          {/* Meta row */}
-                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 ml-[42px] text-xs text-muted-foreground">
-                            <span className={cn("font-semibold", meta.glow)}>{meta.label}</span>
-                            {draft.duration && (
-                              <span className="inline-flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {draft.duration}
-                              </span>
-                            )}
-                            {draft.genres.length > 0 && (
-                              <span className="inline-flex items-center gap-1">
-                                <Tag className="h-3 w-3" />
-                                {draft.genres.join(", ")}
-                              </span>
-                            )}
-                            {draft.cast.length > 0 && (
-                              <span className="inline-flex items-center gap-1">
-                                <UsersIcon className="h-3 w-3" />
-                                {draft.cast.length} cast
-                              </span>
-                            )}
-                            {draft.type === "series" && draft.seasons.length > 0 && (
-                              <span className="inline-flex items-center gap-1">
-                                <Tv className="h-3 w-3" />
-                                {draft.seasons.length}S · {totalEpisodes}E
-                              </span>
-                            )}
-                            <span className="inline-flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {formatDate(draft.updatedAt)}
-                            </span>
-                          </div>
-                        </button>
-
-                        {/* Right: Actions */}
-                        <div className="flex items-center gap-2 shrink-0 pt-1">
-                          <button
-                            type="button"
-                            onClick={() => deleteDraft(draft.id)}
-                            className={cn(
-                              "p-2 rounded-lg text-muted-foreground cursor-pointer",
-                              "hover:text-red-500 hover:bg-red-500/10 transition-all",
-                              "opacity-0 group-hover:opacity-100",
-                            )}
-                            title="Delete draft"
+                    {/* Cast Avatar Stack */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex -space-x-1.5">
+                        {topCast.map((member, i) => (
+                          <div 
+                            key={member.id} 
+                            className="h-6 w-6 rounded-full border-2 border-card bg-muted ring-1 ring-white/5 overflow-hidden"
+                            title={member.name}
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => resumeDraft(draft.id)}
-                            className={cn(
-                              "flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer",
-                              "bg-primary text-primary-foreground hover:bg-primary/90 transition-colors",
+                            {member.profilePath ? (
+                              <img src={member.profilePath} alt="" className="h-full w-full object-cover" />
+                            ) : (
+                              <div className="h-full w-full flex items-center justify-center text-[8px] font-bold">
+                                {member.name.charAt(0)}
+                              </div>
                             )}
-                          >
-                            Resume <ArrowRight className="h-3 w-3" />
-                          </button>
-                        </div>
+                          </div>
+                        ))}
+                        {remainingCast > 0 && (
+                          <div className="h-6 w-6 rounded-full border-2 border-card bg-muted-foreground/10 flex items-center justify-center text-[8px] font-black text-muted-foreground ring-1 ring-white/5">
+                            +{remainingCast}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground font-medium">
+                        {draft.type === "series" ? (
+                          <span className="flex items-center gap-1">
+                            <Tv className="h-3 w-3" /> {draft.seasons.length}S · {totalEpisodes}E
+                          </span>
+                        ) : draft.duration && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" /> {draft.duration}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Meta Footer - Timestamps */}
+                    <div className="pt-2.5 border-t border-border/50 flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between text-[9px] text-muted-foreground/60">
+                        <span>Drafted:</span>
+                        <span className="font-medium text-muted-foreground">
+                          {new Date(draft.createdAt).toLocaleDateString()} · {new Date(draft.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-[9px] text-muted-foreground/60">
+                        <span>Updated:</span>
+                        <span className={cn("font-bold", meta.glow)}>
+                          {new Date(draft.updatedAt).toLocaleDateString()} · {new Date(draft.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       </div>
                     </div>
                   </div>
+
+                  {/* Invisible Link */}
+                  <button
+                    type="button"
+                    className="absolute inset-0 z-0 cursor-pointer"
+                    onClick={() => resumeDraft(draft.id)}
+                  />
                 </div>
               );
             })}
           </div>
 
-          {/* ── Pagination ────────────────────────── */}
+          
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-muted-foreground">

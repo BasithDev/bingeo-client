@@ -3,11 +3,11 @@ import { ChevronDown, CreditCard, Crown, Users, UserX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
-interface ExpandableUsersCardProps {
+interface IExpandableUsersCardProps {
   stats: { total: number; premium: number; basic: number; free: number };
 }
 
-export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
+export function ExpandableUsersCard({ stats }: IExpandableUsersCardProps) {
   const [expanded, setExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
@@ -16,9 +16,9 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
     if (contentRef.current) {
       setContentHeight(contentRef.current.scrollHeight);
     }
-  }, []); // Only measure on mount, or we could use ResizeObserver for more robustness
+  }, []);
 
-  const previousTotal = 45; // mock: last month's total
+  const previousTotal = 45;
   const growthPct = Math.round(((stats.total - previousTotal) / previousTotal) * 100);
 
   const breakdown = [
@@ -50,7 +50,6 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
 
   return (
     <div className="rounded-2xl border border-border bg-card overflow-hidden transition-shadow duration-200 hover:shadow-md">
-      {/* Header — always visible */}
       <button
         type="button"
         onClick={() => setExpanded((v) => !v)}
@@ -85,7 +84,6 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
         </div>
       </button>
 
-      {/* Expanded: horizontal plan cards */}
       <div
         className="transition-[max-height,opacity] duration-300 ease-in-out overflow-hidden"
         style={{
@@ -98,7 +96,6 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
             <div className="grid grid-cols-3 gap-2">
               {breakdown.map((item) => (
                 <div key={item.label} className="rounded-xl bg-muted/50 p-2.5">
-                  {/* Icon + label */}
                   <div className="flex items-center gap-1.5 mb-1">
                     <div
                       className={cn(
@@ -111,7 +108,6 @@ export function ExpandableUsersCard({ stats }: ExpandableUsersCardProps) {
                     </div>
                     <span className="text-xs font-medium text-muted-foreground">{item.label}</span>
                   </div>
-                  {/* Count + change — below the label */}
                   <div className="flex items-center gap-1.5 pl-8">
                     <NumberFlow value={item.value} className="text-lg font-bold text-foreground" />
                     <span className="text-[9px] font-semibold text-emerald-500 bg-emerald-500/10 px-1 py-0.5 rounded">

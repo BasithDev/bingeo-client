@@ -1,12 +1,6 @@
 import { HttpResponse, http } from "msw";
 
-/* ══════════════════════════════════════════════════
-   Mock Handlers
-   Backend contracts from features/admin/data/mockAnalytics.ts
-   ══════════════════════════════════════════════════ */
-
 export const handlers = [
-  // Analytics - Users
   http.get("/api/admin/analytics/users", () => {
     return HttpResponse.json({
       totalUsers: 4820,
@@ -16,7 +10,6 @@ export const handlers = [
     });
   }),
 
-  // Analytics - Revenue
   http.get("/api/admin/analytics/revenue", () => {
     return HttpResponse.json({
       totalRevenue: 284500,
@@ -26,7 +19,6 @@ export const handlers = [
     });
   }),
 
-  // Content Upload flow (when needed)
   http.post("/api/admin/content", async ({ request }) => {
     const data = await request.json();
     return HttpResponse.json({ success: true, data }, { status: 201 });

@@ -19,7 +19,6 @@ import { PlansManagePage } from "@/features/admin/pages/PlansManagePage";
 import { PlansOverviewPage } from "@/features/admin/pages/PlansOverviewPage";
 import rootRoute from "../RootRoute";
 
-// /admin → redirect to login
 const adminIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin",
@@ -28,8 +27,6 @@ const adminIndexRoute = createRoute({
   },
 });
 
-// /admin/login — public, outside layout (no sidebar)
-// If already logged in as admin, redirect to dashboard
 const adminLoginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin/login",
@@ -38,7 +35,6 @@ const adminLoginRoute = createRoute({
   pendingComponent: AdminLoader,
 });
 
-// /admin/forgot-password — public, outside layout
 const adminForgotPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin/forgot-password",
@@ -47,7 +43,6 @@ const adminForgotPasswordRoute = createRoute({
   pendingComponent: AdminLoader,
 });
 
-// /admin/reset-password — public, outside layout
 const adminResetPasswordRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/admin/reset-password",
@@ -58,7 +53,6 @@ const adminResetPasswordRoute = createRoute({
   pendingComponent: AdminLoader,
 });
 
-// Admin layout wrapper — parent for all protected admin pages
 const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: "admin-layout",
@@ -67,14 +61,12 @@ const adminLayoutRoute = createRoute({
   pendingComponent: AdminLoader,
 });
 
-// ── Dashboard ────────────────────────────────────
 const adminDashboardRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/dashboard",
   component: AdminDashboardPage,
 });
 
-// ── Plans ────────────────────────────────────────
 const adminPlansRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/plans",
@@ -87,7 +79,6 @@ const adminPlansManageRoute = createRoute({
   component: PlansManagePage,
 });
 
-// ── Content ──────────────────────────────────────
 const adminContentUploadRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/content/upload",
@@ -109,14 +100,12 @@ const adminContentManageRoute = createRoute({
   component: () => <PlaceholderPage title="Manage Content" />,
 });
 
-// ── Users ────────────────────────────────────────
 const adminUsersRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/users",
   component: AdminUsersPage,
 });
 
-// ── Analytics ────────────────────────────────────
 const adminAnalyticsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/analytics",
@@ -143,7 +132,6 @@ const adminAnalyticsEngagementRoute = createRoute({
   component: AnalyticsEngagementPage,
 });
 
-// ── Settings ─────────────────────────────────────
 const adminSettingsRoute = createRoute({
   getParentRoute: () => adminLayoutRoute,
   path: "/admin/settings",
@@ -156,7 +144,6 @@ const adminSettingsAppearanceRoute = createRoute({
   component: () => <PlaceholderPage title="Appearance" />,
 });
 
-// Simple placeholder component for pages not yet built
 function PlaceholderPage({ title }: { title: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center">

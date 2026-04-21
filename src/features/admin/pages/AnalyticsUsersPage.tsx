@@ -25,22 +25,22 @@ import {
   usersKPIs,
 } from "../data/mockAnalytics";
 
-/* ── Chart tooltip ────────────────────────────── */
 
-interface ChartPayloadEntry {
+
+interface IChartPayloadEntry {
   name: string;
   value: number;
   color?: string;
   fill?: string;
 }
 
-interface ChartTipProps {
+interface IChartTipProps {
   active?: boolean;
-  payload?: ChartPayloadEntry[];
+  payload?: IChartPayloadEntry[];
   label?: string;
 }
 
-function ChartTip({ active, payload, label }: ChartTipProps) {
+function ChartTip({ active, payload, label }: IChartTipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-border bg-card px-3 py-2 shadow-lg text-xs">
@@ -54,9 +54,9 @@ function ChartTip({ active, payload, label }: ChartTipProps) {
   );
 }
 
-/* ── Donut center label ───────────────────────── */
 
-interface DonutLabelProps {
+
+interface IDonutLabelProps {
   viewBox?: {
     cx?: number;
     cy?: number;
@@ -68,7 +68,7 @@ interface DonutLabelProps {
 }
 
 function renderDonutLabel(total: number) {
-  return (props: DonutLabelProps) => {
+  return (props: IDonutLabelProps) => {
     const { viewBox } = props;
     const cx = viewBox?.cx ?? 0;
     const cy = viewBox?.cy ?? 0;
@@ -84,10 +84,6 @@ function renderDonutLabel(total: number) {
     );
   };
 }
-
-/* ── Plan badge ──────────────────────────────── */
-
-/* ── Switchable chart renderer ────────────────── */
 
 function SignupsChart({ style }: { style: ChartStyle }) {
   const sharedMargin = { top: 4, right: 4, left: -20, bottom: 0 };
@@ -134,7 +130,6 @@ function SignupsChart({ style }: { style: ChartStyle }) {
     );
   }
 
-  // Default: area
   return (
     <AreaChart data={userGrowthData} margin={sharedMargin}>
       <defs>
@@ -159,18 +154,17 @@ function SignupsChart({ style }: { style: ChartStyle }) {
   );
 }
 
-/* ══════════════════════════════════════════════════
-   Analytics – Users Page
-   Layout:  KPIs → full-width growth chart
-            3-col: donut | age bar | recent signups
-   ══════════════════════════════════════════════════ */
+
+   
+   
+            
+   
 
 export function AnalyticsUsersPage() {
   const total = planDistribution.reduce((s, p) => s + p.value, 0);
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1
           className="text-2xl font-bold text-foreground"
@@ -183,7 +177,6 @@ export function AnalyticsUsersPage() {
         </p>
       </div>
 
-      {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={Users}
@@ -214,7 +207,7 @@ export function AnalyticsUsersPage() {
         />
       </div>
 
-      {/* Full-width growth chart — switchable */}
+      
       <ChartCard
         title="Signups Overview"
         subtitle="New user registrations over time"
@@ -230,9 +223,9 @@ export function AnalyticsUsersPage() {
         )}
       </ChartCard>
 
-      {/* 2-column row */}
+      
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
-        {/* Plan Distribution — donut */}
+        
         <ChartCard title="Plan Distribution" controls={false}>
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -267,7 +260,7 @@ export function AnalyticsUsersPage() {
           </div>
         </ChartCard>
 
-        {/* Age Demographics — horizontal bar */}
+        
         <ChartCard title="Age Demographics" controls={false}>
           <div className="h-[230px]">
             <ResponsiveContainer width="100%" height="100%">

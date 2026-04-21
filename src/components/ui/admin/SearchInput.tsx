@@ -2,7 +2,7 @@ import { Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
-export interface SearchInputProps {
+export interface ISearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -16,11 +16,10 @@ export function SearchInput({
   placeholder = "Search…",
   debounceMs = 300,
   className,
-}: SearchInputProps) {
+}: ISearchInputProps) {
   const [local, setLocal] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Sync external value → local
   useEffect(() => {
     setLocal(value);
   }, [value]);

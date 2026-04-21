@@ -1,7 +1,3 @@
-/**
- * Utility for merging Tailwind CSS classes
- * Used by shadcn/ui components
- */
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

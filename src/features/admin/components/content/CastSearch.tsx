@@ -3,9 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import type { CastMember } from "../../types/content.types";
 
-/* ── TMDb search result shape ─────────────────── */
-
-interface TmdbPerson {
+interface ITmdbPerson {
   id: number;
   name: string;
   profile_path: string | null;
@@ -14,37 +12,19 @@ interface TmdbPerson {
 
 const TMDB_IMG = "https://image.tmdb.org/t/p/w185";
 
-/* ── Fallback mock results when no API key ────── */
-
-const MOCK_RESULTS: TmdbPerson[] = [
-  { id: 1, name: "Shah Rukh Khan", profile_path: null, known_for_department: "Acting" },
-  { id: 2, name: "Deepika Padukone", profile_path: null, known_for_department: "Acting" },
-  { id: 3, name: "Aamir Khan", profile_path: null, known_for_department: "Acting" },
-  { id: 4, name: "Priyanka Chopra", profile_path: null, known_for_department: "Acting" },
-  { id: 5, name: "Ranveer Singh", profile_path: null, known_for_department: "Acting" },
-  { id: 6, name: "Alia Bhatt", profile_path: null, known_for_department: "Acting" },
-  { id: 7, name: "Rajinikanth", profile_path: null, known_for_department: "Acting" },
-  { id: 8, name: "Vijay Sethupathi", profile_path: null, known_for_department: "Acting" },
-  { id: 9, name: "Samantha Ruth Prabhu", profile_path: null, known_for_department: "Acting" },
-  { id: 10, name: "Pankaj Tripathi", profile_path: null, known_for_department: "Acting" },
-];
-
-/* ── Props ────────────────────────────────────── */
-
-interface CastSearchProps {
+interface ICastSearchProps {
   cast: CastMember[];
   onChange: (cast: CastMember[]) => void;
 }
 
-export function CastSearch({ cast, onChange }: CastSearchProps) {
+export function CastSearch({ cast, onChange }: ICastSearchProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<TmdbPerson[]>([]);
+  const [results, setResults] = useState<ITmdbPerson[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  /* Close dropdown on outside click */
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -55,7 +35,6 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  /* Debounced search */
   const search = useCallback((q: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (q.trim().length < 2) {
@@ -68,23 +47,13 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
       setLoading(true);
       try {
         const apiKey = import.meta.env.VITE_TMDB_API_KEY;
-        if (apiKey) {
-          const res = await fetch(
-            `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${encodeURIComponent(q)}&page=1`,
-          );
-          const data = await res.json();
-          setResults((data.results ?? []).slice(0, 8));
-        } else {
-          // Fallback to mock
-          const filtered = MOCK_RESULTS.filter((p) =>
-            p.name.toLowerCase().includes(q.toLowerCase()),
-          );
-          setResults(filtered);
-        }
+        const res = await fetch(
+          `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${encodeURIComponent(q)}&page=1`,
+        );
+        const data = await res.json();
+        setResults((data.results ?? []).slice(0, 8));
       } catch {
-        // Fallback to mock on error
-        const filtered = MOCK_RESULTS.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()));
-        setResults(filtered);
+        setResults([]);
       } finally {
         setLoading(false);
         setOpen(true);
@@ -97,7 +66,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
     search(val);
   };
 
-  const addPerson = (person: TmdbPerson) => {
+  const addPerson = (person: ITmdbPerson) => {
     if (cast.some((c) => c.id === person.id)) return;
     onChange([
       ...cast,
@@ -127,7 +96,6 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
         Cast
       </label>
 
-      {/* Search input */}
       <div ref={wrapperRef} className="relative">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -147,7 +115,6 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
           )}
         </div>
 
-        {/* Dropdown results */}
         {open && results.length > 0 && (
           <div className="absolute z-50 mt-1 w-full rounded-xl border border-border bg-card shadow-xl max-h-64 overflow-y-auto">
             {results.map((p) => {
@@ -164,7 +131,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
                     alreadyAdded && "opacity-40 cursor-not-allowed",
                   )}
                 >
-                  {/* Avatar */}
+                  
                   <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
                     {p.profile_path ? (
                       <img
@@ -198,7 +165,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
         )}
       </div>
 
-      {/* Added cast cards */}
+      
       {cast.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {cast.map((c) => (
@@ -206,7 +173,7 @@ export function CastSearch({ cast, onChange }: CastSearchProps) {
               key={c.id}
               className="flex items-center gap-3 rounded-xl border border-border bg-muted/20 px-3 py-2.5"
             >
-              {/* Avatar */}
+              
               <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
                 {c.profilePath ? (
                   <img src={c.profilePath} alt={c.name} className="h-full w-full object-cover" />

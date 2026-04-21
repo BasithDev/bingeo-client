@@ -5,7 +5,7 @@ import { type MouseEvent, type ReactNode, useCallback, useEffect, useRef } from 
 import { createPortal } from "react-dom";
 import { cn } from "@/utils/cn";
 
-/* ── Overlay variants ─────────────────────────────── */
+
 
 const overlayVariants = cva("fixed inset-0 z-[100] flex items-center justify-center p-4", {
   variants: {
@@ -19,7 +19,7 @@ const overlayVariants = cva("fixed inset-0 z-[100] flex items-center justify-cen
   defaultVariants: { blur: "sm" },
 });
 
-/* ── Panel variants ───────────────────────────────── */
+
 
 const panelVariants = cva(
   [
@@ -59,9 +59,9 @@ const panelVariants = cva(
   },
 );
 
-/* ── Types ─────────────────────────────────────────── */
 
-export interface ModalProps
+
+export interface IModalProps
   extends VariantProps<typeof overlayVariants>,
     VariantProps<typeof panelVariants> {
   open: boolean;
@@ -77,7 +77,7 @@ export interface ModalProps
   portalTarget?: HTMLElement;
 }
 
-/* ── Component ─────────────────────────────────────── */
+
 
 export function Modal({
   open,
@@ -95,10 +95,9 @@ export function Modal({
   overlayClassName,
   className,
   portalTarget,
-}: ModalProps) {
+}: IModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
-  /* Escape key */
   const handleKeyDown = useCallback(
     (e: globalThis.KeyboardEvent) => {
       if (closeOnEscape && e.key === "Escape") onClose();
@@ -112,7 +111,7 @@ export function Modal({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, handleKeyDown]);
 
-  /* Lock body scroll */
+  
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -122,12 +121,12 @@ export function Modal({
     };
   }, [open]);
 
-  /* Focus trap */
+  
   useEffect(() => {
     if (open) panelRef.current?.focus();
   }, [open]);
 
-  /* Backdrop click */
+  
   const handleBackdropClick = (e: MouseEvent) => {
     if (closeOnBackdrop && e.target === e.currentTarget) onClose();
   };
@@ -166,7 +165,7 @@ export function Modal({
               mass: 0.6,
             }}
           >
-            {/* ── Header ──────────── */}
+            
             {hasHeader && (
               <ModalHeader
                 header={header}
@@ -176,10 +175,7 @@ export function Modal({
               />
             )}
 
-            {/* ── Body ────────────── */}
             <div className={cn(getPaddingClass(padding))}>{children}</div>
-
-            {/* ── Footer ──────────── */}
             {footer && <ModalFooter footer={footer} padding={padding} />}
           </motion.div>
         </motion.div>
@@ -190,15 +186,15 @@ export function Modal({
   return createPortal(modal, portalTarget ?? document.body);
 }
 
-/* ── Helpers ────────────────────────────────────────── */
 
-function getPaddingClass(padding: ModalProps["padding"]) {
+
+function getPaddingClass(padding: IModalProps["padding"]) {
   if (padding === "lg") return "px-8 py-6";
   if (padding === "sm") return "px-4 py-3";
   return "px-6 py-5";
 }
 
-function getHeaderFooterPaddingClass(padding: ModalProps["padding"]) {
+function getHeaderFooterPaddingClass(padding: IModalProps["padding"]) {
   if (padding === "lg") return "px-8 py-5";
   if (padding === "sm") return "px-4 py-3";
   return "px-6 py-4";
@@ -211,7 +207,7 @@ function ModalHeader({
   showCloseButton,
 }: {
   header: ReactNode;
-  padding: ModalProps["padding"];
+  padding: IModalProps["padding"];
   onClose: () => void;
   showCloseButton: boolean;
 }) {
@@ -241,7 +237,7 @@ function ModalHeader({
   );
 }
 
-function ModalFooter({ footer, padding }: { footer: ReactNode; padding: ModalProps["padding"] }) {
+function ModalFooter({ footer, padding }: { footer: ReactNode; padding: IModalProps["padding"] }) {
   return (
     <div className={cn("border-t border-white/6", getHeaderFooterPaddingClass(padding))}>
       {footer}

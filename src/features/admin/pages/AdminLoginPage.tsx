@@ -35,7 +35,6 @@ export function AdminLoginPage() {
   const loginMutation = useMutation({
     mutationFn: authService.login,
     onSuccess: async (data) => {
-      // Admin role guard — reject non-admin users
       if (data.user.role !== "admin") {
         await authService.logout();
         toast.error("Admin access only. You do not have permission.");
@@ -60,14 +59,14 @@ export function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* ── Left: Brand Panel ──────────────────────── */}
+      
       <div
         className="hidden lg:flex lg:w-[45%] xl:w-[50%] relative overflow-hidden flex-col justify-between p-12"
         style={{
           background: "linear-gradient(135deg, #7C3AED 0%, #5B21B6 50%, #4C1D95 100%)",
         }}
       >
-        {/* Decorative shapes */}
+        
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-10"
@@ -83,7 +82,7 @@ export function AdminLoginPage() {
           />
         </div>
 
-        {/* Logo */}
+        
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
@@ -113,7 +112,7 @@ export function AdminLoginPage() {
           </div>
         </div>
 
-        {/* Center content */}
+        
         <div className="relative z-10 space-y-8">
           <div>
             <h1
@@ -130,7 +129,7 @@ export function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Feature highlights */}
+          
           <div className="space-y-4">
             {[
               { icon: Film, text: "Content management & uploads" },
@@ -147,7 +146,7 @@ export function AdminLoginPage() {
           </div>
         </div>
 
-        {/* Footer */}
+        
         <div className="relative z-10">
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} Bingeo Entertainment Pvt. Ltd.
@@ -155,7 +154,7 @@ export function AdminLoginPage() {
         </div>
       </div>
 
-      {/* ── Right: Login Form ──────────────────────── */}
+      
       <div className="flex-1 flex items-center justify-center bg-white px-6 py-12">
         <motion.div
           className="w-full max-w-[400px]"
@@ -163,12 +162,12 @@ export function AdminLoginPage() {
           animate={{ opacity: showForm ? 1 : 0, y: showForm ? 0 : -10 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          {/* Mobile logo */}
+          
           <div className="lg:hidden flex justify-center mb-10">
             <BingeoLogo size="default" />
           </div>
 
-          {/* Header */}
+          
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-xs font-semibold uppercase tracking-[0.15em] text-violet-600">
@@ -186,7 +185,7 @@ export function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Form */}
+          
           <form onSubmit={onSubmit} className="space-y-5" id="admin-login-form">
             <Input
               id="admin-email"
@@ -194,6 +193,7 @@ export function AdminLoginPage() {
               label="Email Address"
               placeholder="admin@bingeo.com"
               icon={<Mail className="h-4 w-4" />}
+              variant="lightFixed"
               error={errors.email?.message}
               autoComplete="email"
               disabled={loginMutation.isPending || loginMutation.isSuccess}
@@ -201,26 +201,25 @@ export function AdminLoginPage() {
             />
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="admin-password" className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                <Link
-                  to="/admin/forgot-password"
-                  className="text-xs font-medium text-violet hover:underline cursor-pointer"
-                >
-                  Forgot password?
-                </Link>
-              </div>
               <PasswordInput
                 id="admin-password"
+                label="Password"
                 placeholder="Enter your password"
                 icon={<Lock className="h-4 w-4" />}
+                variant="lightFixed"
                 error={errors.password?.message}
                 autoComplete="current-password"
                 disabled={loginMutation.isPending || loginMutation.isSuccess}
                 {...register("password")}
               />
+              <div className="text-right">
+              <Link
+                  to="/admin/forgot-password"
+                  className="text-xs font-medium text-violet hover:underline cursor-pointer"
+                >
+                  Forgot password?
+              </Link>
+              </div>
             </div>
 
             <Button
@@ -242,14 +241,14 @@ export function AdminLoginPage() {
             </Button>
           </form>
 
-          {/* Footer (mobile) */}
+          
           <div className="mt-10 text-center lg:hidden">
             <p className="text-xs text-gray-400">
               © {new Date().getFullYear()} Bingeo Entertainment Pvt. Ltd.
             </p>
           </div>
 
-          {/* Desktop footer */}
+          
           <div className="mt-10 hidden lg:block">
             <p className="text-xs text-gray-400 text-center">
               Protected area · Authorized personnel only

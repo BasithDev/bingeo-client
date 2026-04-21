@@ -3,13 +3,13 @@ import { persist } from "zustand/middleware";
 
 type AdminTheme = "light" | "dark";
 
-export interface AdminThemeState {
+export interface IAdminThemeState {
   theme: AdminTheme;
   setTheme: (theme: AdminTheme) => void;
   toggleTheme: () => void;
 }
 
-export const useAdminThemeStore = create<AdminThemeState>()(
+export const useAdminThemeStore = create<IAdminThemeState>()(
   persist(
     (set, get) => ({
       theme: "light",

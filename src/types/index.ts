@@ -1,14 +1,9 @@
-/**
- * Shared Type Definitions
- */
-
-// Content types
-export interface Movie {
+export interface IMovie {
   id: string;
   title: string;
   description: string;
   thumbnail: string;
-  duration: number; // in seconds
+  duration: number;
   releaseYear: number;
   rating: number;
   genres: string[];
@@ -17,12 +12,12 @@ export interface Movie {
   updatedAt: string;
 }
 
-export interface Series {
+export interface ISeries {
   id: string;
   title: string;
   description: string;
   thumbnail: string;
-  seasons: Season[];
+  seasons: ISeason[];
   releaseYear: number;
   rating: number;
   genres: string[];
@@ -31,14 +26,14 @@ export interface Series {
   updatedAt: string;
 }
 
-export interface Season {
+export interface ISeason {
   id: string;
   seasonNumber: number;
   title: string;
-  episodes: Episode[];
+  episodes: IEpisode[];
 }
 
-export interface Episode {
+export interface IEpisode {
   id: string;
   episodeNumber: number;
   title: string;
@@ -47,24 +42,22 @@ export interface Episode {
   duration: number;
 }
 
-// User types
-export interface User {
+export interface IUser {
   id: string;
   email: string;
   name: string;
   role: "user" | "admin";
-  subscription: SubscriptionInfo;
+  subscription: ISubscriptionInfo;
   createdAt: string;
 }
 
-export interface SubscriptionInfo {
+export interface ISubscriptionInfo {
   plan: "free" | "premium";
   status: "active" | "cancelled" | "expired";
   expiresAt: string | null;
 }
 
-// API Response types
-export interface PaginatedResponse<T> {
+export interface IPaginatedResponse<T> {
   data: T[];
   total: number;
   page: number;
@@ -72,17 +65,16 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// Playback types
-export interface PlaybackToken {
+export interface IPlaybackToken {
   token: string;
   expiresAt: string;
   streamUrl: string;
 }
 
-export interface WatchProgress {
+export interface IWatchProgress {
   contentId: string;
   contentType: "movie" | "episode";
-  position: number; // in seconds
+  position: number;
   duration: number;
   updatedAt: string;
 }

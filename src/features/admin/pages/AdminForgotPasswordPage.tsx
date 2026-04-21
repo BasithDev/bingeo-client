@@ -41,7 +41,6 @@ export function AdminForgotPasswordPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left panel – branding */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 bg-white relative overflow-hidden">
         <div className="relative z-10">
           <BingeoLogo />
@@ -63,12 +62,10 @@ export function AdminForgotPasswordPage() {
             © {new Date().getFullYear()} Bingeo Entertainment Pvt. Ltd.
           </p>
         </div>
-        {/* Decorative circles */}
         <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-violet/5 blur-3xl" />
         <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-violet/5 blur-3xl" />
       </div>
 
-      {/* Right panel – form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#fafafa] px-6 py-12">
         <motion.div
           className="w-full max-w-[400px]"

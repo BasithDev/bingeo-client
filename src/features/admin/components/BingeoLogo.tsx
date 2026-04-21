@@ -1,7 +1,4 @@
-/**
- * Bingeo brand logo component with animated violet glow.
- * Used across admin pages — login, sidebar, header.
- */
+
 export function BingeoLogo({
   size = "default",
   className = "",
@@ -17,7 +14,6 @@ export function BingeoLogo({
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* Icon mark */}
       <div className="relative">
         <div
           className={`
@@ -51,7 +47,6 @@ export function BingeoLogo({
           </svg>
         </div>
 
-        {/* Glow ring */}
         <div
           className="absolute -inset-1 rounded-xl opacity-40 blur-md -z-10"
           style={{
@@ -60,7 +55,6 @@ export function BingeoLogo({
         />
       </div>
 
-      {/* Wordmark */}
       <span
         className={`font-bold tracking-tight ${sizeMap[size]}`}
         style={{ fontFamily: "var(--font-heading)" }}
