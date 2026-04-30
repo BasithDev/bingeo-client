@@ -1,37 +1,36 @@
-import { CheckCircle, CloudUpload, FileVideo, Upload, X, AlertCircle } from "lucide-react";
+import { CheckCircle, CloudUpload, Image as ImageIcon, Upload, X, AlertCircle } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 
-const ACCEPTED_VIDEO_TYPES = [
-  "video/mp4",
-  "video/webm",
-  "video/quicktime",
-  "video/x-matroska",
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
 ];
-const ACCEPTED_EXTENSIONS = ".mp4,.webm,.mov,.mkv";
-const MAX_FILE_SIZE_MB = 5120; // 5 GB
+const ACCEPTED_EXTENSIONS = ".jpg,.jpeg,.png,.webp";
+const MAX_FILE_SIZE_MB = 10; // 10 MB
 
 export type UploadState = "idle" | "uploading" | "success" | "error";
 
-interface MediaUploadZoneProps {
+interface ThumbnailUploadZoneProps {
   contentId: string;
-  existingVideoKey?: string;
-  onUploadComplete: (videoKey: string) => void;
+  existingThumbnailKey?: string;
+  onUploadComplete: (thumbnailKey: string) => void;
   requestUploadUrl: (
     contentId: string,
     fileName: string,
     contentType: string,
   ) => Promise<{ uploadUrl: string; key: string }>;
-  confirmUpload: (contentId: string, videoKey: string) => Promise<unknown>;
+  confirmUpload: (contentId: string, thumbnailKey: string) => Promise<unknown>;
 }
 
-export function MediaUploadZone({
+export function ThumbnailUploadZone({
   contentId,
-  existingVideoKey,
+  existingThumbnailKey,
   onUploadComplete,
   requestUploadUrl,
   confirmUpload,
-}: MediaUploadZoneProps) {
+}: ThumbnailUploadZoneProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadState, setUploadState] = useState<UploadState>("idle");
   const [progress, setProgress] = useState(0);
@@ -41,11 +40,11 @@ export function MediaUploadZone({
   const xhrRef = useRef<XMLHttpRequest | null>(null);
 
   const validateFile = useCallback((f: File): string | null => {
-    if (!ACCEPTED_VIDEO_TYPES.includes(f.type) && !f.name.match(/\.(mp4|webm|mov|mkv)$/i)) {
-      return `Unsupported format. Accepted: MP4, WebM, MOV, MKV`;
+    if (!ACCEPTED_IMAGE_TYPES.includes(f.type) && !f.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
+      return `Unsupported format. Accepted: JPG, PNG, WebP`;
     }
     if (f.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-      return `File too large. Max ${MAX_FILE_SIZE_MB / 1024} GB`;
+      return `File too large. Max ${MAX_FILE_SIZE_MB} MB`;
     }
     return null;
   }, []);
@@ -87,14 +86,12 @@ export function MediaUploadZone({
     setErrorMsg("");
 
     try {
-      // 1. Get presigned URL from backend
       const { uploadUrl, key } = await requestUploadUrl(
         contentId,
         file.name,
-        file.type || "video/mp4",
+        file.type || "image/jpeg",
       );
 
-      // 2. Upload directly to S3 via presigned URL (XHR for progress)
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhrRef.current = xhr;
@@ -117,11 +114,10 @@ export function MediaUploadZone({
         xhr.addEventListener("abort", () => reject(new Error("Upload cancelled")));
 
         xhr.open("PUT", uploadUrl);
-        xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
+        xhr.setRequestHeader("Content-Type", file.type || "image/jpeg");
         xhr.send(file);
       });
 
-      // 3. Confirm upload with backend
       await confirmUpload(contentId, key);
 
       setUploadState("success");
@@ -159,18 +155,22 @@ export function MediaUploadZone({
 
   return (
     <fieldset className="space-y-4">
-      <legend className="text-sm font-medium text-foreground block mb-2">Video Upload</legend>
+      <legend className="text-sm font-medium text-foreground block mb-2">Thumbnail Upload</legend>
 
       {/* Already uploaded (loaded from DB) */}
-      {existingVideoKey && !file && uploadState !== "success" && uploadState !== "uploading" && (
+      {existingThumbnailKey && !file && uploadState !== "success" && uploadState !== "uploading" && (
         <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/4 p-4">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
               <CheckCircle className="h-6 w-6 text-emerald-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground">Video uploaded</p>
-              <p className="text-xs text-muted-foreground truncate">{existingVideoKey}</p>
+              <p className="text-sm font-medium text-foreground">Thumbnail uploaded</p>
+              <p className="text-xs text-muted-foreground truncate">
+                <a href={`https://bingeo-media-assets.s3.ap-south-1.amazonaws.com/${existingThumbnailKey}`} target="_blank" rel="noreferrer" className="hover:underline">
+                  View image
+                </a>
+              </p>
             </div>
             <button
               type="button"
@@ -190,7 +190,7 @@ export function MediaUploadZone({
       )}
 
       {/* Drop zone */}
-      {!file && !existingVideoKey && uploadState !== "success" && (
+      {!file && !existingThumbnailKey && uploadState !== "success" && (
         <div
           role="button"
           tabIndex={0}
@@ -214,10 +214,10 @@ export function MediaUploadZone({
           </div>
           <div className="text-center space-y-1">
             <p className="text-sm font-medium text-foreground">
-              {dragOver ? "Drop your video here" : "Drag & drop your video file"}
+              {dragOver ? "Drop your image here" : "Drag & drop your thumbnail image"}
             </p>
             <p className="text-xs text-muted-foreground">
-              MP4, WebM, MOV, MKV — up to {MAX_FILE_SIZE_MB / 1024} GB
+              JPG, PNG, WebP — up to {MAX_FILE_SIZE_MB} MB
             </p>
           </div>
           <button
@@ -241,7 +241,7 @@ export function MediaUploadZone({
         <div className="rounded-2xl border border-border bg-card p-4 space-y-4">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <FileVideo className="h-5 w-5 text-primary" />
+              <ImageIcon className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
@@ -267,7 +267,7 @@ export function MediaUploadZone({
         <div className="rounded-2xl border border-primary/30 bg-primary/2 p-4 space-y-3">
           <div className="flex items-center gap-3">
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <FileVideo className="h-5 w-5 text-primary" />
+              <ImageIcon className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
@@ -283,7 +283,6 @@ export function MediaUploadZone({
             </button>
           </div>
 
-          {/* Progress bar */}
           <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full bg-linear-to-r from-primary to-primary/80 rounded-full transition-all duration-300 ease-out"

@@ -8,6 +8,7 @@ import { cn } from "@/utils/cn";
 import { CastSearch } from "../components/content/CastSearch";
 import { GenrePicker } from "../components/content/GenrePicker";
 import { MediaUploadZone } from "../components/content/MediaUploadZone";
+import { ThumbnailUploadZone } from "../components/content/ThumbnailUploadZone";
 import { SeasonManager } from "../components/content/SeasonManager";
 import type { ICastMember, IContentMetadata, ContentType, ISeason } from "../types/content.types";
 import { contentService } from "@/services/api";
@@ -39,14 +40,16 @@ interface IFormState {
   plot: string;
   duration: string;
   posterUrl: string;
+  thumbnailKey: string;
   genres: string[];
   cast: ICastMember[];
   seasons: ISeason[];
+  videoKey: string;
 }
 
 type Action =
   | { kind: "SET_TYPE"; payload: ContentType }
-  | { kind: "SET_FIELD"; field: "title" | "plot" | "duration" | "posterUrl"; value: string }
+  | { kind: "SET_FIELD"; field: "title" | "plot" | "duration" | "posterUrl" | "thumbnailKey" | "videoKey"; value: string }
   | { kind: "SET_GENRES"; payload: string[] }
   | { kind: "SET_CAST"; payload: ICastMember[] }
   | { kind: "SET_SEASONS"; payload: ISeason[] }
@@ -84,6 +87,8 @@ const INITIAL: IFormState = {
   genres: [],
   cast: [],
   seasons: [],
+  thumbnailKey: "",
+  videoKey: "",
 };
 
 export function ContentUploadPage() {
@@ -110,11 +115,12 @@ export function ContentUploadPage() {
             genres: f.genres,
             cast: f.cast || [],
             seasons: f.seasons || [],
+            thumbnailKey: f.thumbnailKey || "",
+            videoKey: f.videoKey || "",
           },
         });
         setStepIdx(1);
       } catch {
-        // ignore load errors for now
       }
     })();
   }, [draftId]);
@@ -131,10 +137,13 @@ export function ContentUploadPage() {
 
   const queryClient = useQueryClient();
 
-  const saveDraft = async () => {
+  const ensureSaved = async (): Promise<string> => {
     const now = new Date().toISOString();
+    const id = editingIdRef.current ?? `draft-${Date.now()}`;
+    editingIdRef.current = id;
+
     const data: IContentMetadata = {
-      id: editingIdRef.current ?? `draft-${Date.now()}`,
+      id,
       status: "draft",
       createdAt: now,
       title: state.title || "Untitled",
@@ -143,14 +152,39 @@ export function ContentUploadPage() {
       plot: state.plot,
       duration: state.duration,
       posterUrl: state.posterUrl || undefined,
+      thumbnailKey: state.thumbnailKey || undefined,
+      videoKey: state.videoKey || undefined,
       cast: state.cast,
       seasons: state.seasons,
       updatedAt: now,
     };
 
     await contentService.saveDraft(data);
+    return id;
+  };
+
+  const saveDraft = async () => {
+    await ensureSaved();
     await queryClient.invalidateQueries({ queryKey: ["content", "drafts"] });
     navigate({ to: "/admin/content/drafts" });
+  };
+
+  const handleUploadComplete = (videoKey: string) => {
+    dispatch({ kind: "SET_FIELD", field: "videoKey", value: videoKey });
+  };
+
+  const handleRequestUploadUrl = async (
+    _contentId: string,
+    fileName: string,
+    contentType: string,
+  ) => {
+    const id = await ensureSaved();
+    return contentService.requestUploadUrl(id, fileName, contentType);
+  };
+
+  const handleConfirmUpload = async (_contentId: string, videoKey: string) => {
+    const id = editingIdRef.current!;
+    return contentService.confirmUpload(id, videoKey);
   };
 
   return (
@@ -172,7 +206,18 @@ export function ContentUploadPage() {
         {currentStep?.key === "details" && <DetailsStep state={state} dispatch={dispatch} />}
         {currentStep?.key === "cast" && <CastStep state={state} dispatch={dispatch} />}
         {currentStep?.key === "seasons" && <SeasonsStep state={state} dispatch={dispatch} />}
-        {currentStep?.key === "media" && <MediaStep state={state} dispatch={dispatch} />}
+        {currentStep?.key === "media" && (
+          <MediaStep
+            state={state}
+            dispatch={dispatch}
+            contentId={editingIdRef.current ?? ""}
+            onUploadComplete={handleUploadComplete}
+            requestUploadUrl={handleRequestUploadUrl}
+            confirmUpload={handleConfirmUpload}
+            ensureSaved={ensureSaved}
+            editingIdRef={editingIdRef}
+          />
+        )}
       </div>
 
       <Footer
@@ -308,24 +353,53 @@ function SeasonsStep({ state, dispatch }: { state: IFormState; dispatch: React.D
   );
 }
 
-function MediaStep({ state, dispatch }: { state: IFormState; dispatch: React.Dispatch<Action> }) {
+interface MediaStepProps {
+  state: IFormState;
+  dispatch: React.Dispatch<Action>;
+  contentId: string;
+  onUploadComplete: (videoKey: string) => void;
+  requestUploadUrl: (
+    contentId: string,
+    fileName: string,
+    contentType: string,
+  ) => Promise<{ uploadUrl: string; key: string }>;
+  confirmUpload: (contentId: string, videoKey: string) => Promise<unknown>;
+  ensureSaved: () => Promise<string>;
+  editingIdRef: React.MutableRefObject<string | null>;
+}
+
+function MediaStep({
+  state,
+  dispatch,
+  contentId,
+  onUploadComplete,
+  requestUploadUrl,
+  confirmUpload,
+  ensureSaved,
+  editingIdRef,
+}: MediaStepProps) {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <div className="space-y-1.5">
-        <label htmlFor="pu" className="text-sm font-medium text-foreground">
-          Poster URL
-        </label>
-        <input
-          id="pu"
-          type="text"
-          value={state.posterUrl}
-          onChange={(e) =>
-            dispatch({ kind: "SET_FIELD", field: "posterUrl", value: e.target.value })
-          }
-          className="w-full rounded-xl border border-border bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-        />
-      </div>
-      <MediaUploadZone />
+      <ThumbnailUploadZone
+        contentId={contentId}
+        existingThumbnailKey={state.thumbnailKey || undefined}
+        onUploadComplete={(key) => dispatch({ kind: "SET_FIELD", field: "thumbnailKey", value: key })}
+        requestUploadUrl={async (cId, fName, cType) => {
+          const id = await ensureSaved();
+          return contentService.requestThumbnailUrl(id, fName, cType);
+        }}
+        confirmUpload={async (cId, key) => {
+          const id = editingIdRef.current!;
+          return contentService.confirmThumbnail(id, key);
+        }}
+      />
+      <MediaUploadZone
+        contentId={contentId}
+        existingVideoKey={state.videoKey || undefined}
+        onUploadComplete={onUploadComplete}
+        requestUploadUrl={requestUploadUrl}
+        confirmUpload={confirmUpload}
+      />
     </div>
   );
 }

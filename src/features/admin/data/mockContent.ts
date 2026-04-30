@@ -1,10 +1,4 @@
-/* ══════════════════════════════════════════════════
-   Mock data for admin content section.
-   ══════════════════════════════════════════════════ */
-
-import type { ContentMetadata } from "../types/content.types";
-
-/* ── Genre list ───────────────────────────────── */
+import type { IContentMetadata } from "../types/content.types";
 
 export const GENRES = [
   "Action",
@@ -24,9 +18,7 @@ export const GENRES = [
   "Western",
 ] as const;
 
-/* ── Sample drafts ────────────────────────────── */
-
-export const mockDrafts: ContentMetadata[] = [
+export const mockDrafts: IContentMetadata[] = [
   {
     id: "draft-1",
     title: "The Last Frontier",

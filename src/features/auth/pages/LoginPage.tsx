@@ -9,8 +9,7 @@ import { toast } from "@/components/ui/Toast";
 import { authService } from "@/services/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { type LoginFormData, loginSchema } from "../schemas/authSchemas";
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+import { apiConfig } from "@/services/config/api.config";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -120,7 +119,7 @@ export function LoginPage() {
 
           
           <a
-            href={`${API_BASE_URL}/api/auth/google`}
+            href={apiConfig.endpoints.identity.google}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm font-medium text-foreground transition-all duration-200 hover:bg-secondary"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
