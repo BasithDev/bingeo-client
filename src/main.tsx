@@ -6,6 +6,7 @@ import { router } from "./app/routes";
 import { AppToaster } from "./components/ui/Toast";
 import "./index.css";
 
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -18,6 +19,7 @@ const queryClient = new QueryClient({
 const rootElement = document.getElementById("root");
 if (rootElement) {
   createRoot(rootElement).render(
+    
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />

@@ -1,5 +1,5 @@
 export type ContentType = "movie" | "series" | "special";
-export type ContentStatus = "draft" | "uploading" | "published";
+export type ContentStatus = "draft" | "upcoming" | "uploaded" | "processing" | "ready";
 
 export interface IEpisode {
   number: number;
@@ -31,6 +31,8 @@ export interface IContentMetadata {
   cast: ICastMember[];
   seasons: ISeason[]; 
   posterUrl?: string;
+  thumbnailKey?: string;
+  videoKey?: string;
   status: ContentStatus;
   createdAt: string;
   updatedAt: string;

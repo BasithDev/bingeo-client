@@ -2,7 +2,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowRight,
-  Calendar,
   ChevronLeft,
   ChevronRight,
   Clock,
@@ -10,16 +9,13 @@ import {
   Plus,
   Search,
   Sparkles,
-  Tag,
   Trash2,
   Tv,
-  Users as UsersIcon,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { cn } from "@/utils/cn";
 import { contentService } from "@/services/api";
 import type { IContentMetadata as ContentMetadata, ContentType } from "../types/content.types";
-import { formatDate } from "../utils/helpers";
 
 
 
@@ -203,22 +199,32 @@ export function ContentDraftsPage() {
                   )}
                 >
                   {/* Poster Placeholder Area - Reduced height */}
-                  <div className="relative aspect-[16/10] bg-muted/20 overflow-hidden flex items-center justify-center">
-                    <div
-                      className={cn(
-                        "absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-30 transition-opacity duration-500",
-                        meta.accent,
-                      )}
-                    />
-                    
-                    {/* Icon */}
-                    <div className={cn(
-                      "relative z-10 h-10 w-10 rounded-xl bg-background/40 backdrop-blur-sm flex items-center justify-center",
-                      "border border-white/5 transition-transform duration-500 group-hover:scale-110",
-                      meta.glow
-                    )}>
-                      <meta.Icon className="h-5 w-5" />
-                    </div>
+                  <div className="relative aspect-16/10 bg-muted/20 overflow-hidden flex items-center justify-center">
+                    {draft.thumbnailKey || draft.posterUrl ? (
+                      <img 
+                        src={draft.thumbnailKey ? `https://bingeo-media-assets.s3.ap-south-1.amazonaws.com/${draft.thumbnailKey}` : draft.posterUrl} 
+                        alt={draft.title || "Thumbnail"}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <>
+                        <div
+                          className={cn(
+                            "absolute inset-0 bg-linear-to-br opacity-10 group-hover:opacity-30 transition-opacity duration-500",
+                            meta.accent,
+                          )}
+                        />
+                        
+                        {/* Icon */}
+                        <div className={cn(
+                          "relative z-10 h-10 w-10 rounded-xl bg-background/40 backdrop-blur-sm flex items-center justify-center",
+                          "border border-white/5 transition-transform duration-500 group-hover:scale-110",
+                          meta.glow
+                        )}>
+                          <meta.Icon className="h-5 w-5" />
+                        </div>
+                      </>
+                    )}
 
                     {/* Hover Actions Overlay - Compact */}
                     <div className="absolute inset-0 z-30 bg-background/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-2">
@@ -269,7 +275,7 @@ export function ContentDraftsPage() {
                     {/* Cast Avatar Stack */}
                     <div className="flex items-center justify-between">
                       <div className="flex -space-x-1.5">
-                        {topCast.map((member, i) => (
+                        {topCast.map((member) => (
                           <div 
                             key={member.id} 
                             className="h-6 w-6 rounded-full border-2 border-card bg-muted ring-1 ring-white/5 overflow-hidden"

@@ -14,6 +14,7 @@ export const apiConfig = {
       resendOtp: `${GATEWAY_URL}/identity/auth/resend-otp`,
       forgotPassword: `${GATEWAY_URL}/identity/auth/forgot-password`,
       resetPassword: `${GATEWAY_URL}/identity/auth/reset-password`,
+      google: `${GATEWAY_URL}/identity/auth/google`,
     },
     admin: {
       users: `${GATEWAY_URL}/identity/admin/users`,
@@ -23,6 +24,11 @@ export const apiConfig = {
     content: {
       drafts: `${GATEWAY_URL}/content/admin/drafts`,
       draftById: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}`,
+      markUpcoming: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}/upcoming`,
+      uploadUrl: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}/upload-url`,
+      uploadComplete: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}/upload-complete`,
+      thumbnailUrl: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}/thumbnail-url`,
+      thumbnailComplete: (id: string) => `${GATEWAY_URL}/content/admin/drafts/${id}/thumbnail-complete`,
     },
   },
 } as const;
